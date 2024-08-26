@@ -1,0 +1,93 @@
+.form-container {
+    width: 400px;
+    margin: 0 auto;
+    padding: 20px;
+    border: 1px solid #ddd;
+    border-radius: 8px;
+    box-shadow: 0 2px 4px rgba(0, 0, 0, 0.1);
+    font-family: Arial, sans-serif;
+  }
+  
+  .social-login {
+    display: flex;
+    justify-content: space-between;
+    margin-bottom: 20px;
+  }
+  
+  .social-button {
+    width: 48%;
+    padding: 10px;
+    border: none;
+    border-radius: 4px;
+    font-size: 14px;
+    cursor: pointer;
+  }
+  
+  .apple {
+    background-color: #000;
+    color: #fff;
+  }
+  
+  .google {
+    background-color: #4285F4;
+    color: #fff;
+  }
+  
+  .separator {
+    text-align: center;
+    margin: 20px 0;
+    color: #888;
+  }
+  
+  .input-group {
+    display: flex;
+    justify-content: space-between;
+    margin-bottom: 15px;
+  }
+  
+  .input-group input {
+    width: 48%;
+    padding: 10px;
+    border: 1px solid #ccc;
+    border-radius: 4px;
+  }
+  
+  .input-field {
+    margin-bottom: 15px;
+  }
+  
+  .input-field input,
+  .input-field select {
+    width: 100%;
+    padding: 10px;
+    border: 1px solid #ccc;
+    border-radius: 4px;
+  }
+  
+  .checkbox-group {
+    display: flex;
+    align-items: center;
+    margin-bottom: 15px;
+  }
+  
+  .checkbox-group input {
+    margin-right: 10px;
+  }
+  
+  .submit-button {
+    width: 100%;
+    padding: 10px;
+    background-color: #28a745;
+    color: #fff;
+    border: none;
+    border-radius: 4px;
+    cursor: pointer;
+    font-size: 16px;
+  }
+  
+  .login-link {
+    text-align: center;
+    margin-top: 15px;
+    font-size: 14px;
+  }
+  
