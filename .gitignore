@@ -1,6 +1,6 @@
 # Node.js dependencies
 /Backend/node_modules
-
+/Frontend/node_modules
 
 # Environment variables
 /Backend/.env
@@ -9,3 +9,4 @@
 
 # npm specific files
 /Backend/package-lock.json
+/Frontend/package-lock.json

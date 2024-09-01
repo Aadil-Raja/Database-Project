@@ -17,7 +17,9 @@ app.use('/', require('./routes/userRoutes'));
 sequelize.sync({ force: true }).then(() => {
     console.log('Database & tables created!');
 });
-
+app.get("/",(req,res)=>{
+    res.send("Server running");
+})
 app.listen(PORT, () => {
     console.log(`Server is running on port ${PORT}`);
 });
