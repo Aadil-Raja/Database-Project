@@ -23,8 +23,9 @@ const Login = () => {
       const response = await axios.post("http://localhost:3000/login", { email, password });
       console.log(response);  // Log the entire response
   
-      if (response.data === "exist") {
+      if (response.data.message === "exist") {
         console.log("Login successful!");
+        localStorage.setItem('token',response.data.token);
         navigate("/About");
       } else if (response.data === "notexist") {
         console.log("User does not exist, please sign up.");

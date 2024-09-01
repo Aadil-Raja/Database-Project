@@ -1,7 +1,7 @@
 const Client = require("../models/client");
 const Sp = require("../models/Sp");
 const bcrypt = require("bcryptjs");
-
+const jwt=require('jsonwebtoken');
 exports.createClient = async (req, res) => {
   try {
     const { firstName, lastName, email, password, tips, terms } = req.body;
@@ -49,7 +49,8 @@ exports.login = async (req, res) => {
       const passwordMatch = await bcrypt.compare(password, spUser.password);
       if (passwordMatch) {
         console.log(`Login successful for ServiceProvider: ${email}`);
-        return res.json("exist");
+        const token=jwt.sign({id:spUser.id,email:spUser.email},process.env.JWT_SECRET,{expiresIn : '1h'});
+        return res.json({ message: "exist", token });
       }
     }
 
@@ -59,7 +60,8 @@ exports.login = async (req, res) => {
       const passwordMatch = await bcrypt.compare(password, clientUser.password);
       if (passwordMatch) {
         console.log(`Login successful for Client: ${email}`);
-        return res.json("exist");
+        const token =jwt.sign({id:clientUser.id,email:clientUser.email},process.env.JWT_SECRET,{expiresIn:'1h'});
+        return res.json({ message: "exist", token });
       }
     }
 

@@ -1,7 +1,7 @@
 const express = require('express');
 const sequelize = require('./config/db');
 const cors = require('cors');
-
+require('dotenv').config()
 // Import the models separately
 const Client = require('./models/client');
 const ServiceProvider = require('./models/Sp');
