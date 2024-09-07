@@ -11,52 +11,75 @@ import Register from './components/Register/Register.jsx'
 import SP from './components/Register/SP/sp.jsx'
 import Client from './components/Register/Client/client.jsx'
 import Login from './components/Login/Login.jsx'
+import ProtectedRoute from './components/utils/ProtectedRoute.jsx';
+import ServicePage from './components/ServicePage/ServicePage.jsx'
+import Final from './components/Requests/Final.jsx'
 
 
-const router = createBrowserRouter ([
+
+
+const router = createBrowserRouter([
   {
     path: '/',
-    element: <Layout/>,
-    children:[
+    element: <Layout />,
+    
+    children: [
+      
+      // Public Routes
       {
-        path: "",
-        element:<Home/>
+        path: '',
+        element: <Home />
       },
       {
-        path: "About",
-        element:<About/>
+        path: 'About',
+        element: <About />
       },
       {
-        path: "Contact",
-        element:<Contact/>
+        path: 'Contact',
+        element: <Contact />
       },
       {
-        path: "Register",
-        element:<Register/>,
-        children:[
+        path: 'Login',
+        element: <Login />
+      },
+      {
+        path: 'Client',
+        element: <Client />
+      },
+      {
+        path: 'SP',
+        element: <SP />
+      },
+      {
+        path: 'Register',
+        element: <Register />
+      },
+      {
+        path: 'ServicePage',
+        element: <ServicePage />
+      },
+      {
+        
           
+            element: <ProtectedRoute />, // Apply ProtectedRoute to secure these paths
+            children: [
+              {
+                path: 'Requests',
+                element: <Final/>
+              },
+  
+             
+            ]
           
-          ]
-      },
-      {
-        path: "Client",
-        element:<Client/>
-      },
-      {
-        path: "SP",
-        element:<SP/>
-      },
-      {
-        path: "Login",
-        element: <Login/>
-      },
-    ]
+      }
 
+      
+    ]
   }
-])
+]);
 
 ReactDOM.createRoot(document.getElementById('root')).render(
   <React.StrictMode>
-    <RouterProvider router ={router}/>
-  </React.StrictMode>,
-)
+    <RouterProvider router={router} />
+  </React.StrictMode>
+);
