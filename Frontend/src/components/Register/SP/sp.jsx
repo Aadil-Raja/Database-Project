@@ -1,4 +1,4 @@
-import React, { useState } from "react";
+import React, { useState ,useEffect} from "react";
 import axios from "axios";
 import "./sp.css";
 import { Link } from "react-router-dom";
@@ -9,10 +9,29 @@ const SP = () => {
     lastName: "",
     email: "",
     password: "",
-    country: "Pakistan",  // Default value
+    phone: "",
+    address: "",
+    city: "",
+    gender: "",
+    dob: "",
+    status: "active",
     tips: false,
     terms: false,
   });
+  const [cities, setCities] = useState([]);
+
+  useEffect(() => {
+    // Fetch cities from backend when the component loads
+    const fetchCities = async () => {
+      try {
+        const response = await axios.get("http://localhost:3000/cities");
+        setCities(response.data);
+      } catch (error) {
+        console.error("Error fetching cities:", error);
+      }
+    };
+    fetchCities();
+  }, []);
 
   const handleInputChange = (e) => {
     const { name, value, type, checked } = e.target;
@@ -40,40 +59,49 @@ const SP = () => {
     <div className="form-container">
       <div className="social-login">
         <button className="social-button apple">Continue with Apple</button>
-        <button className="social-button google">Continue as Google</button>
+        <button className="social-button google">Continue with Google</button>
       </div>
       <div className="separator">
         <span>or</span>
       </div>
       <form onSubmit={handleCreateAccount}>
+        {/* First Name Field */}
         <div className="input-group">
           <input
             type="text"
-            placeholder="First name"
+            placeholder="First Name"
             name="firstName"
             value={formData.firstName}
             onChange={handleInputChange}
             required
           />
+        </div>
+
+        {/* Last Name Field */}
+        <div className="input-group">
           <input
             type="text"
-            placeholder="Last name"
+            placeholder="Last Name"
             name="lastName"
             value={formData.lastName}
             onChange={handleInputChange}
             required
           />
         </div>
+
+        {/* Email Field */}
         <div className="input-field">
           <input
             type="email"
-            placeholder="Work email address"
+            placeholder="Email Address"
             name="email"
             value={formData.email}
             onChange={handleInputChange}
             required
           />
         </div>
+
+        {/* Password Field */}
         <div className="input-field">
           <input
             type="password"
@@ -84,20 +112,70 @@ const SP = () => {
             required
           />
         </div>
+
+        {/* Phone Field */}
+        <div className="input-field">
+          <input
+            type="text"
+            placeholder="Phone Number"
+            name="phone"
+            value={formData.phone}
+            onChange={handleInputChange}
+            required
+          />
+        </div>
+
+        {/* Address Field */}
+        <div className="input-field">
+          <input
+            type="text"
+            placeholder="Address"
+            name="address"
+            value={formData.address}
+            onChange={handleInputChange}
+            required
+          />
+        </div>
+
+        {/* City Selection Field */}
+        <div className="input-field">
+        <select name="city" value={formData.city} onChange={handleInputChange} required>
+          <option value="">Select City</option>
+          {cities.map((city) => (
+            <option key={city.city_id} value={city.name}>
+              {city.name}
+            </option>
+          ))}
+        </select>
+        </div>
+
+        {/* Gender Selection */}
         <div className="input-field">
           <select
-            name="country"
-            value={formData.country}
+            name="gender"
+            value={formData.gender}
             onChange={handleInputChange}
             required
           >
-            <option value="Pakistan">Pakistan</option>
-            <option value="India">India</option>
-            <option value="United States">United States</option>
-            <option value="Canada">Canada</option>
-            {/* Add more countries as needed */}
+            <option value="">Select Gender</option>
+            <option value="male">Male</option>
+            <option value="female">Female</option>
+            <option value="other">Other</option>
           </select>
         </div>
+
+        {/* Date of Birth Field */}
+        <div className="input-field">
+          <input
+            type="date"
+            name="dob"
+            value={formData.dob}
+            onChange={handleInputChange}
+            required
+          />
+        </div>
+
+        {/* Tips Checkbox */}
         <div className="checkbox-group">
           <input
             type="checkbox"
@@ -110,6 +188,8 @@ const SP = () => {
             Send me emails with tips on how to find talent that fits my needs.
           </label>
         </div>
+
+        {/* Terms and Conditions */}
         <div className="checkbox-group">
           <input
             type="checkbox"
@@ -120,13 +200,17 @@ const SP = () => {
             required
           />
           <label htmlFor="terms">
-            Yes, I understand and agree to the ServiceProvider Terms of Service, including the <a href="#">User Agreement</a> and <a href="#">Privacy Policy</a>.
+            Yes, I understand and agree to the Service Provider Terms of Service, including the <a href="#">User Agreement</a> and <a href="#">Privacy Policy</a>.
           </label>
         </div>
+
+        {/* Submit Button */}
         <button type="submit" className="submit-button">
           Create my account
         </button>
       </form>
+
+      {/* Login Link */}
       <div className="login-link">
         Already have an account? <Link to="/login">Login</Link>
       </div>

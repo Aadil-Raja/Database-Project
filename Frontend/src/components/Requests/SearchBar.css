@@ -1,0 +1,83 @@
+/* styles.css */
+
+/* Header styling */
+.header {
+  @apply fixed top-0 left-0 right-0 z-30 w-full bg-white shadow-md;
+}
+
+/* Navigation styling within the header */
+.nav {
+  @apply bg-white px-4 lg:px-3 py-2.5;
+}
+
+.nav-container {
+  @apply flex items-center justify-between w-full max-w-screen-xl mx-auto;
+}
+
+.logo {
+  @apply flex items-center;
+}
+
+.logo-text {
+  @apply font-bold text-xl;
+}
+
+.logo-highlight {
+  @apply text-orange-700;
+}
+
+/* Search bar styling */
+.search-bar-container {
+  @apply flex items-center border rounded-full bg-gray-100 p-1 w-full max-w-md; /* Adjust max-width as needed */
+  @apply shadow-md; /* Add shadow for a subtle 3D effect */
+  @apply relative; /* Make sure container is positioned relative to handle button positioning */
+}
+
+.search-bar-input {
+  @apply bg-transparent outline-none pl-4 pr-3 py-1 h-8; /* Refined padding for better spacing */
+  @apply text-gray-700; /* Subtle text color */
+  @apply placeholder-gray-500; /* Placeholder color */
+  @apply flex-grow; /* Allow input to take available space */
+}
+
+.search-bar-button {
+  @apply text-white bg-orange-700 rounded-full p-2 h-8; /* Adjust height for consistency */
+  @apply absolute right-1 top-1/2 transform -translate-y-1/2; /* Position button to the right and center vertically */
+  @apply shadow-sm; /* Subtle button shadow */
+}
+
+.search-bar-button:hover {
+  @apply bg-orange-800; /* Darker background on hover */
+}
+
+.search-bar-button:focus {
+  @apply ring-2 ring-orange-400; /* Focus ring for better accessibility */
+}
+
+/* Main content padding to ensure content is not hidden under the header */
+.main-content {
+  @apply pt-16; /* Padding-top equal to header height */
+}
+
+/* Responsive design adjustments */
+@media (max-width: 768px) {
+  .nav-container {
+    @apply flex-col items-start;
+  }
+  
+  .search-bar-container {
+    @apply flex-col w-full;
+  }
+  
+  .search-bar-input,
+  .search-bar-button {
+    @apply w-full mb-2;
+  }
+
+  .search-bar-button {
+    @apply ml-0; /* Remove margin on small screens */
+    @apply absolute; /* Ensure button stays on the right side on small screens */
+  }
+}
+
+

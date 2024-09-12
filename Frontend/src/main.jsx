@@ -12,7 +12,8 @@ import SP from './components/Register/SP/sp.jsx'
 import Client from './components/Register/Client/client.jsx'
 import Login from './components/Login/Login.jsx'
 import ProtectedRoute from './components/utils/ProtectedRoute.jsx';
-
+import ServicePage from './components/ServicePage/ServicePage.jsx'
+import Final from './components/Requests/Final.jsx'
 
 
 
@@ -21,8 +22,22 @@ const router = createBrowserRouter([
   {
     path: '/',
     element: <Layout />,
+    
     children: [
+      
       // Public Routes
+      {
+        path: '',
+        element: <Home />
+      },
+      {
+        path: 'About',
+        element: <About />
+      },
+      {
+        path: 'Contact',
+        element: <Contact />
+      },
       {
         path: 'Login',
         element: <Login />
@@ -39,26 +54,26 @@ const router = createBrowserRouter([
         path: 'Register',
         element: <Register />
       },
-
-      // Protected Routes
       {
-        element: <ProtectedRoute />, // Apply ProtectedRoute to secure these paths
-        children: [
-          {
-            path: '',
-            element: <Home />
-          },
-          {
-            path: 'About',
-            element: <About />
-          },
-          {
-            path: 'Contact',
-            element: <Contact />
-          },
-         
-        ]
+        path: 'ServicePage',
+        element: <ServicePage />
+      },
+      {
+        
+          
+            element: <ProtectedRoute />, // Apply ProtectedRoute to secure these paths
+            children: [
+              {
+                path: 'Requests',
+                element: <Final/>
+              },
+  
+             
+            ]
+          
       }
+
+      
     ]
   }
 ]);

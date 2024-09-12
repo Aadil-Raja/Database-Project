@@ -1,10 +1,21 @@
 const express = require('express');
-const userController = require("../controllers/usercontroller")
 const router = express.Router();
-const authenticateToken = require('../middleware/auth');
-router.post("/login",userController.login);
-router.post("/register/client",userController.createClient);
-router.post("/register/sp",userController.createSp);
 
+// Import controllers
+const clientController = require('../controllers/clientController');
+const spController = require('../controllers/spController');
+const cityController = require('../controllers/cityController');
+const loginController = require('../controllers/loginController.js')
 
-module.exports=router;
+// Client routes
+router.post('/register/client', clientController.createClient);
+router.post('/login',loginController.login );
+
+// Service Provider routes
+router.post('/register/sp', spController.createSp);
+router.post('/login',loginController.login );
+
+// City routes
+router.get('/cities', cityController.getCities);
+
+module.exports = router;
