@@ -3,14 +3,16 @@ const {  DataTypes } = require('sequelize');
 const sequelize =require("../config/db")
 
 const Client = sequelize.define('Client', {
-  firstName: {
+  client_id: {
+    type: DataTypes.INTEGER,
+    primaryKey: true,
+    autoIncrement: true,
+  },
+  name: {
     type: DataTypes.STRING,
     allowNull: false,
   },
-  lastName: {
-    type: DataTypes.STRING,
-    allowNull: false,
-  },
+  
   email: {
     type: DataTypes.STRING,
     allowNull: false,
@@ -20,14 +22,8 @@ const Client = sequelize.define('Client', {
     type: DataTypes.STRING,
     allowNull: false,
   },
-  tips: {
-    type: DataTypes.BOOLEAN,
-    defaultValue: false,
-  },
-  terms: {
-    type: DataTypes.BOOLEAN,
-    allowNull: false,
-  },
+}, {
+  timestamps: true, // Automatically create createdAt and updatedAt fields
 });
 
 

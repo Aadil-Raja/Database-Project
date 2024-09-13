@@ -1,18 +1,19 @@
-const City = require('../models/city'); // Ensure your city model is imported
+const sequelize = require('../config/db'); // Ensure you have access to the Sequelize instance
 
 const initializeCities = async () => {
   const cities = [
-    { name: 'Karachi' },
-    { name: 'Lahore' },
-    { name: 'Islamabad' },
-    { name: 'Peshawar' },
+    'Karachi',
+    'Lahore',
+    'Islamabad',
+    'Peshawar'
     // Add more cities as required
   ];
 
   for (const city of cities) {
-    await City.findOrCreate({
-      where: { name: city.name }, // Avoid duplicates by checking the city name
-    });
+    const insertCityQuery = `
+      INSERT IGNORE INTO Cities (name) VALUES('${city}');
+    `;
+    await sequelize.query(insertCityQuery);
   }
 
   console.log('Cities initialized successfully');

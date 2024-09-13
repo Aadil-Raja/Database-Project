@@ -1,7 +1,8 @@
-import React, { useState ,useEffect} from "react";
+import React, { useState, useEffect } from "react";
 import axios from "axios";
 import "./sp.css";
 import { Link } from "react-router-dom";
+import { useNavigate } from "react-router-dom";
 
 const SP = () => {
   const [formData, setFormData] = useState({
@@ -11,7 +12,7 @@ const SP = () => {
     password: "",
     phone: "",
     address: "",
-    city: "",
+    city_id: 0,  // Fix: use city_id
     gender: "",
     dob: "",
     status: "active",
@@ -19,7 +20,7 @@ const SP = () => {
     terms: false,
   });
   const [cities, setCities] = useState([]);
-
+  const navigate=useNavigate();
   useEffect(() => {
     // Fetch cities from backend when the component loads
     const fetchCities = async () => {
@@ -49,8 +50,17 @@ const SP = () => {
     }
     try {
       const response = await axios.post("http://localhost:3000/register/sp", formData);
-      console.log("Account created successfully:", response.data);
+      if (response.data.message === "Email already exists") {
+        alert("The email address is already registered. Please use a different email.");
+      } else {
+        console.log("Account created successfully:", response.data);
+        alert("Account created successfully!");
+        navigate("/About");
+      }
+        
+      
     } catch (error) {
+      
       console.error("There was an error creating the account:", error);
     }
   };
@@ -139,14 +149,14 @@ const SP = () => {
 
         {/* City Selection Field */}
         <div className="input-field">
-        <select name="city" value={formData.city} onChange={handleInputChange} required>
-          <option value="">Select City</option>
-          {cities.map((city) => (
-            <option key={city.city_id} value={city.name}>
-              {city.name}
-            </option>
-          ))}
-        </select>
+          <select name="city_id" value={formData.city_id} onChange={handleInputChange} required>
+            <option value="">Select City</option>
+            {cities.map((city) => (
+              <option key={city.city_id} value={city.city_id}>
+                {city.name}
+              </option>
+            ))}
+          </select>
         </div>
 
         {/* Gender Selection */}

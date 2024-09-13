@@ -2,6 +2,11 @@ const { DataTypes } = require('sequelize');
 const sequelize = require('../config/db');
 
 const ServiceProvider = sequelize.define('ServiceProvider', {
+  sp_id: {
+    type: DataTypes.INTEGER,
+    primaryKey: true,
+    autoIncrement: true,
+  },
   firstName: {
     type: DataTypes.STRING,
     allowNull: false,
@@ -25,19 +30,19 @@ const ServiceProvider = sequelize.define('ServiceProvider', {
   },
   address: {
     type: DataTypes.STRING,
-    allowNull: true, // Add address for service provider
+    allowNull: false, // Add address for service provider
   },
-  city: {
-    type: DataTypes.STRING,
-    allowNull: true, // The city where the service provider is located
+  city_id: {
+    type: DataTypes.INTEGER,
+    allowNull: false, // The city where the service provider is located
   },
   gender: {
-    type: DataTypes.ENUM('male', 'female', 'other'),
-    allowNull: true, // Add gender field
+    type: DataTypes.ENUM('Male', 'Female', 'Other'),
+    allowNull: false, // Add gender field
   },
   dob: {
     type: DataTypes.DATEONLY,
-    allowNull: true, // Date of birth for the service provider
+    allowNull: false, // Date of birth for the service provider
   },
   role: {
     type: DataTypes.ENUM('client', 'service_provider', 'both'),

@@ -3,10 +3,11 @@ import axios from "axios";
 import React from "react";
 import "./Client.css";
 import { Link } from "react-router-dom";
+import { useNavigate } from "react-router-dom";
 
 const Client = () => {
   const [formData,setFormData] =useState({
-    firstName : "",lastName:"",email: "",password:"",tips:"",terms:false
+    name : "",email: "",password:""
   })
   const handleInputChange = (e) => {
     const { name, value, type, checked } = e.target;
@@ -15,20 +16,21 @@ const Client = () => {
       [name]: type === "checkbox" ? checked : value,
     });
   };
-  
+  const navigate=useNavigate();
   const handleCreateAccount= async(e)=> {
     e.preventDefault();
-    if(!formData.terms)
-    {
-      alert("You must agree to the term and conditions.");
-      return;
-    }
+  
     try {
       
       const response = await axios.post("http://localhost:3000/register/client", formData);
-      
-     
-      console.log("Account created successfully:", response.data);
+      if (response.data.message === "Email already exists") {
+        alert("The email address is already registered. Please use a different email.");
+      } else {
+        console.log("Account created successfully:", response.data);
+        alert("Account created successfully!");
+        navigate("/About");
+        }
+        
   
     } catch (error) {
       
@@ -50,25 +52,18 @@ const Client = () => {
         <div className="input-group">
         <input
             type="text"
-            placeholder="First name"
-            name="firstName"
-            value={formData.firstName}
+            placeholder="Name"
+            name="name"
+            value={formData.name}
             onChange={handleInputChange}
             required
           />
-           <input
-            type="text"
-            placeholder="Last name"
-            name="lastName"
-            value={formData.lastName}
-            onChange={handleInputChange}
-            required
-          />
+           
         </div>
         <div className="input-field">
         <input
             type="email"
-            placeholder="Work Email Address"
+            placeholder="Email Address"
             name="email"
             value={formData.email}
             onChange={handleInputChange}
@@ -78,37 +73,14 @@ const Client = () => {
         <div className="input-field">
         <input
             type="password"
-            placeholder="Password (8 or more characters)"
+            placeholder="Password"
             name="password"
             value={formData.password}
             onChange={handleInputChange}
             required
           />
         </div>
-        
-        <div className="checkbox-group">
-        <input
-            type="checkbox"
-            id="tips"
-            name="tips"
-            checked={formData.tips}
-            onChange={handleInputChange}
-          />
-          <label htmlFor="tips">Send me emails with tips on how to find talent that fits my needs.</label>
-        </div>
-        <div className="checkbox-group">
-        <input
-            type="checkbox"
-            id="terms"
-            name="terms"
-            checked={formData.terms}
-            onChange={handleInputChange}
-            required
-          />
-          <label htmlFor="terms">
-            Yes, I understand and agree to the ServiceProvider Terms of Service, including the <a href="#">User Agreement</a> and <a href="#">Privacy Policy</a>.
-          </label>
-        </div>
+      
         <button type="submit" className="submit-button" onClick={handleCreateAccount}>Create my account</button>
       </form>
       <div className="login-link">
