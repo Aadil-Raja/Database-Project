@@ -14,7 +14,7 @@ import Login from './components/Login/Login.jsx'
 import ProtectedRoute from './components/utils/ProtectedRoute.jsx';
 import ServicePage from './components/ServicePage/ServicePage.jsx'
 import Final from './components/Requests/Final.jsx'
-import Forgotpassword from './components/Forgotpassword.jsx'
+import Forgotpassword from './components/Forgotpassword/Forgotpassword.jsx'
 
 import  Resetpassword  from './components/Resetpassword.jsx'
 
