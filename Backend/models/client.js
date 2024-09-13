@@ -22,6 +22,14 @@ const Client = sequelize.define('Client', {
     type: DataTypes.STRING,
     allowNull: false,
   },
+  resetPasswordToken: {
+    type: DataTypes.STRING,
+    allowNull: true, // This field can be null until a password reset is requested
+  },
+  resetPasswordExpires: {
+    type: DataTypes.DATE,
+    allowNull: true, // This field can be null until a password reset is requested
+  }
 }, {
   timestamps: true, // Automatically create createdAt and updatedAt fields
 });

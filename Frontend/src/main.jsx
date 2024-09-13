@@ -14,9 +14,9 @@ import Login from './components/Login/Login.jsx'
 import ProtectedRoute from './components/utils/ProtectedRoute.jsx';
 import ServicePage from './components/ServicePage/ServicePage.jsx'
 import Final from './components/Requests/Final.jsx'
+import Forgotpassword from './components/Forgotpassword.jsx'
 
-
-
+import  Resetpassword  from './components/Resetpassword.jsx'
 
 const router = createBrowserRouter([
   {
@@ -30,6 +30,7 @@ const router = createBrowserRouter([
         path: '',
         element: <Home />
       },
+      
       {
         path: 'About',
         element: <About />
@@ -37,6 +38,14 @@ const router = createBrowserRouter([
       {
         path: 'Contact',
         element: <Contact />
+      },
+      {
+        path : 'resetPassword',
+        element :<Resetpassword />
+      },
+      {
+               path: 'forgotpassword',
+               element : <Forgotpassword/>
       },
       {
         path: 'Login',

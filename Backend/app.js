@@ -15,7 +15,7 @@ app.use('/', require('./routes/userRoutes'));
 
 const initializeApp = async () => {
     try {
-      await sequelize.sync(); // Ensures the database syncs
+      await sequelize.sync({alter:true}); // Ensures the database syncs
       await initializeCities();              // Populate city table
       console.log('Database & tables initialized!');
     } catch (error) {

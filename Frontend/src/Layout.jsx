@@ -5,8 +5,8 @@ import Footer from "./components/Footer/Footer";
 
 function Layout() {
     const location = useLocation();
-    const hideHeader = ["/register", "/sp", "/client","/login","/Requests"].includes(location.pathname);
-    const hideFooter = ["/register", "/sp", "/client","/login","/ServicePage","/Requests"].includes(location.pathname);
+    const hideHeader = ["/register", "/sp", "/client","/login","/Requests","/forgotpassword" ,"/resetPassword"].includes(location.pathname);
+    const hideFooter = ["/register", "/sp", "/client","/login","/ServicePage","/Requests","/forgotpassword","/resetPassword"].includes(location.pathname);
     
     return (
         <>

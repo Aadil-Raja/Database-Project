@@ -54,7 +54,7 @@ const Login = () => {
           <input type="password" placeholder="Password" required  onChange={passwordHandler}/>
         </div>
         <div className="forgot-password">
-          <a href="#">Forgot Password?</a>
+        <Link to="/forgotpassword" classname="submit">Forgot Password?</Link>
         </div>
         <button type="submit" className="login-button" onClick={handlelogin}>Log In</button>
       </form>

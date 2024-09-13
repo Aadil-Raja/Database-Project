@@ -1,6 +1,7 @@
 const { DataTypes } = require('sequelize');
 const sequelize = require('../config/db');
 
+
 const ServiceProvider = sequelize.define('ServiceProvider', {
   sp_id: {
     type: DataTypes.INTEGER,
@@ -34,7 +35,13 @@ const ServiceProvider = sequelize.define('ServiceProvider', {
   },
   city_id: {
     type: DataTypes.INTEGER,
-    allowNull: false, // The city where the service provider is located
+    references: {
+      model: 'Cities', // Name of the table, not the model
+      key: 'city_id',
+    },
+    onDelete: 'SET NULL',
+    onUpdate: 'CASCADE',
+    allowNull: true, // It can be set to null if the referenced city is deleted
   },
   gender: {
     type: DataTypes.ENUM('Male', 'Female', 'Other'),
@@ -59,6 +66,14 @@ const ServiceProvider = sequelize.define('ServiceProvider', {
   terms: {
     type: DataTypes.BOOLEAN,
     allowNull: false, // Agree to terms and conditions
+  },
+  resetPasswordToken: {
+    type: DataTypes.STRING,
+    allowNull: true, // This field can be null until a password reset is requested
+  },
+  resetPasswordExpires: {
+    type: DataTypes.DATE,
+    allowNull: true, // This field can be null until a password reset is requested
   },
 }, {
   timestamps: true, // Automatically create createdAt and updatedAt fields
