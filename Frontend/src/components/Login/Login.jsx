@@ -38,7 +38,12 @@ const Login = () => {
       } else if (response.data === "notexist") {
         console.log("User does not exist, please sign up.");
         alert("Signup First");
-      } else {
+      }
+      else if(response.data.message === "Invalid password")
+        {
+          alert("Invalid Password!");
+        } 
+      else {
         console.log("Unexpected response:", response.data);
         alert("Failed to login");
       }
