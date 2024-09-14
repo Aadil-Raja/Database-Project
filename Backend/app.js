@@ -3,9 +3,10 @@ const sequelize = require('./config/db');
 const cors = require('cors');
 require('dotenv').config()
 const initializeCities = require('./seeds/initializeCities');
+const initializeCategoriesAndServices=require('./seeds/initializeCategoriesAndServices');
 const Client = require('./models/client');
 const ServiceProvider = require('./models/Sp');
-
+const ServiceProviderServices=require('./models/spservices');
 const app = express();
 const PORT = process.env.PORT || 3000;
 
@@ -17,6 +18,7 @@ const initializeApp = async () => {
     try {
       await sequelize.sync({alter:true}); // Ensures the database syncs
       await initializeCities();              // Populate city table
+      await initializeCategoriesAndServices();
       console.log('Database & tables initialized!');
     } catch (error) {
       console.error('Error initializing database:', error);
@@ -28,6 +30,7 @@ const initializeApp = async () => {
 app.get("/",(req,res)=>{
     res.send("Server running");
 })
+
 app.listen(PORT, () => {
     console.log(`Server is running on port ${PORT}`);
 });

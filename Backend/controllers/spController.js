@@ -24,7 +24,7 @@ exports.createSp = async (req, res) => {
       return res.json({ message: "Email already exists" });
     }
    
-
+     
     // SQL query to insert a new service provider
     const insertQuery = `
       INSERT INTO ServiceProviders 
@@ -36,7 +36,7 @@ exports.createSp = async (req, res) => {
     // Execute the query
     await sequelize.query(insertQuery);
 
-    res.json({ message: "User Created Successfully" });
+    res.json({ message: "User Created Successfully"});
   } catch (err) {
     console.error("Error in createSp:", err.message);
     res.status(500).json({ error: err.message });

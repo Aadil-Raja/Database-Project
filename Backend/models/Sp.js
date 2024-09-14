@@ -75,6 +75,11 @@ const ServiceProvider = sequelize.define('ServiceProvider', {
     type: DataTypes.DATE,
     allowNull: true, // This field can be null until a password reset is requested
   },
+  first_time_login: {
+    type: DataTypes.BOOLEAN,
+    defaultValue: true, // Set to true when the user signs up
+  },
+  
 }, {
   timestamps: true, // Automatically create createdAt and updatedAt fields
 });

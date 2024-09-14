@@ -22,11 +22,19 @@ const Login = () => {
     try {
       const response = await axios.post("http://localhost:3000/login", { email, password });
       console.log(response);  // Log the entire response
-  
+     
       if (response.data.message === "exist") {
         console.log("Login successful!");
         localStorage.setItem('token',response.data.token);
-        navigate("/About");
+        
+        if(response.data.first_time_login=== "First time login")
+        {
+          navigate("/service-provider-form");
+        }
+        else{
+          navigate("/About");
+        }
+        
       } else if (response.data === "notexist") {
         console.log("User does not exist, please sign up.");
         alert("Signup First");

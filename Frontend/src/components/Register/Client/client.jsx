@@ -28,7 +28,7 @@ const Client = () => {
       } else {
         console.log("Account created successfully:", response.data);
         alert("Account created successfully!");
-        navigate("/About");
+        navigate("/Login");
         }
         
   

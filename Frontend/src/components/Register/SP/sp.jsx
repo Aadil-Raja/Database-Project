@@ -52,10 +52,11 @@ const SP = () => {
       const response = await axios.post("http://localhost:3000/register/sp", formData);
       if (response.data.message === "Email already exists") {
         alert("The email address is already registered. Please use a different email.");
-      } else {
+      } else if (response.data.message==="User Created Successfully") {
         console.log("Account created successfully:", response.data);
+
         alert("Account created successfully!");
-        navigate("/About");
+        navigate("/Login");
       }
         
       

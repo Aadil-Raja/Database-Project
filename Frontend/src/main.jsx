@@ -17,6 +17,7 @@ import Final from './components/Requests/Final.jsx'
 import Forgotpassword from './components/Forgotpassword/Forgotpassword.jsx'
 
 import  Resetpassword  from './components/Resetpassword/Resetpassword.jsx'
+import ServiceProviderForm from './components/ServiceProviderForm/ServiceProviderForm.jsx'
 
 const router = createBrowserRouter([
   {
@@ -68,6 +69,10 @@ const router = createBrowserRouter([
         element: <ServicePage />
       },
       {
+        path :"service-provider-form",
+        element : <ServiceProviderForm/>
+     },
+      {
         
           
             element: <ProtectedRoute />, // Apply ProtectedRoute to secure these paths
@@ -76,6 +81,7 @@ const router = createBrowserRouter([
                 path: 'Requests',
                 element: <Final/>
               },
+             
   
              
             ]
