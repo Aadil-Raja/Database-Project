@@ -1,6 +1,7 @@
 import React, { useState } from "react";
 import { useNavigate } from "react-router-dom";
 import axios from "axios";
+import "./Resetpassword.css"
 
 const ResetPassword = () => {
   const [password, setPassword] = useState("");
@@ -21,7 +22,7 @@ const ResetPassword = () => {
     }
     try {
       const response = await axios.post(`http://localhost:3000/resetpassword`, { password, token, type });
-      
+
       if (response.data.message === "Token is invalid or has expired") {
         setErrorMessage("Token is invalid or has expired. Do you want to resend the link?");
         setShowResendLink(true);  // Show the option to resend the link
@@ -46,31 +47,47 @@ const ResetPassword = () => {
   };
 
   return (
-    <div>
-      <form onSubmit={handleResetPassword}>
-        <input
-          type="password"
-          placeholder="Enter new password"
-          value={password}
-          onChange={(e) => setPassword(e.target.value)}
-          required
-        />
-        <input
-          type="password"
-          placeholder="Confirm new password"
-          value={confirmPassword}
-          onChange={(e) => setConfirmPassword(e.target.value)}
-          required
-        />
-        <button type="submit">Reset Password</button>
-      </form>
+    <>
+      <div className="reset-password-container">
+        <div className="reset-password-header">
+          <h2>Reset Password</h2>
+        </div>
+        <form className="reset-password-form" onSubmit={handleResetPassword}>
+          <div className="input-field">
+            <input
+              type="password"
+              placeholder="Enter new password"
+              value={password}
+              onChange={(e) => setPassword(e.target.value)}
+              required
+            />
+          </div>
+          <div className="input-field">
+            <input
+              type="password"
+              placeholder="Confirm new password"
+              value={confirmPassword}
+              onChange={(e) => setConfirmPassword(e.target.value)}
+              required
+            />
+          </div>
+          <button
+            type="submit"
+            className="reset-password-button"
+          >
+            Reset Password
+          </button>
+        </form>
 
-      {errorMessage && <p>{errorMessage}</p>}
+        {errorMessage && <p className="error-message">{errorMessage}</p>}
 
-      {showResendLink && (
-        <button onClick={handleResendLink}>Resend Password Reset Link</button>
-      )}
-    </div>
+        {showResendLink && (
+          <div className="resend-link">
+            <button onClick={handleResendLink}>Resend Password Reset Link</button>
+          </div>
+        )}
+      </div>
+    </>
   );
 };
 
