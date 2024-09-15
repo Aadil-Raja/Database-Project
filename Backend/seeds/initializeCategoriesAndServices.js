@@ -3,6 +3,7 @@ const Category = require('../models/category');
 const Service = require('../models/service'); 
 
 const initializeCategoriesAndServices = async () => {
+  console.log("i am running");
   const categories = [
     { 
       name: 'Plumbing', 
