@@ -7,6 +7,8 @@ const initializeCategoriesAndServices=require('./seeds/initializeCategoriesAndSe
 const Client = require('./models/client');
 const ServiceProvider = require('./models/Sp');
 const ServiceProviderServices=require('./models/spservices');
+const Services =require('./models/service');
+const Categoery= require('./models/category');
 const app = express();
 const PORT = process.env.PORT || 3000;
 
@@ -16,7 +18,7 @@ app.use('/', require('./routes/userRoutes'));
 
 const initializeApp = async () => {
     try {
-      await sequelize.sync({alter:true}); // Ensures the database syncs
+      await sequelize.sync({alter:true ,logging: console.log}); // Ensures the database syncs
       await initializeCities();              // Populate city table
       await initializeCategoriesAndServices();
       console.log('Database & tables initialized!');
