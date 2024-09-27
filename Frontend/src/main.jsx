@@ -21,6 +21,8 @@ import ServiceProviderForm from './components/ServiceProviderForm/ServiceProvide
 import Categories from './components/Categories/Categories.jsx'
 import CategoryDetails from './components/Categories/CategoryDetails.jsx'
 
+import Sp from './components/ServiceProviderTemporaryPage/sp1.jsx'
+import  SpProfile  from './components/SpProfile/SpProfile.jsx'
 const router = createBrowserRouter([
   {
     path: '/',
@@ -84,19 +86,26 @@ const router = createBrowserRouter([
         element: <CategoryDetails />
       },
       {
-
-
-        element: <ProtectedRoute />, // Apply ProtectedRoute to secure these paths
-        children: [
-          {
-            path: 'Requests',
-            element: <Final />
-          },
-
-
-
-        ]
-
+        
+          
+            element: <ProtectedRoute />, // Apply ProtectedRoute to secure these paths
+            children: [
+              {
+                path: 'Requests',
+                element: <Final/>
+              },
+             {
+                     path : 'ServiceProviderHome',
+                     element :<Sp/>
+             },
+             {
+                   path : 'SpProfile',
+                   element : <SpProfile/>
+             },
+  
+             
+            ]
+          
       }
 
 

@@ -11,6 +11,8 @@ const categoryController =require('../controllers/categoriesController.js');
 const serviceController = require('../controllers/serviceController');
 const savePreferences =require('../controllers/Spservices.js')
 const resetPasswordController=require('../controllers/resetPasswordController.js');
+const serviceProviderProfile=require('../controllers/spProfileController.js');
+
 const verifyToken = require('../middleware/auth');
 const { verify } = require('crypto');
 // Client routes
@@ -34,5 +36,16 @@ router.get ('/categories',categoryController.getCategories);
 router.get('/services/:categoryId', serviceController.getServicesByCategory);
 
 router.post('/service-provider/preferences',verifyToken,savePreferences.savePreferences);
+
+router.get('/service-provider/profile',verifyToken,serviceProviderProfile.getProfile);
+
+router.put('/service-provider/updateProfile',verifyToken,serviceProviderProfile.updateProfile);
+router.get('/service-provider/services',verifyToken,serviceProviderProfile.getServices);
+router.put('/service-provider/updateAvailability/:service_id',verifyToken,serviceProviderProfile.updateAvailability);
+router.delete('/service-provider/removeService/:service_id',verifyToken,serviceProviderProfile.removeService);
+router.get('/verify-token', verifyToken, (req, res) => {
+    // If the token is valid, return success
+    res.json({ isValid: true });
+  });
 
 module.exports = router;

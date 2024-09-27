@@ -6,16 +6,24 @@ exports.savePreferences = async (req, res) => {
     const service_provider_id = req.user.id; 
 
     
-    const deleteQuery = `DELETE FROM ServiceProviderServices  WHERE service_provider_id = ${service_provider_id}`;
-    await sequelize.query(deleteQuery);
-
     for (const service of services) {
-      const insertQuery = `
+      const checkQuery = `SELECT * FROM serviceproviderservices 
+                          WHERE service_provider_id = ${service_provider_id} 
+                          AND service_id = ${service.serviceId}`;
+
+      const [existingService] = await sequelize.query(checkQuery);
+
+      // If the service does not already exist, insert it
+      if (existingService.length === 0) {
+        const insertQuery = `
         INSERT INTO ServiceProviderServices (service_provider_id, service_id,  availability_status) 
         VALUES (${service_provider_id}, ${service.serviceId}, ${service.available});
       `;
       await sequelize.query(insertQuery);
+      }
     }
+
+
 
     res.json({ message: 'Preferences updated successfully' });
   } catch (error) {
