@@ -16,11 +16,13 @@ function Layout() {
         "/Requests",
         "/forgotpassword",
         "/resetPassword",
-        "/service-provider-form"
+        "/service-provider-form",
+        "/SpProfile",
     ].includes(location.pathname);
 
     // Conditions to hide the logout header (e.g., for Home, About, and Contact)
-    const hideLogoutHeader = ["/","/About","/Contact", "/login", "/register","/forgotpassword","/resetPassword","/contact"].includes(location.pathname);
+    const hideLogoutHeader = ["/","/About","/Contact", "/login", "/register","/forgotpassword","/resetPassword","/contact",
+        "/SpProfile",].includes(location.pathname);
 
     // Conditions to hide the footer
     const hideFooter = [
@@ -32,7 +34,8 @@ function Layout() {
         "/Requests",
         "/forgotpassword",
         "/resetPassword",
-        "/service-provider-form"
+        "/service-provider-form",
+        "/SpProfile",
     ].includes(location.pathname);
 
     return (

@@ -31,8 +31,12 @@ const Login = () => {
         {
           navigate("/service-provider-form");
         }
-        else{
-          navigate("/About");
+        else if(response.data.role==="servicesproviders"){
+          navigate("/ServiceProviderHome");
+        }
+        else if(response.data.role==="clients")
+        {
+           navigate("/About");
         }
         
       } else if (response.data === "notexist") {

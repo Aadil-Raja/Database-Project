@@ -19,6 +19,8 @@ import Forgotpassword from './components/Forgotpassword/Forgotpassword.jsx'
 import  Resetpassword  from './components/Resetpassword/Resetpassword.jsx'
 import ServiceProviderForm from './components/ServiceProviderForm/ServiceProviderForm.jsx'
 
+import Sp from './components/ServiceProviderTemporaryPage/sp1.jsx'
+import  SpProfile  from './components/SpProfile/SpProfile.jsx'
 const router = createBrowserRouter([
   {
     path: '/',
@@ -81,7 +83,14 @@ const router = createBrowserRouter([
                 path: 'Requests',
                 element: <Final/>
               },
-             
+             {
+                     path : 'ServiceProviderHome',
+                     element :<Sp/>
+             },
+             {
+                   path : 'SpProfile',
+                   element : <SpProfile/>
+             },
   
              
             ]
