@@ -16,22 +16,24 @@ import ServicePage from './components/ServicePage/ServicePage.jsx'
 import Final from './components/Requests/Final.jsx'
 import Forgotpassword from './components/Forgotpassword/Forgotpassword.jsx'
 
-import  Resetpassword  from './components/Resetpassword/Resetpassword.jsx'
+import Resetpassword from './components/Resetpassword/Resetpassword.jsx'
 import ServiceProviderForm from './components/ServiceProviderForm/ServiceProviderForm.jsx'
+import Categories from './components/Categories/Categories.jsx'
+import CategoryDetails from './components/Categories/CategoryDetails.jsx'
 
 const router = createBrowserRouter([
   {
     path: '/',
     element: <Layout />,
-    
+
     children: [
-      
+
       // Public Routes
       {
         path: '',
         element: <Home />
       },
-      
+
       {
         path: 'About',
         element: <About />
@@ -41,12 +43,12 @@ const router = createBrowserRouter([
         element: <Contact />
       },
       {
-        path : 'resetPassword',
-        element :<Resetpassword />
+        path: 'resetPassword',
+        element: <Resetpassword />
       },
       {
-               path: 'forgotpassword',
-               element : <Forgotpassword/>
+        path: 'forgotpassword',
+        element: <Forgotpassword />
       },
       {
         path: 'Login',
@@ -69,26 +71,35 @@ const router = createBrowserRouter([
         element: <ServicePage />
       },
       {
-        path :"service-provider-form",
-        element : <ServiceProviderForm/>
-     },
+        path: "service-provider-form",
+        element: <ServiceProviderForm />
+      },
       {
-        
-          
-            element: <ProtectedRoute />, // Apply ProtectedRoute to secure these paths
-            children: [
-              {
-                path: 'Requests',
-                element: <Final/>
-              },
-             
-  
-             
-            ]
-          
+        path: 'Categories',
+        element: <Categories />
+      },
+      {
+        // Dynamic route for CategoryDetails
+        path: 'Categories/:categoryId',  // Adds dynamic routing based on categoryId
+        element: <CategoryDetails />
+      },
+      {
+
+
+        element: <ProtectedRoute />, // Apply ProtectedRoute to secure these paths
+        children: [
+          {
+            path: 'Requests',
+            element: <Final />
+          },
+
+
+
+        ]
+
       }
 
-      
+
     ]
   }
 ]);
