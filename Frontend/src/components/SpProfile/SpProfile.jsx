@@ -8,7 +8,87 @@ const SpProfile = () => {
   const [isEditing, setIsEditing] = useState(false); // Toggle for editing mode
   const [services, setServices] = useState([]); // Services offered by the service provider
   const [selectedServices, setSelectedServices] = useState([]); // For managing selected services
+  const [newSelectedServices,setnewSelectedServices]=useState([]);
 
+  const [categories, setCategories] = useState([]);
+  const [servicesByCategory, setServicesByCategory] = useState({}); 
+  
+  useEffect(() => {
+    const fetchCategoriesAndServices = async () => {
+      try {
+        const categoriesResponse = await axios.get('http://localhost:3000/categories');
+        const fetchedCategories = categoriesResponse.data;
+        setCategories(fetchedCategories);
+
+        // Fetch services for each category
+        const servicesData = {};
+        for (const category of fetchedCategories) {
+          const servicesResponse = await axios.get(`http://localhost:3000/services/${category.category_id}`);
+          servicesData[category.category_id] = servicesResponse.data;
+        }
+        setServicesByCategory(servicesData);
+      } catch (error) {
+        console.error('Error fetching categories or services:', error);
+      }
+    };
+
+    fetchCategoriesAndServices();
+  }, []);
+
+  // Handle service selection
+  const handleServiceChange = (serviceId) => {
+    setSelectedServices((prevSelectedServices) => {
+      if (prevSelectedServices.includes(serviceId)) {
+        return prevSelectedServices.filter((id) => id !== serviceId);
+      } else {
+        return [...prevSelectedServices, serviceId];
+      }
+    });
+  };
+
+  const handleNewServiceChange = (serviceId) => {
+    setnewSelectedServices((prevNewSelectedServices) => {
+      if (prevNewSelectedServices.includes(serviceId)) {
+        // If the service is already selected, remove it from the array
+        return prevNewSelectedServices.filter((id) => id !== serviceId);
+      } else {
+        // Otherwise, add it to the array
+        return [...prevNewSelectedServices, serviceId];
+      }
+    });
+  };
+  
+
+  // Handle form submission
+  const handleSubmit = async (e) => {
+    e.preventDefault();
+
+    try {
+      const data = {
+        services: newSelectedServices.map((serviceId) => ({
+          serviceId,
+          available: true, // Default availability to true
+        })),
+      };
+
+      const response = await axios.post('http://localhost:3000/service-provider/preferences', data, {
+        headers: {
+          'Authorization': `Bearer ${localStorage.getItem('token')}`,
+        },
+      });
+
+      if (response.data.message === 'Preferences updated successfully') {
+        alert('Preferences updated successfully!');
+       
+      }
+    } catch (error) {
+      console.error('Error updating preferences:', error);
+      alert('Failed to update preferences');
+    }
+  };
+
+
+    
   useEffect(() => {
     const fetchProfile = async () => {
       try {
@@ -27,7 +107,7 @@ const SpProfile = () => {
   }, []);
 
   useEffect(() => {
-    if (activeTab === 'services') {
+    if (activeTab === 'services' || activeTab ==='add-services') {
       const fetchServices = async () => {
         try {
           const response = await axios.get('http://localhost:3000/service-provider/services', {
@@ -104,6 +184,12 @@ const SpProfile = () => {
           onClick={() => handleTabChange('services')}
         >
           Services Offered
+        </button>
+        <button
+          className={activeTab === 'add-services' ? 'active' : ''}
+          onClick={() => handleTabChange('add-services')}
+        >
+          Add New Services
         </button>
       </div>
 
@@ -214,7 +300,8 @@ const SpProfile = () => {
         </div>
       )}
 
-      {activeTab === 'services' && (
+      {
+      activeTab === 'services' && (
         <div className="services-container">
           <h2>Services Offered</h2>
          
@@ -240,6 +327,76 @@ const SpProfile = () => {
          
         </div>
       )}
+     {activeTab === "add-services" && (
+  <div>
+    <link
+      rel="stylesheet"
+      href="https://cdn.jsdelivr.net/npm/bootstrap@4.1.3/dist/css/bootstrap.min.css"
+      integrity="sha384-MCw98/SFnGE8fJT3GXwEOngsV7Zt27NXFoaoApmYm81iuXoPkFOJwJ8ERdknLPMO"
+      crossorigin="anonymous"
+    />
+    <div className="container mt-5">
+      <h2 className="p-10">Service Provider Preferences</h2>
+      <form onSubmit={handleSubmit}>
+        <div className="row">
+          {/* Render categories and their services */}
+          {categories.map((category) => (
+            <div key={category.category_id} className="col-md-4 mb-3">
+              <div className="list-group">
+                <h3 className="list-group-item list-group-item-action active">
+                  {category.name}
+                </h3>
+                {servicesByCategory[category.category_id] &&
+                  servicesByCategory[category.category_id].map((service) => (
+                    <label
+                      key={service.service_id}
+                      className="list-group-item d-flex gap-2"
+                    >
+                      {/* Check if service is already selected */}
+                      {selectedServices.includes(service.service_id) ? (
+                        <span>{service.name} (Already selected)</span>
+                      ) : (
+                        <>
+                          <input
+                            className="form-check-input flex-shrink-0"
+                            type="checkbox"
+                            checked={newSelectedServices.includes(service.service_id)}
+                            onChange={() => handleNewServiceChange(service.service_id)}
+                          />
+                          <span>{service.name}</span>
+                        </>
+                      )}
+                    </label>
+                  ))}
+              </div>
+            </div>
+          ))}
+        </div>
+
+        {/* Submit Button */}
+        <button type="submit" className="btn btn-primary">
+          Save Preferences
+        </button>
+      </form>
+    </div>
+    <script
+      src="https://code.jquery.com/jquery-3.3.1.slim.min.js"
+      integrity="sha384-q8i/X+965DzO0rT7abK41JStQIAqVgRVzpbzo5smXKp4YfRvH+8abtTE1Pi6jizo"
+      crossorigin="anonymous"
+    ></script>
+    <script
+      src="https://cdn.jsdelivr.net/npm/popper.js@1.14.3/dist/umd/popper.min.js"
+      integrity="sha384-ZMP7rVo3mIykV+2+9J3UJ46jBk0WLaUAdn689aCwoqbBJiSnjAK/l8WvCWPIPm49"
+      crossorigin="anonymous"
+    ></script>
+    <script
+      src="https://cdn.jsdelivr.net/npm/bootstrap@4.1.3/dist/js/bootstrap.min.js"
+      integrity="sha384-ChfqqxuZUCnJSK3+MXmPNIyE6ZbWh2IMqE241rYiqJxyMiZ6OW/JmZQ5stwEULTy"
+      crossorigin="anonymous"
+    ></script>
+  </div>
+)}
+
     </div>
   );
 };
