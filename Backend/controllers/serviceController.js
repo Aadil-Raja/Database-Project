@@ -1,5 +1,5 @@
 
-const Service = require('../models/Service'); 
+const Service = require('../models/service'); 
 
 
 exports.getServicesByCategory = async (req, res) => {

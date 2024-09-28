@@ -13,6 +13,20 @@ const SpProfile = () => {
   const [categories, setCategories] = useState([]);
   const [servicesByCategory, setServicesByCategory] = useState({}); 
   
+  const handleSaveProfile = async () => {
+    try {
+      const response = await axios.put('http://localhost:3000/service-provider/updateProfile', profile, {
+        headers: {
+          Authorization: `Bearer ${localStorage.getItem('token')}`,
+        },
+      });
+      alert('Profile updated successfully!');
+      setIsEditing(false); // Exit edit mode after saving
+    } catch (error) {
+      console.error('Error updating profile:', error);
+      alert('Failed to update profile');
+    }
+  };
   useEffect(() => {
     const fetchCategoriesAndServices = async () => {
       try {
@@ -226,7 +240,7 @@ const SpProfile = () => {
                   type="text"
                   name="phone"
                   value={profile.phone}
-                  onChange={handleInputChange}
+                  onChange={(e) => setProfile({ ...profile, phone: e.target.value })}
                 />
               ) : (
                 profile.phone
@@ -240,7 +254,7 @@ const SpProfile = () => {
                   type="text"
                   name="address"
                   value={profile.address}
-                  onChange={handleInputChange}
+                  onChange={(e) => setProfile({ ...profile, address: e.target.value })}
                 />
               ) : (
                 profile.address
@@ -254,7 +268,7 @@ const SpProfile = () => {
                   type="text"
                   name="city"
                   value={profile.city}
-                  onChange={handleInputChange}
+                  onChange={(e) => setProfile({ ...profile, city: e.target.value })}
                 />
               ) : (
                 profile.city
@@ -267,7 +281,7 @@ const SpProfile = () => {
                 <select
                   name="gender"
                   value={profile.gender}
-                  onChange={handleInputChange}
+                  onChange={(e) => setProfile({ ...profile, gender: e.target.value })}
                 >
                   <option value="Male">Male</option>
                   <option value="Female">Female</option>
@@ -284,7 +298,7 @@ const SpProfile = () => {
                   type="date"
                   name="dob"
                   value={profile.dob}
-                  onChange={handleInputChange}
+                  onChange={(e) => setProfile({ ...profile, dob: e.target.value })}
                 />
               ) : (
                 profile.dob

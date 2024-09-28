@@ -63,7 +63,7 @@ const ServiceProviderForm = () => {
 
       if (response.data.message === 'Preferences updated successfully') {
         alert('Preferences updated successfully!');
-        navigate("/About");
+        navigate("/ServiceProviderHome");
       }
     } catch (error) {
       console.error('Error updating preferences:', error);

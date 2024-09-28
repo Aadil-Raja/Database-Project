@@ -43,6 +43,8 @@ router.put('/service-provider/updateProfile',verifyToken,serviceProviderProfile.
 router.get('/service-provider/services',verifyToken,serviceProviderProfile.getServices);
 router.put('/service-provider/updateAvailability/:service_id',verifyToken,serviceProviderProfile.updateAvailability);
 router.delete('/service-provider/removeService/:service_id',verifyToken,serviceProviderProfile.removeService);
+
+router.get('/categories/:categoryId',categoryController.getACategory);
 router.get('/verify-token', verifyToken, (req, res) => {
     // If the token is valid, return success
     res.json({ isValid: true });

@@ -26,6 +26,11 @@ const Service = sequelize.define('Service', {
     type :DataTypes.STRING,
     allowNull: true
   },
+  image :{
+
+    type :DataTypes.STRING,
+    allowNull :false,
+  },
   status : {
     type: DataTypes.ENUM('active', 'inactive'),
     defaultValue: 'active',
