@@ -8,11 +8,11 @@ const SpProfile = () => {
   const [isEditing, setIsEditing] = useState(false); // Toggle for editing mode
   const [services, setServices] = useState([]); // Services offered by the service provider
   const [selectedServices, setSelectedServices] = useState([]); // For managing selected services
-  const [newSelectedServices,setnewSelectedServices]=useState([]);
+  const [newSelectedServices, setnewSelectedServices] = useState([]);
 
   const [categories, setCategories] = useState([]);
-  const [servicesByCategory, setServicesByCategory] = useState({}); 
-  
+  const [servicesByCategory, setServicesByCategory] = useState({});
+
   const handleSaveProfile = async () => {
     try {
       const response = await axios.put('http://localhost:3000/service-provider/updateProfile', profile, {
@@ -71,7 +71,7 @@ const SpProfile = () => {
       }
     });
   };
-  
+
 
   // Handle form submission
   const handleSubmit = async (e) => {
@@ -93,7 +93,7 @@ const SpProfile = () => {
 
       if (response.data.message === 'Preferences updated successfully') {
         alert('Preferences updated successfully!');
-       
+
       }
     } catch (error) {
       console.error('Error updating preferences:', error);
@@ -102,7 +102,7 @@ const SpProfile = () => {
   };
 
 
-    
+
   useEffect(() => {
     const fetchProfile = async () => {
       try {
@@ -121,7 +121,7 @@ const SpProfile = () => {
   }, []);
 
   useEffect(() => {
-    if (activeTab === 'services' || activeTab ==='add-services') {
+    if (activeTab === 'services' || activeTab === 'add-services') {
       const fetchServices = async () => {
         try {
           const response = await axios.get('http://localhost:3000/service-provider/services', {
@@ -146,25 +146,25 @@ const SpProfile = () => {
 
   // Mark a service as unavailable
   const handleToggleAvailability = async (serviceId, currentAvailability) => {
-  try {
-    const newAvailability = !currentAvailability; // Toggle the current availability status
-    await axios.put(`http://localhost:3000/service-provider/updateAvailability/${serviceId}`, { available: newAvailability }, {
-      headers: {
-        Authorization: `Bearer ${localStorage.getItem('token')}`,
-      },
-    });
-    
-    // Update the state to reflect the new availability status
-    setServices(services.map(service => 
-      service.service_id === serviceId ? { ...service, availability_status: newAvailability } : service
-    ));
+    try {
+      const newAvailability = !currentAvailability; // Toggle the current availability status
+      await axios.put(`http://localhost:3000/service-provider/updateAvailability/${serviceId}`, { available: newAvailability }, {
+        headers: {
+          Authorization: `Bearer ${localStorage.getItem('token')}`,
+        },
+      });
 
-    alert(`Service ${newAvailability ? 'marked as available' : 'marked as unavailable'}`);
-  } catch (error) {
-    console.error('Error updating service availability:', error);
-    alert('Failed to update service availability');
-  }
-};
+      // Update the state to reflect the new availability status
+      setServices(services.map(service =>
+        service.service_id === serviceId ? { ...service, availability_status: newAvailability } : service
+      ));
+
+      alert(`Service ${newAvailability ? 'marked as available' : 'marked as unavailable'}`);
+    } catch (error) {
+      console.error('Error updating service availability:', error);
+      alert('Failed to update service availability');
+    }
+  };
 
   // Remove a service completely
   const handleRemoveService = async (serviceId) => {
@@ -182,11 +182,17 @@ const SpProfile = () => {
     }
   };
 
-  
+
 
   return (
     <div>
-      <div className="tab-container">
+      <link
+        rel="stylesheet"
+        href="https://cdn.jsdelivr.net/npm/bootstrap@4.1.3/dist/css/bootstrap.min.css"
+        integrity="sha384-MCw98/SFnGE8fJT3GXwEOngsV7Zt27NXFoaoApmYm81iuXoPkFOJwJ8ERdknLPMO"
+        crossorigin="anonymous"
+      />
+      <div className="tab-container ">
         <button
           className={activeTab === 'profile' ? 'active' : ''}
           onClick={() => handleTabChange('profile')}
@@ -209,13 +215,16 @@ const SpProfile = () => {
 
       {/* Conditional rendering based on the active tab */}
       {activeTab === 'profile' && profile && (
-        <div className="profile-container">
-          <h2>Service Provider Profile</h2>
+        <div className="profile-container shadow p-3 mb-5 bg-body-tertiary rounded">
+          <h1>Service Provider Profile</h1>
+          <hr></hr>
           <div className="profile-details">
             <p>
-              <strong>Name:</strong>
+              
+              <div><strong>Name</strong></div>
               {isEditing ? (
                 <>
+                <div className='name-inputs'>
                   <input
                     type="text"
                     name="firstName"
@@ -228,13 +237,14 @@ const SpProfile = () => {
                     value={profile.lastName}
                     onChange={(e) => setProfile({ ...profile, lastName: e.target.value })}
                   />
+                  </div>
                 </>
               ) : (
                 `${profile.firstName} ${profile.lastName}`
               )}
             </p>
-<p>
-              <strong>Phone:</strong>
+            <p>
+              <div><strong>Phone:</strong></div>
               {isEditing ? (
                 <input
                   type="text"
@@ -248,7 +258,7 @@ const SpProfile = () => {
             </p>
 
             <p>
-              <strong>Address:</strong>
+              <div><strong>Address:</strong></div>
               {isEditing ? (
                 <input
                   type="text"
@@ -262,7 +272,7 @@ const SpProfile = () => {
             </p>
 
             <p>
-              <strong>City:</strong>
+              <div><strong>City:</strong></div>
               {isEditing ? (
                 <input
                   type="text"
@@ -276,7 +286,7 @@ const SpProfile = () => {
             </p>
 
             <p>
-              <strong>Gender:</strong>
+              <div><strong>Gender:</strong></div>
               {isEditing ? (
                 <select
                   name="gender"
@@ -292,7 +302,7 @@ const SpProfile = () => {
             </p>
 
             <p>
-              <strong>Date of Birth:</strong>
+              <div><strong>Date of Birth:</strong></div>
               {isEditing ? (
                 <input
                   type="date"
@@ -315,101 +325,100 @@ const SpProfile = () => {
       )}
 
       {
-      activeTab === 'services' && (
-        <div className="services-container">
-          <h2>Services Offered</h2>
-         
+        activeTab === 'services' && (
+          <div className="services-container shadow p-3 mb-5 bg-body-tertiary rounded">
+            <h1>Services Offered</h1>
+            <hr></hr>
+
             {services.map((service) => (
               <div key={service.sp_service_id} className="service-item">
                 <p>
                   <strong>Service:</strong> {service.service_name} - <strong>Category:</strong> {service.category_name}
                 </p>
                 <label>
-  Available:
-  <input
-    type="checkbox"
-    checked={Boolean(service.availability_status)}
-    onChange={() => handleToggleAvailability(service.service_id, service.availability_status)} // Pass the current state to the handler
-  />
-</label>
+                  Available:
+                  <input
+                    type="checkbox"
+                    checked={Boolean(service.availability_status)}
+                    onChange={() => handleToggleAvailability(service.service_id, service.availability_status)} // Pass the current state to the handler
+                  />
+                </label>
                 <button type="button" className="btn btn-danger" onClick={() => handleRemoveService(service.service_id)}>
                   Remove
                 </button>
               </div>
             ))}
-           
-         
+
+
+          </div>
+        )}
+      {activeTab === "add-services" && (
+        <div className='preferences'>
+          <div className="container shadow p-3 mb-5 bg-body-tertiary rounded">
+            <h1 className="p-10">Service Provider Preferences</h1>
+            <hr></hr>
+            <form onSubmit={handleSubmit}>
+              <div className="row">
+                {/* Render categories and their services */}
+                {categories.map((category) => (
+                  <div key={category.category_id} className="col-md-4 mb-3">
+                    <div className="list-group">
+                      <h3 className="list-group-item list-group-item-action active"
+                      style={{ backgroundColor: "white", color:"black", border: "2px green solid" }}>
+                        
+                        {category.name}
+                      </h3>
+                      {servicesByCategory[category.category_id] &&
+                        servicesByCategory[category.category_id].map((service) => (
+                          <label
+                            key={service.service_id}
+                            className="list-group-item d-flex gap-2"
+                          >
+                            {/* Check if service is already selected */}
+                            {selectedServices.includes(service.service_id) ? (
+                              <span>{service.name} (Already selected)</span>
+                            ) : (
+                              <>
+                                <input
+                                  className="form-check-input flex-shrink-0"
+                                  type="checkbox"
+                                  checked={newSelectedServices.includes(service.service_id)}
+                                  onChange={() => handleNewServiceChange(service.service_id)}
+                                />
+                                <span>{service.name}</span>
+                              </>
+                            )}
+                          </label>
+                        ))}
+                    </div>
+                  </div>
+                ))}
+              </div>
+
+              {/* Submit Button */}
+              <button type="submit" className="btn"
+              >
+                Save Preferences
+              </button>
+            </form>
+          </div>
         </div>
       )}
-     {activeTab === "add-services" && (
-  <div>
-    <link
-      rel="stylesheet"
-      href="https://cdn.jsdelivr.net/npm/bootstrap@4.1.3/dist/css/bootstrap.min.css"
-      integrity="sha384-MCw98/SFnGE8fJT3GXwEOngsV7Zt27NXFoaoApmYm81iuXoPkFOJwJ8ERdknLPMO"
-      crossorigin="anonymous"
-    />
-    <div className="container mt-5">
-      <h2 className="p-10">Service Provider Preferences</h2>
-      <form onSubmit={handleSubmit}>
-        <div className="row">
-          {/* Render categories and their services */}
-          {categories.map((category) => (
-            <div key={category.category_id} className="col-md-4 mb-3">
-              <div className="list-group">
-                <h3 className="list-group-item list-group-item-action active">
-                  {category.name}
-                </h3>
-                {servicesByCategory[category.category_id] &&
-                  servicesByCategory[category.category_id].map((service) => (
-                    <label
-                      key={service.service_id}
-                      className="list-group-item d-flex gap-2"
-                    >
-                      {/* Check if service is already selected */}
-                      {selectedServices.includes(service.service_id) ? (
-                        <span>{service.name} (Already selected)</span>
-                      ) : (
-                        <>
-                          <input
-                            className="form-check-input flex-shrink-0"
-                            type="checkbox"
-                            checked={newSelectedServices.includes(service.service_id)}
-                            onChange={() => handleNewServiceChange(service.service_id)}
-                          />
-                          <span>{service.name}</span>
-                        </>
-                      )}
-                    </label>
-                  ))}
-              </div>
-            </div>
-          ))}
-        </div>
-
-        {/* Submit Button */}
-        <button type="submit" className="btn btn-primary">
-          Save Preferences
-        </button>
-      </form>
-    </div>
-    <script
-      src="https://code.jquery.com/jquery-3.3.1.slim.min.js"
-      integrity="sha384-q8i/X+965DzO0rT7abK41JStQIAqVgRVzpbzo5smXKp4YfRvH+8abtTE1Pi6jizo"
-      crossorigin="anonymous"
-    ></script>
-    <script
-      src="https://cdn.jsdelivr.net/npm/popper.js@1.14.3/dist/umd/popper.min.js"
-      integrity="sha384-ZMP7rVo3mIykV+2+9J3UJ46jBk0WLaUAdn689aCwoqbBJiSnjAK/l8WvCWPIPm49"
-      crossorigin="anonymous"
-    ></script>
-    <script
-      src="https://cdn.jsdelivr.net/npm/bootstrap@4.1.3/dist/js/bootstrap.min.js"
-      integrity="sha384-ChfqqxuZUCnJSK3+MXmPNIyE6ZbWh2IMqE241rYiqJxyMiZ6OW/JmZQ5stwEULTy"
-      crossorigin="anonymous"
-    ></script>
-  </div>
-)}
+      <script
+        src="https://code.jquery.com/jquery-3.3.1.slim.min.js"
+        integrity="sha384-q8i/X+965DzO0rT7abK41JStQIAqVgRVzpbzo5smXKp4YfRvH+8abtTE1Pi6jizo"
+        crossorigin="anonymous"
+      ></script>
+      <script
+        src="https://cdn.jsdelivr.net/npm/popper.js@1.14.3/dist/umd/popper.min.js"
+        integrity="sha384-ZMP7rVo3mIykV+2+9J3UJ46jBk0WLaUAdn689aCwoqbBJiSnjAK/l8WvCWPIPm49"
+        crossorigin="anonymous"
+      ></script>
+      <script
+        src="https://cdn.jsdelivr.net/npm/bootstrap@4.1.3/dist/js/bootstrap.min.js"
+        integrity="sha384-ChfqqxuZUCnJSK3+MXmPNIyE6ZbWh2IMqE241rYiqJxyMiZ6OW/JmZQ5stwEULTy"
+        crossorigin="anonymous"
+      ></script>
 
     </div>
   );
