@@ -8,11 +8,11 @@ const SpProfile = () => {
   const [isEditing, setIsEditing] = useState(false); // Toggle for editing mode
   const [services, setServices] = useState([]); // Services offered by the service provider
   const [selectedServices, setSelectedServices] = useState([]); // For managing selected services
-  const [newSelectedServices,setnewSelectedServices]=useState([]);
+  const [newSelectedServices, setnewSelectedServices] = useState([]);
 
   const [categories, setCategories] = useState([]);
-  const [servicesByCategory, setServicesByCategory] = useState({}); 
-  
+  const [servicesByCategory, setServicesByCategory] = useState({});
+
   const handleSaveProfile = async () => {
     try {
       const response = await axios.put('http://localhost:3000/service-provider/updateProfile', profile, {
@@ -71,7 +71,7 @@ const SpProfile = () => {
       }
     });
   };
-  
+
 
   // Handle form submission
   const handleSubmit = async (e) => {
@@ -93,7 +93,7 @@ const SpProfile = () => {
 
       if (response.data.message === 'Preferences updated successfully') {
         alert('Preferences updated successfully!');
-       
+
       }
     } catch (error) {
       console.error('Error updating preferences:', error);
@@ -102,7 +102,7 @@ const SpProfile = () => {
   };
 
 
-    
+
   useEffect(() => {
     const fetchProfile = async () => {
       try {
@@ -121,7 +121,7 @@ const SpProfile = () => {
   }, []);
 
   useEffect(() => {
-    if (activeTab === 'services' || activeTab ==='add-services') {
+    if (activeTab === 'services' || activeTab === 'add-services') {
       const fetchServices = async () => {
         try {
           const response = await axios.get('http://localhost:3000/service-provider/services', {
@@ -146,25 +146,25 @@ const SpProfile = () => {
 
   // Mark a service as unavailable
   const handleToggleAvailability = async (serviceId, currentAvailability) => {
-  try {
-    const newAvailability = !currentAvailability; // Toggle the current availability status
-    await axios.put(`http://localhost:3000/service-provider/updateAvailability/${serviceId}`, { available: newAvailability }, {
-      headers: {
-        Authorization: `Bearer ${localStorage.getItem('token')}`,
-      },
-    });
-    
-    // Update the state to reflect the new availability status
-    setServices(services.map(service => 
-      service.service_id === serviceId ? { ...service, availability_status: newAvailability } : service
-    ));
+    try {
+      const newAvailability = !currentAvailability; // Toggle the current availability status
+      await axios.put(`http://localhost:3000/service-provider/updateAvailability/${serviceId}`, { available: newAvailability }, {
+        headers: {
+          Authorization: `Bearer ${localStorage.getItem('token')}`,
+        },
+      });
 
-    alert(`Service ${newAvailability ? 'marked as available' : 'marked as unavailable'}`);
-  } catch (error) {
-    console.error('Error updating service availability:', error);
-    alert('Failed to update service availability');
-  }
-};
+      // Update the state to reflect the new availability status
+      setServices(services.map(service =>
+        service.service_id === serviceId ? { ...service, availability_status: newAvailability } : service
+      ));
+
+      alert(`Service ${newAvailability ? 'marked as available' : 'marked as unavailable'}`);
+    } catch (error) {
+      console.error('Error updating service availability:', error);
+      alert('Failed to update service availability');
+    }
+  };
 
   // Remove a service completely
   const handleRemoveService = async (serviceId) => {
@@ -182,25 +182,34 @@ const SpProfile = () => {
     }
   };
 
-  
+
 
   return (
     <div>
-      <div className="tab-container">
+      <link
+        rel="stylesheet"
+        href="https://cdn.jsdelivr.net/npm/bootstrap@4.1.3/dist/css/bootstrap.min.css"
+        integrity="sha384-MCw98/SFnGE8fJT3GXwEOngsV7Zt27NXFoaoApmYm81iuXoPkFOJwJ8ERdknLPMO"
+        crossorigin="anonymous"
+      />
+      <div className="tab-container" id='fixed'>
         <button
           className={activeTab === 'profile' ? 'active' : ''}
+          id='middle'
           onClick={() => handleTabChange('profile')}
         >
           Profile
         </button>
         <button
           className={activeTab === 'services' ? 'active' : ''}
+          id='middle'
           onClick={() => handleTabChange('services')}
         >
           Services Offered
         </button>
         <button
           className={activeTab === 'add-services' ? 'active' : ''}
+          id='middle'
           onClick={() => handleTabChange('add-services')}
         >
           Add New Services
@@ -209,207 +218,228 @@ const SpProfile = () => {
 
       {/* Conditional rendering based on the active tab */}
       {activeTab === 'profile' && profile && (
-        <div className="profile-container">
-          <h2>Service Provider Profile</h2>
-          <div className="profile-details">
-            <p>
-              <strong>Name:</strong>
-              {isEditing ? (
-                <>
-                  <input
-                    type="text"
-                    name="firstName"
-                    value={profile.firstName}
-                    onChange={(e) => setProfile({ ...profile, firstName: e.target.value })}
-                  />
-                  <input
-                    type="text"
-                    name="lastName"
-                    value={profile.lastName}
-                    onChange={(e) => setProfile({ ...profile, lastName: e.target.value })}
-                  />
-                </>
-              ) : (
-                `${profile.firstName} ${profile.lastName}`
-              )}
-            </p>
-<p>
-              <strong>Phone:</strong>
-              {isEditing ? (
-                <input
-                  type="text"
-                  name="phone"
-                  value={profile.phone}
-                  onChange={(e) => setProfile({ ...profile, phone: e.target.value })}
-                />
-              ) : (
-                profile.phone
-              )}
-            </p>
+        <div className="profile-container shadow p-3 mb-5 bg-body-tertiary rounded">
+          <h1 className="profile-header">Service Provider Profile</h1>
+          <hr />
+          <div className="row">
+            <div className="col-3 border-right text-center">
+              <div className='image-adjust'>
+              <img
+                className="rounded-circle profile-image"
+                width="150px"
+                src="https://st3.depositphotos.com/15648834/17930/v/600/depositphotos_179308454-stock-illustration-unknown-person-silhouette-glasses-profile.jpg"
+                alt="Profile"
+              />
+              </div>
+              <h4>{profile.firstName} {profile.lastName}</h4>
+            </div>
+            <div className="col-9">
+              <div className="profile-details">
+                <div className="row">
+                  <div className="col-6">
+                    <p><strong>Name:</strong></p>
+                    {isEditing ? (
+                      <div className="name-inputs">
+                        <input
+                          type="text"
+                          name="firstName"
+                          value={profile.firstName}
+                          onChange={(e) => setProfile({ ...profile, firstName: e.target.value })}
+                        />
+                        <input
+                          type="text"
+                          name="lastName"
+                          value={profile.lastName}
+                          onChange={(e) => setProfile({ ...profile, lastName: e.target.value })}
+                        />
+                      </div>
+                    ) : (
+                      `${profile.firstName} ${profile.lastName}`
+                    )}
+                  </div>
+                  <div className="col-6">
+                    <p><strong>Phone:</strong></p>
+                    {isEditing ? (
+                      <input
+                        type="text"
+                        name="phone"
+                        value={profile.phone}
+                        onChange={(e) => setProfile({ ...profile, phone: e.target.value })}
+                      />
+                    ) : (
+                      profile.phone
+                    )}
+                  </div>
+                </div>
+                <div className="row">
+                  <div className="col-6">
+                    <p><strong>Address:</strong></p>
+                    {isEditing ? (
+                      <input
+                        type="text"
+                        name="address"
+                        value={profile.address}
+                        onChange={(e) => setProfile({ ...profile, address: e.target.value })}
+                      />
+                    ) : (
+                      profile.address
+                    )}
+                  </div>
+                  <div className="col-6">
+                    <p><strong>City:</strong></p>
+                    {isEditing ? (
+                      <input
+                        type="text"
+                        name="city"
+                        value={profile.city}
+                        onChange={(e) => setProfile({ ...profile, city: e.target.value })}
+                      />
+                    ) : (
+                      profile.city
+                    )}
+                  </div>
+                </div>
+                <div className="row">
+                  <div className="col-6">
+                    <p><strong>Gender:</strong></p>
+                    {isEditing ? (
+                      <select
+                        name="gender"
+                        value={profile.gender}
+                        onChange={(e) => setProfile({ ...profile, gender: e.target.value })}
+                      >
+                        <option value="Male">Male</option>
+                        <option value="Female">Female</option>
+                      </select>
+                    ) : (
+                      profile.gender
+                    )}
+                  </div>
+                  <div className="col-6">
+                    <p><strong>Date of Birth:</strong></p>
+                    {isEditing ? (
+                      <input
+                        type="date"
+                        name="dob"
+                        value={profile.dob}
+                        onChange={(e) => setProfile({ ...profile, dob: e.target.value })}
+                      />
+                    ) : (
+                      profile.dob
+                    )}
+                  </div>
+                </div>
 
-            <p>
-              <strong>Address:</strong>
-              {isEditing ? (
-                <input
-                  type="text"
-                  name="address"
-                  value={profile.address}
-                  onChange={(e) => setProfile({ ...profile, address: e.target.value })}
-                />
-              ) : (
-                profile.address
-              )}
-            </p>
-
-            <p>
-              <strong>City:</strong>
-              {isEditing ? (
-                <input
-                  type="text"
-                  name="city"
-                  value={profile.city}
-                  onChange={(e) => setProfile({ ...profile, city: e.target.value })}
-                />
-              ) : (
-                profile.city
-              )}
-            </p>
-
-            <p>
-              <strong>Gender:</strong>
-              {isEditing ? (
-                <select
-                  name="gender"
-                  value={profile.gender}
-                  onChange={(e) => setProfile({ ...profile, gender: e.target.value })}
-                >
-                  <option value="Male">Male</option>
-                  <option value="Female">Female</option>
-                </select>
-              ) : (
-                profile.gender
-              )}
-            </p>
-
-            <p>
-              <strong>Date of Birth:</strong>
-              {isEditing ? (
-                <input
-                  type="date"
-                  name="dob"
-                  value={profile.dob}
-                  onChange={(e) => setProfile({ ...profile, dob: e.target.value })}
-                />
-              ) : (
-                profile.dob
-              )}
-            </p>
-
-            {isEditing ? (
-              <button onClick={handleSaveProfile}>Save Changes</button>
-            ) : (
-              <button onClick={() => setIsEditing(true)}>Edit Profile</button>
-            )}
+                {isEditing ? (
+                  <button className="btn btn-success profile-button" onClick={handleSaveProfile}>Save Changes</button>
+                ) : (
+                  <button className="btn btn-primary profile-button" onClick={() => setIsEditing(true)}>Edit Profile</button>
+                )}
+              </div>
+            </div>
           </div>
         </div>
       )}
 
+
       {
-      activeTab === 'services' && (
-        <div className="services-container">
-          <h2>Services Offered</h2>
-         
+        activeTab === 'services' && (
+          <div className="services-container shadow p-3 mb-5 bg-body-tertiary rounded">
+            <h1 className="profile-header">Services Offered</h1>
+            <hr></hr>
+
             {services.map((service) => (
               <div key={service.sp_service_id} className="service-item">
                 <p>
-                  <strong>Service:</strong> {service.service_name} - <strong>Category:</strong> {service.category_name}
+                  <strong>Service:</strong> {service.service_name}
+                </p>
+                <p>
+                  <strong>Category:</strong> {service.category_name}
                 </p>
                 <label>
-  Available:
-  <input
-    type="checkbox"
-    checked={Boolean(service.availability_status)}
-    onChange={() => handleToggleAvailability(service.service_id, service.availability_status)} // Pass the current state to the handler
-  />
-</label>
+                  Available:
+                  <input
+                    type="checkbox"
+                    checked={Boolean(service.availability_status)}
+                    onChange={() => handleToggleAvailability(service.service_id, service.availability_status)} // Pass the current state to the handler
+                  />
+                </label>
                 <button type="button" className="btn btn-danger" onClick={() => handleRemoveService(service.service_id)}>
                   Remove
                 </button>
               </div>
             ))}
-           
-         
+
+
+          </div>
+        )}
+      {activeTab === "add-services" && (
+        <div className='preferences'>
+          <div className="container shadow p-3 mb-5 bg-body-tertiary rounded">
+            <h1 className="profile-header">Service Provider Preferences</h1>
+            <hr></hr>
+            <form onSubmit={handleSubmit}>
+              <div className="row">
+                {/* Render categories and their services */}
+                {categories.map((category) => (
+                  <div key={category.category_id} className="col-md-4 mb-3">
+                    <div className="list-group">
+                      <h3 className="list-group-item list-group-item-action active"
+                        style={{ backgroundColor: "white", color: "black", border: "2px green solid" }}>
+
+                        {category.name}
+                      </h3>
+                      {servicesByCategory[category.category_id] &&
+                        servicesByCategory[category.category_id].map((service) => (
+                          <label
+                            key={service.service_id}
+                            className="list-group-item d-flex gap-1"
+                          >
+                            {/* Check if service is already selected */}
+                            {selectedServices.includes(service.service_id) ? (
+                              <span>{service.name} (Already selected)</span>
+                            ) : (
+                              <>
+                                <input
+                                  className="form-check-input flex-shrink-0"
+                                  type="checkbox"
+                                  checked={newSelectedServices.includes(service.service_id)}
+                                  onChange={() => handleNewServiceChange(service.service_id)}
+                                />
+                                <span>{service.name}</span>
+                              </>
+                            )}
+                          </label>
+                        ))}
+                    </div>
+                  </div>
+                ))}
+              </div>
+
+              {/* Submit Button */}
+              <button type="submit" className="btn"
+              >
+                Save Preferences
+              </button>
+            </form>
+          </div>
         </div>
       )}
-     {activeTab === "add-services" && (
-  <div>
-    <link
-      rel="stylesheet"
-      href="https://cdn.jsdelivr.net/npm/bootstrap@4.1.3/dist/css/bootstrap.min.css"
-      integrity="sha384-MCw98/SFnGE8fJT3GXwEOngsV7Zt27NXFoaoApmYm81iuXoPkFOJwJ8ERdknLPMO"
-      crossorigin="anonymous"
-    />
-    <div className="container mt-5">
-      <h2 className="p-10">Service Provider Preferences</h2>
-      <form onSubmit={handleSubmit}>
-        <div className="row">
-          {/* Render categories and their services */}
-          {categories.map((category) => (
-            <div key={category.category_id} className="col-md-4 mb-3">
-              <div className="list-group">
-                <h3 className="list-group-item list-group-item-action active">
-                  {category.name}
-                </h3>
-                {servicesByCategory[category.category_id] &&
-                  servicesByCategory[category.category_id].map((service) => (
-                    <label
-                      key={service.service_id}
-                      className="list-group-item d-flex gap-2"
-                    >
-                      {/* Check if service is already selected */}
-                      {selectedServices.includes(service.service_id) ? (
-                        <span>{service.name} (Already selected)</span>
-                      ) : (
-                        <>
-                          <input
-                            className="form-check-input flex-shrink-0"
-                            type="checkbox"
-                            checked={newSelectedServices.includes(service.service_id)}
-                            onChange={() => handleNewServiceChange(service.service_id)}
-                          />
-                          <span>{service.name}</span>
-                        </>
-                      )}
-                    </label>
-                  ))}
-              </div>
-            </div>
-          ))}
-        </div>
-
-        {/* Submit Button */}
-        <button type="submit" className="btn btn-primary">
-          Save Preferences
-        </button>
-      </form>
-    </div>
-    <script
-      src="https://code.jquery.com/jquery-3.3.1.slim.min.js"
-      integrity="sha384-q8i/X+965DzO0rT7abK41JStQIAqVgRVzpbzo5smXKp4YfRvH+8abtTE1Pi6jizo"
-      crossorigin="anonymous"
-    ></script>
-    <script
-      src="https://cdn.jsdelivr.net/npm/popper.js@1.14.3/dist/umd/popper.min.js"
-      integrity="sha384-ZMP7rVo3mIykV+2+9J3UJ46jBk0WLaUAdn689aCwoqbBJiSnjAK/l8WvCWPIPm49"
-      crossorigin="anonymous"
-    ></script>
-    <script
-      src="https://cdn.jsdelivr.net/npm/bootstrap@4.1.3/dist/js/bootstrap.min.js"
-      integrity="sha384-ChfqqxuZUCnJSK3+MXmPNIyE6ZbWh2IMqE241rYiqJxyMiZ6OW/JmZQ5stwEULTy"
-      crossorigin="anonymous"
-    ></script>
-  </div>
-)}
+      <script
+        src="https://code.jquery.com/jquery-3.3.1.slim.min.js"
+        integrity="sha384-q8i/X+965DzO0rT7abK41JStQIAqVgRVzpbzo5smXKp4YfRvH+8abtTE1Pi6jizo"
+        crossorigin="anonymous"
+      ></script>
+      <script
+        src="https://cdn.jsdelivr.net/npm/popper.js@1.14.3/dist/umd/popper.min.js"
+        integrity="sha384-ZMP7rVo3mIykV+2+9J3UJ46jBk0WLaUAdn689aCwoqbBJiSnjAK/l8WvCWPIPm49"
+        crossorigin="anonymous"
+      ></script>
+      <script
+        src="https://cdn.jsdelivr.net/npm/bootstrap@4.1.3/dist/js/bootstrap.min.js"
+        integrity="sha384-ChfqqxuZUCnJSK3+MXmPNIyE6ZbWh2IMqE241rYiqJxyMiZ6OW/JmZQ5stwEULTy"
+        crossorigin="anonymous"
+      ></script>
 
     </div>
   );
