@@ -192,21 +192,24 @@ const SpProfile = () => {
         integrity="sha384-MCw98/SFnGE8fJT3GXwEOngsV7Zt27NXFoaoApmYm81iuXoPkFOJwJ8ERdknLPMO"
         crossorigin="anonymous"
       />
-      <div className="tab-container ">
+      <div className="tab-container" id='fixed'>
         <button
           className={activeTab === 'profile' ? 'active' : ''}
+          id='middle'
           onClick={() => handleTabChange('profile')}
         >
           Profile
         </button>
         <button
           className={activeTab === 'services' ? 'active' : ''}
+          id='middle'
           onClick={() => handleTabChange('services')}
         >
           Services Offered
         </button>
         <button
           className={activeTab === 'add-services' ? 'active' : ''}
+          id='middle'
           onClick={() => handleTabChange('add-services')}
         >
           Add New Services
@@ -216,127 +219,142 @@ const SpProfile = () => {
       {/* Conditional rendering based on the active tab */}
       {activeTab === 'profile' && profile && (
         <div className="profile-container shadow p-3 mb-5 bg-body-tertiary rounded">
-          <h1>Service Provider Profile</h1>
-          <hr></hr>
-          <div className="profile-details">
-            <p>
-              
-              <div><strong>Name</strong></div>
-              {isEditing ? (
-                <>
-                <div className='name-inputs'>
-                  <input
-                    type="text"
-                    name="firstName"
-                    value={profile.firstName}
-                    onChange={(e) => setProfile({ ...profile, firstName: e.target.value })}
-                  />
-                  <input
-                    type="text"
-                    name="lastName"
-                    value={profile.lastName}
-                    onChange={(e) => setProfile({ ...profile, lastName: e.target.value })}
-                  />
+          <h1 className="profile-header">Service Provider Profile</h1>
+          <hr />
+          <div className="row">
+            <div className="col-3 border-right text-center">
+              <div className='image-adjust'>
+              <img
+                className="rounded-circle profile-image"
+                width="150px"
+                src="https://st3.depositphotos.com/15648834/17930/v/600/depositphotos_179308454-stock-illustration-unknown-person-silhouette-glasses-profile.jpg"
+                alt="Profile"
+              />
+              </div>
+              <h4>{profile.firstName} {profile.lastName}</h4>
+            </div>
+            <div className="col-9">
+              <div className="profile-details">
+                <div className="row">
+                  <div className="col-6">
+                    <p><strong>Name:</strong></p>
+                    {isEditing ? (
+                      <div className="name-inputs">
+                        <input
+                          type="text"
+                          name="firstName"
+                          value={profile.firstName}
+                          onChange={(e) => setProfile({ ...profile, firstName: e.target.value })}
+                        />
+                        <input
+                          type="text"
+                          name="lastName"
+                          value={profile.lastName}
+                          onChange={(e) => setProfile({ ...profile, lastName: e.target.value })}
+                        />
+                      </div>
+                    ) : (
+                      `${profile.firstName} ${profile.lastName}`
+                    )}
                   </div>
-                </>
-              ) : (
-                `${profile.firstName} ${profile.lastName}`
-              )}
-            </p>
-            <p>
-              <div><strong>Phone:</strong></div>
-              {isEditing ? (
-                <input
-                  type="text"
-                  name="phone"
-                  value={profile.phone}
-                  onChange={(e) => setProfile({ ...profile, phone: e.target.value })}
-                />
-              ) : (
-                profile.phone
-              )}
-            </p>
+                  <div className="col-6">
+                    <p><strong>Phone:</strong></p>
+                    {isEditing ? (
+                      <input
+                        type="text"
+                        name="phone"
+                        value={profile.phone}
+                        onChange={(e) => setProfile({ ...profile, phone: e.target.value })}
+                      />
+                    ) : (
+                      profile.phone
+                    )}
+                  </div>
+                </div>
+                <div className="row">
+                  <div className="col-6">
+                    <p><strong>Address:</strong></p>
+                    {isEditing ? (
+                      <input
+                        type="text"
+                        name="address"
+                        value={profile.address}
+                        onChange={(e) => setProfile({ ...profile, address: e.target.value })}
+                      />
+                    ) : (
+                      profile.address
+                    )}
+                  </div>
+                  <div className="col-6">
+                    <p><strong>City:</strong></p>
+                    {isEditing ? (
+                      <input
+                        type="text"
+                        name="city"
+                        value={profile.city}
+                        onChange={(e) => setProfile({ ...profile, city: e.target.value })}
+                      />
+                    ) : (
+                      profile.city
+                    )}
+                  </div>
+                </div>
+                <div className="row">
+                  <div className="col-6">
+                    <p><strong>Gender:</strong></p>
+                    {isEditing ? (
+                      <select
+                        name="gender"
+                        value={profile.gender}
+                        onChange={(e) => setProfile({ ...profile, gender: e.target.value })}
+                      >
+                        <option value="Male">Male</option>
+                        <option value="Female">Female</option>
+                      </select>
+                    ) : (
+                      profile.gender
+                    )}
+                  </div>
+                  <div className="col-6">
+                    <p><strong>Date of Birth:</strong></p>
+                    {isEditing ? (
+                      <input
+                        type="date"
+                        name="dob"
+                        value={profile.dob}
+                        onChange={(e) => setProfile({ ...profile, dob: e.target.value })}
+                      />
+                    ) : (
+                      profile.dob
+                    )}
+                  </div>
+                </div>
 
-            <p>
-              <div><strong>Address:</strong></div>
-              {isEditing ? (
-                <input
-                  type="text"
-                  name="address"
-                  value={profile.address}
-                  onChange={(e) => setProfile({ ...profile, address: e.target.value })}
-                />
-              ) : (
-                profile.address
-              )}
-            </p>
-
-            <p>
-              <div><strong>City:</strong></div>
-              {isEditing ? (
-                <input
-                  type="text"
-                  name="city"
-                  value={profile.city}
-                  onChange={(e) => setProfile({ ...profile, city: e.target.value })}
-                />
-              ) : (
-                profile.city
-              )}
-            </p>
-
-            <p>
-              <div><strong>Gender:</strong></div>
-              {isEditing ? (
-                <select
-                  name="gender"
-                  value={profile.gender}
-                  onChange={(e) => setProfile({ ...profile, gender: e.target.value })}
-                >
-                  <option value="Male">Male</option>
-                  <option value="Female">Female</option>
-                </select>
-              ) : (
-                profile.gender
-              )}
-            </p>
-
-            <p>
-              <div><strong>Date of Birth:</strong></div>
-              {isEditing ? (
-                <input
-                  type="date"
-                  name="dob"
-                  value={profile.dob}
-                  onChange={(e) => setProfile({ ...profile, dob: e.target.value })}
-                />
-              ) : (
-                profile.dob
-              )}
-            </p>
-
-            {isEditing ? (
-              <button onClick={handleSaveProfile}>Save Changes</button>
-            ) : (
-              <button onClick={() => setIsEditing(true)}>Edit Profile</button>
-            )}
+                {isEditing ? (
+                  <button className="btn btn-success profile-button" onClick={handleSaveProfile}>Save Changes</button>
+                ) : (
+                  <button className="btn btn-primary profile-button" onClick={() => setIsEditing(true)}>Edit Profile</button>
+                )}
+              </div>
+            </div>
           </div>
         </div>
       )}
 
+
       {
         activeTab === 'services' && (
           <div className="services-container shadow p-3 mb-5 bg-body-tertiary rounded">
-            <h1>Services Offered</h1>
+            <h1 className="profile-header">Services Offered</h1>
             <hr></hr>
 
             {services.map((service) => (
               <div key={service.sp_service_id} className="service-item">
                 <p>
-                  <strong>Service:</strong> {service.service_name} 
+                  <strong>Service:</strong> {service.service_name}
                 </p>
                 <p>
-                 <strong>Category:</strong> {service.category_name}
+                  <strong>Category:</strong> {service.category_name}
                 </p>
                 <label>
                   Available:
@@ -358,7 +376,7 @@ const SpProfile = () => {
       {activeTab === "add-services" && (
         <div className='preferences'>
           <div className="container shadow p-3 mb-5 bg-body-tertiary rounded">
-            <h1 className="p-10">Service Provider Preferences</h1>
+            <h1 className="profile-header">Service Provider Preferences</h1>
             <hr></hr>
             <form onSubmit={handleSubmit}>
               <div className="row">
@@ -367,15 +385,15 @@ const SpProfile = () => {
                   <div key={category.category_id} className="col-md-4 mb-3">
                     <div className="list-group">
                       <h3 className="list-group-item list-group-item-action active"
-                      style={{ backgroundColor: "white", color:"black", border: "2px green solid" }}>
-                        
+                        style={{ backgroundColor: "white", color: "black", border: "2px green solid" }}>
+
                         {category.name}
                       </h3>
                       {servicesByCategory[category.category_id] &&
                         servicesByCategory[category.category_id].map((service) => (
                           <label
                             key={service.service_id}
-                            className="list-group-item d-flex gap-2"
+                            className="list-group-item d-flex gap-1"
                           >
                             {/* Check if service is already selected */}
                             {selectedServices.includes(service.service_id) ? (

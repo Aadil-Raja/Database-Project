@@ -4,13 +4,39 @@ body {
     background-color: #f4f4f4;
 }
 
-.profile-container, .services-container {
+.profile-container {
     background-color: #ffffff;
     padding: 30px;
     margin: 20px auto;
     width: 900px;
     border-radius: 10px;
     box-shadow: 0 4px 8px rgba(0, 0, 0, 0.1);
+}
+
+h4 {
+    margin-right: 30px;
+}
+
+.tab-container {
+    display: flex;
+    width: 900px;
+    height: auto;
+}
+
+.services-container {
+    background-color: #ffffff;
+    padding: 30px;
+    margin: 20px auto;
+    width: 900px;
+    border-radius: 10px;
+    box-shadow: 0 4px 8px rgba(0, 0, 0, 0.1);
+}
+
+.profile-header {
+    text-align: center;
+    font-size: 32px;
+    color: black;
+    margin-bottom: 20px;
 }
 
 h1 {
@@ -20,18 +46,16 @@ h1 {
     color: #333;
     padding: 30px;
 }
-.name-inputs {
-    display: flex; /* Use flexbox to position the inputs side by side */
-    gap: 10px; /* Optional: Adds space between the input fields */
-  }
-  
-  .name-inputs input {
-    flex: 1; /* Ensures both input fields have equal width */
-    padding: 8px; /* Optional: Adds padding for better appearance */
-  }
-  
 
-.profile-details p, .services-details p {
+.profile-image {
+    margin-bottom: 10px;
+}
+
+.profile-details {
+    padding: 20px;
+}
+
+.services-details p {
     font-size: 18px;
     color: #555;
     line-height: 1.6;
@@ -39,23 +63,11 @@ h1 {
     text-align: center;
 }
 
-strong {
-    color: #333;
+
+.profile-details .row {
+    margin-bottom: 15px;
 }
 
-input[type="text"], input[type="email"], input[type="password"], input[type="date"], select {
-    width: 100%;
-    padding: 10px;
-    margin: 10px 0;
-    border: 1px solid #ccc;
-    border-radius: 5px;
-    font-size: 16px;
-}
-.tab-container{
-    display: flex;
-    width: 900px;
-    height: auto;
-}
 button {
     width: 100%;
     padding: 12px;
@@ -72,6 +84,8 @@ button:hover {
     background-color: #45a049;
 }
 
+
+
 .services-container {
     margin-top: 50px;
 }
@@ -81,16 +95,29 @@ button:hover {
     padding: 15px 0;
 }
 
+.name-inputs {
+    display: flex;
+    gap: 10px;
+}
+
+input[type="text"],
+input[type="email"],
+input[type="password"],
+input[type="date"],
+select {
+    width: 100%;
+    padding: 10px;
+    margin-top: 5px;
+    border: 1px solid #ccc;
+    border-radius: 5px;
+    font-size: 16px;
+}
+
 label {
     display: block;
     margin: 5px 0;
 }
 
-input[type="checkbox"] {
-    margin-right: 10px;
-}
-
-/* Tabs Styling */
 .tabs {
     display: flex;
     justify-content: center;
@@ -112,32 +139,88 @@ input[type="checkbox"] {
     font-weight: bold;
 }
 
-
 .tab:hover {
     background-color: #e0e0e0;
 }
-@media(max-width:896px)
-{
-    .tab-container{
+
+input[type="checkbox"] {
+    margin-right: 10px;
+}
+
+button.profile-button {
+    width: 100%;
+    padding: 12px;
+    background-color: #4CAF50;
+    color: white;
+    border: 1px solid #000;
+    border-radius: 5px;
+    font-size: 18px;
+    cursor: pointer;
+    transition: background-color 0.3s ease;
+    margin-top: 20px;
+}
+
+button.profile-button:hover {
+    background-color: #45a049;
+}
+
+@media (max-width: 896px) {
+    .profile-container {
+        width: 400px;
+    }
+}
+
+@media (max-width: 1200px) {
+    .col-lg-4 {
+        width: 50%;
+    }
+}
+
+@media(max-width:896px) {
+    .tab-container {
         display: flex;
         flex-wrap: wrap;
         margin-top: 165px;
     }
-    .profile-container,.services-container{
+
+    .profile-container,
+    .services-container {
         width: 400px;
     }
-    .preferences{
+
+    .preferences {
         margin-bottom: 100px;
     }
 
 }
+
 @media (max-width: 1200px) {
     .col-lg-4 {
-      width: 50%; /* On screens smaller than 1200px, each column takes 50% width */
+        width: 50%;
+        /* On screens smaller than 1200px, each column takes 50% width */
     }
-  }
-  
+}
+@media(max-width: 768px) {
+    .tab-container {
+        position: relative;
+        top: 260px;
+    }
 
-  
-  /* Ensure the button stays responsive */
- 
+    .preferences,.services-container,.profile-container {
+        margin-top: 240px;
+    }
+}
+
+@media(max-width: 575px) {
+    .tab-container {
+        position: relative;
+        top: 260px;
+    }
+
+    .preferences {
+        width: 500px;
+        align-items: center;
+        margin-left: 200px;
+        margin-top: 240px;
+    }
+}
