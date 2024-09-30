@@ -20,3 +20,16 @@ exports.getServicesByCategory = async (req, res) => {
     res.status(500).json({ message: 'Server error fetching services' });
   }
 };
+
+exports.getaServiceName = async (req, res) => {
+  try {
+    const { service_id } = req.query; // Change to req.query for GET request
+    const query = `SELECT name FROM services WHERE service_id = ${service_id}`;
+    const [result] = await sequelize.query(query);
+    res.json(result[0] || { message: 'Service not found' })
+  } catch (error) {
+    res.json({ error: error.message });
+  }
+};
+
+

@@ -1,5 +1,6 @@
 import React, { useState, useEffect } from "react";
 import { useParams } from "react-router-dom";
+import { Link } from "react-router-dom";
 import axios from "axios";  // Import axios to make API calls
 
 export default function CategoryDetails() {
@@ -48,7 +49,11 @@ export default function CategoryDetails() {
                           className="h-full w-full object-cover object-center"
                         />
                       </div>
-                      <h3 className="mt-6 text-sm text-gray-500">{service.name}</h3>
+                      <h3 className="mt-6 text-sm text-gray-500">
+                      <Link to={`/categories/${service.service_id}/servicerequestform`}>
+                      <span className="absolute inset-0" />
+                      {service.name}
+                    </Link></h3>
                     </div>
                 ))}
               </div>

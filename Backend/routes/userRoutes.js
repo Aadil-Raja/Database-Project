@@ -12,6 +12,8 @@ const serviceController = require('../controllers/serviceController');
 const savePreferences =require('../controllers/Spservices.js')
 const resetPasswordController=require('../controllers/resetPasswordController.js');
 const serviceProviderProfile=require('../controllers/spProfileController.js');
+const servicerequestform=require('../controllers/serviceRequestController.js');
+
 
 const verifyToken = require('../middleware/auth');
 const { verify } = require('crypto');
@@ -45,6 +47,14 @@ router.put('/service-provider/updateAvailability/:service_id',verifyToken,servic
 router.delete('/service-provider/removeService/:service_id',verifyToken,serviceProviderProfile.removeService);
 
 router.get('/categories/:categoryId',categoryController.getACategory);
+
+router.post('/servicerequestform',verifyToken,servicerequestform.addRequest);
+
+router.get('/getRequests',servicerequestform.getallRequests);
+router.get('/getClientName',clientController.getClient);
+router.get('/getCityName',cityController.getACity);
+router.get('/getServiceName',serviceController.getaServiceName);
+
 router.get('/verify-token', verifyToken, (req, res) => {
     // If the token is valid, return success
     res.json({ isValid: true });

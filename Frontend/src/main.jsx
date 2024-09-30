@@ -23,6 +23,7 @@ import CategoryDetails from './components/Categories/CategoryDetails.jsx'
 
 import Sp from './components/ServiceProviderTemporaryPage/sp1.jsx'
 import  SpProfile  from './components/SpProfile/SpProfile.jsx'
+import ServiceRequestForm from './components/Categories/ServiceRequestForm.jsx'
 const router = createBrowserRouter([
   {
     path: '/',
@@ -76,24 +77,17 @@ const router = createBrowserRouter([
         path: "service-provider-form",
         element: <ServiceProviderForm />
       },
+      
       {
-        path: 'Categories',
-        element: <Categories />
-      },
-      {
-        // Dynamic route for CategoryDetails
-        path: 'Categories/:categoryId',  // Adds dynamic routing based on categoryId
-        element: <CategoryDetails />
+        path: 'Requests',
+        element: <Final/>
       },
       {
         
           
             element: <ProtectedRoute />, // Apply ProtectedRoute to secure these paths
             children: [
-              {
-                path: 'Requests',
-                element: <Final/>
-              },
+             
              {
                      path : 'ServiceProviderHome',
                      element :<Sp/>
@@ -102,7 +96,20 @@ const router = createBrowserRouter([
                    path : 'SpProfile',
                    element : <SpProfile/>
              },
-  
+             {
+              path: 'Categories',
+              element: <Categories />
+            },
+            {
+              // Dynamic route for CategoryDetails
+              path: 'Categories/:categoryId',  // Adds dynamic routing based on categoryId
+              element: <CategoryDetails />
+            },
+            {
+                   path : '/categories/:serviceId/servicerequestform',
+                   element : <ServiceRequestForm/>
+      
+            },
              
             ]
           

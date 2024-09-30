@@ -44,3 +44,15 @@ exports.createClient = async (req, res) => {
   }
 };
 
+exports.getClient = async (req, res) => {
+  try {
+    const { client_id } = req.query; // Change to req.query for GET request
+    const query = `SELECT name FROM clients WHERE client_id = ${client_id}`;
+    const [result] = await sequelize.query(query);
+    res.json(result[0]); // Send the first result
+  } catch (error) {
+    res.status(500).json({ error: error.message });
+  }
+};
+
+

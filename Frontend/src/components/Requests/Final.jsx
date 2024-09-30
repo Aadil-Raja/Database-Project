@@ -1,10 +1,10 @@
 import React, { useState, useEffect } from 'react';
 import SearchBar from './SearchBar.jsx';
 import SearchResults from './SearchResults.jsx';
-import {data} from './data'; // Import your data
+//import {data} from './data'; // Import your data
 
 const Final = () => {
-  const [searchResults, setSearchResults] = useState(data);
+  //const [searchResults, setSearchResults] = useState(data);
 
   const handleSearch = (filters) => {
     const filteredData = data.filter((item) => {
@@ -22,13 +22,14 @@ const Final = () => {
 
   useEffect(() => {
     // Optionally, you could initialize or fetch data here
-    console.log(data)
+   // console.log(data)
   }, []);
 
   return (
     <div className="App">
-      <SearchBar onSearch={handleSearch} />
-      <SearchResults data={searchResults} />
+     <SearchBar onSearch={handleSearch} /> 
+    
+      <SearchResults /*data={searchResults} *//>
     </div>
   );
 };
