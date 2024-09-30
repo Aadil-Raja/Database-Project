@@ -137,17 +137,7 @@ input[type="checkbox"] {
     }
   }
   
-  @media (max-width: 768px) {
-    .col-md-6 {
-      width: 100%; /* On screens smaller than 768px, each column takes full width */
-    }
-    .service-item{
-        width: 20px;
-    }
-    .container {
-      padding: 5px; /* Reduce container padding on small screens */
-    }
-  }
+
   
   /* Ensure the button stays responsive */
  

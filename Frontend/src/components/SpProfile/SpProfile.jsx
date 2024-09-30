@@ -333,7 +333,10 @@ const SpProfile = () => {
             {services.map((service) => (
               <div key={service.sp_service_id} className="service-item">
                 <p>
-                  <strong>Service:</strong> {service.service_name} - <strong>Category:</strong> {service.category_name}
+                  <strong>Service:</strong> {service.service_name} 
+                </p>
+                <p>
+                 <strong>Category:</strong> {service.category_name}
                 </p>
                 <label>
                   Available:
