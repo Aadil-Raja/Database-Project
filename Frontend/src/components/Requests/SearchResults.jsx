@@ -35,9 +35,9 @@ const SearchResults = () => {
         // Add client names, city names, and service names to requests
         const detailedRequests = requests.map((request, index) => ({
           ...request,
-          clientName: clientNamesResponses[index].data.client_name,
-          cityName: cityNamesResponses[index].data.city_name,
-          serviceName: serviceNamesResponses[index].data.service_name,
+          clientName: clientNamesResponses[index].data.name,
+          cityName: cityNamesResponses[index].data.name,
+          serviceName: serviceNamesResponses[index].data.name,
         }));
   
         // Update the state with detailed requests

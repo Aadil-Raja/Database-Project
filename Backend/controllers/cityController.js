@@ -1,5 +1,20 @@
 
 const City = require('../models/city'); 
+const sequelize =require('../config/db');
+
+exports.getACity = async (req, res) => {
+  try {
+    const { city_id } = req.query; 
+    
+
+    const query = `SELECT name FROM cities WHERE city_id=${city_id}`;
+    const [result] = await sequelize.query(query);
+    res.json(result[0]);
+  } catch (error) {
+    res.status(500).json({ error: error.message });
+  }
+};
+
 
 exports.getCities = async (req, res) => {
   try {
@@ -10,17 +25,6 @@ exports.getCities = async (req, res) => {
   }
 };
 
-exports.getACity = async (req, res) => {
-  try {
-    const { city_id } = req.query; // Change to req.query for GET request
-   // const query = `SELECT name FROM cities WHERE city_id = ${city_id}`;
-    //const [result] = await sequelize.query(query);
-    res.json('Karachi'); // Send the first result
-  } catch (error) {
-   
-    res.json({ error: error.message });
-  }
-};
 
 
 

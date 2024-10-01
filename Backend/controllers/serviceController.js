@@ -1,7 +1,7 @@
 
 const Service = require('../models/service'); 
 
-
+const sequelize =require('../config/db');
 exports.getServicesByCategory = async (req, res) => {
   try {
     const { categoryId } = req.params; 
@@ -28,7 +28,7 @@ exports.getaServiceName = async (req, res) => {
     const [result] = await sequelize.query(query);
     res.json(result[0] || { message: 'Service not found' })
   } catch (error) {
-    res.json({ error: error.message });
+    res.status(500).json({ error: error.message });
   }
 };
 
