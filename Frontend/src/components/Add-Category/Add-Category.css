@@ -1,0 +1,82 @@
+/* AddCategory.css */
+
+/* Container styling for the form */
+.form-container {
+    max-width: 28rem; /* Adjust width */
+    margin: 2.5rem auto; /* Center the form */
+    padding: 1rem;
+    box-shadow: 0 4px 6px rgba(0, 0, 0, 0.1);
+    background-color: white;
+    border-radius: 0.375rem;
+  }
+  
+  /* Form title styling */
+  .form-title {
+    font-size: 1.5rem;
+    font-weight: bold;
+    margin-bottom: 1rem;
+    text-align: center;
+  }
+  
+  /* Success message box */
+  .success-message {
+    background-color: #d4edda;
+    border: 1px solid #c3e6cb;
+    color: #155724;
+    padding: 0.75rem;
+    border-radius: 0.375rem;
+    margin-bottom: 1rem;
+  }
+  
+  /* Label styling */
+  .form-label {
+    display: block;
+    color: #4a5568; /* gray-700 */
+    font-weight: 500;
+    margin-bottom: 0.5rem;
+  }
+  
+  /* Input and Textarea styling */
+  .form-input,
+  .form-textarea {
+    width: 100%;
+    padding: 0.5rem;
+    border: 1px solid #cbd5e0; /* gray-300 */
+    border-radius: 0.375rem;
+    outline: none;
+    transition: box-shadow 0.2s ease;
+  }
+  
+  .form-input:focus,
+  .form-textarea:focus {
+    border-color: #f97316; /* orange-500 */
+    box-shadow: 0 0 0 2px rgba(251, 146, 60, 0.2); /* orange-500 ring */
+  }
+  
+  /* Textarea specific styling */
+  .form-textarea {
+    resize: vertical; /* Allow vertical resize */
+    height: 6rem;
+  }
+  
+  /* Submit button styling */
+  .form-button {
+    width: 100%;
+    background-color: #ea580c; /* orange-700 */
+    color: white;
+    padding: 0.5rem;
+    border-radius: 0.375rem;
+    text-align: center;
+    cursor: pointer;
+    transition: background-color 0.2s ease;
+  }
+  
+  .form-button:hover {
+    background-color: #c2410c; /* darker orange-700 */
+  }
+  
+  .form-button:focus {
+    outline: none;
+    box-shadow: 0 0 0 2px rgba(251, 146, 60, 0.5); /* orange-500 ring */
+  }
+  

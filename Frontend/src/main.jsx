@@ -24,6 +24,8 @@ import CategoryDetails from './components/Categories/CategoryDetails.jsx'
 import Sp from './components/ServiceProviderTemporaryPage/sp1.jsx'
 import  SpProfile  from './components/SpProfile/SpProfile.jsx'
 import ServiceRequestForm from './components/Categories/ServiceRequestForm.jsx'
+import AdminDashboard from './components/Admin/Admin.jsx'
+import AddCategory from './components/Add-Category/Add-Category.jsx'
 const router = createBrowserRouter([
   {
     path: '/',
@@ -83,6 +85,12 @@ const router = createBrowserRouter([
         element: <Final/>
       },
       {
+        path: 'Admin',
+        element:<AdminDashboard/>
+      },
+      ,
+     
+      {
         
           
             element: <ProtectedRoute />, // Apply ProtectedRoute to secure these paths
@@ -99,6 +107,10 @@ const router = createBrowserRouter([
              {
               path: 'Categories',
               element: <Categories />
+            },
+            {
+              path : 'Add-Category',
+              element : <AddCategory/>
             },
             {
               // Dynamic route for CategoryDetails
