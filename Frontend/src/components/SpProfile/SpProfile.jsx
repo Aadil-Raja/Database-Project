@@ -385,7 +385,7 @@ const SpProfile = () => {
                   <div key={category.category_id} className="col-md-4 mb-3">
                     <div className="list-group">
                       <h3 className="list-group-item list-group-item-action active"
-                        style={{ backgroundColor: "white", color: "black", border: "2px green solid" }}>
+                        style={{ backgroundColor: "#A4EBF3", color: "black", border: "2px solid black" }}>
 
                         {category.name}
                       </h3>
@@ -417,10 +417,12 @@ const SpProfile = () => {
               </div>
 
               {/* Submit Button */}
+              <div className='savepref'>
               <button type="submit" className="btn"
               >
                 Save Preferences
               </button>
+              </div>
             </form>
           </div>
         </div>
