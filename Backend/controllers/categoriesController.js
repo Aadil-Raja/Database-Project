@@ -10,7 +10,20 @@ exports.getCategories = async (req, res) => {
     res.status(500).json({ message: error.message });
   }
 };
-
+exports.AddaCategory = async( req,res ) => {
+  try {
+      const {name ,description} =req.body;
+    
+      const query = `INSERT INTO categories(name,description)
+                      values('${name}','${description}')`;
+                      await sequelize.query(query);
+                      res.json("Successful");
+  }
+  catch (error)
+  {
+    res.json({message:error.message});
+  }
+}
 exports.getACategory =async(req,res)=>{
   try{
     const { categoryId } = req.params;

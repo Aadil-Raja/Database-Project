@@ -13,6 +13,8 @@ const savePreferences =require('../controllers/Spservices.js')
 const resetPasswordController=require('../controllers/resetPasswordController.js');
 const serviceProviderProfile=require('../controllers/spProfileController.js');
 const servicerequestform=require('../controllers/serviceRequestController.js');
+const adminController =require('../controllers/adminController.js');
+const upload = require('../middleware/multer.js');
 
 
 const verifyToken = require('../middleware/auth');
@@ -55,6 +57,13 @@ router.get('/getClientName',clientController.getClient);
 router.get('/getCityName',cityController.getACity);
 router.get('/getServiceName',serviceController.getaServiceName);
 
+
+router.post('/Add-Category',verifyToken, adminController.addReqCategory); 
+// Route to fetch categories
+router.get('/admin', adminController.getReqCategories);
+router.post('/Addcategories', upload.single('categoryImg'), categoryController.AddaCategory);
+
+router.post('/AddService',upload.single('serviceImg'),serviceController.AddaService);
 router.get('/verify-token', verifyToken, (req, res) => {
     // If the token is valid, return success
     res.json({ isValid: true });

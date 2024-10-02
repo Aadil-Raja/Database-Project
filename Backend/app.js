@@ -11,17 +11,19 @@ const Services =require('./models/service');
 const ServiceProviderServices=require('./models/spservices');
 const cities=require('./models/city');
 const ServiceRequest=require('./models/serviceRequest');
+const RequestCategoryService=require('./models/RequestsCategory');
 const app = express();
 const PORT = process.env.PORT || 3000;
 
 app.use(cors());
 app.use(express.json());
 app.use('/', require('./routes/userRoutes'));
+app.use('/images', express.static('public/images'));
 
 
 const initializeApp = async () => {
     try {
-      await sequelize.sync({alter:true }); // Ensures the database syncs
+      await sequelize.sync({sync:true }); // Ensures the database syncs
       await initializeCities();              // Populate city table
       await initializeCategoriesAndServices();
       console.log('Database & tables initialized!');
