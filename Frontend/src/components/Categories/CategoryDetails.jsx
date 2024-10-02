@@ -43,11 +43,11 @@ export default function CategoryDetails() {
                   .map((service, index) => (
                     <div key={index} className="group relative">
                       <div className="relative h-60 w-full overflow-hidden rounded-lg bg-white sm:aspect-h-1 sm:aspect-w-2 lg:aspect-h-1 lg:aspect-w-1 group-hover:opacity-75 sm:h-64">
-                        <img
-                          src={`/images/${service.image}`}  // Assuming the images are in the public/images folder
-                          alt={service.name}
-                          className="h-full w-full object-cover object-center"
-                        />
+                        
+                        < img src={`http://localhost:3000/images/${service.name.toLowerCase().replace(/ /g, '-')}.jpg`} alt={service.name}
+ 
+  className="h-full w-full object-cover object-center"
+/>
                       </div>
                       <h3 className="mt-6 text-sm text-gray-500">
                       <Link to={`/categories/${service.service_id}/servicerequestform`}>

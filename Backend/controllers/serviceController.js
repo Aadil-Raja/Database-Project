@@ -20,7 +20,20 @@ exports.getServicesByCategory = async (req, res) => {
     res.status(500).json({ message: 'Server error fetching services' });
   }
 };
-
+exports.AddaService = async( req,res ) => {
+  try {
+      const {name ,description,category_id} =req.body;
+    
+      const query = `INSERT INTO services(name,description,category_id,image)
+                      values('${name}','${description}',${category_id},'${name}')`;
+                      await sequelize.query(query);
+                      res.json("Successful");
+  }
+  catch (error)
+  {
+    res.status(500).json({message:error.message});
+  }
+}
 exports.getaServiceName = async (req, res) => {
   try {
     const { service_id } = req.query; // Change to req.query for GET request

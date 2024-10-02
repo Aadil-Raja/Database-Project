@@ -88,35 +88,34 @@ const router = createBrowserRouter([
         path: 'Admin',
         element:<AdminDashboard/>
       },
+      {
+        path: 'Categories',
+        element: <Categories />
+      },
       ,
-     
+      {
+        // Dynamic route for CategoryDetails
+        path: 'Categories/:categoryId',  // Adds dynamic routing based on categoryId
+        element: <CategoryDetails />
+      },
+      
       {
         
           
             element: <ProtectedRoute />, // Apply ProtectedRoute to secure these paths
             children: [
              
-             {
-                     path : 'ServiceProviderHome',
-                     element :<Sp/>
-             },
+            
              {
                    path : 'SpProfile',
                    element : <SpProfile/>
              },
-             {
-              path: 'Categories',
-              element: <Categories />
-            },
+            
             {
               path : 'Add-Category',
               element : <AddCategory/>
             },
-            {
-              // Dynamic route for CategoryDetails
-              path: 'Categories/:categoryId',  // Adds dynamic routing based on categoryId
-              element: <CategoryDetails />
-            },
+           
             {
                    path : '/categories/:serviceId/servicerequestform',
                    element : <ServiceRequestForm/>
