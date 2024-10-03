@@ -1,17 +1,13 @@
-const { DataTypes } = require('sequelize');
 const sequelize = require('../config/db');
 
-const City = sequelize.define('City', {
-  city_id: {
-    type: DataTypes.INTEGER,
-    primaryKey: true,
-    autoIncrement: true,
-  },
-  name: {
-    type: DataTypes.STRING,
-    allowNull: false,
-    unique: true,
-  },
-});
+exports.createCitiesTable = async () => {
+  const query = `
+    CREATE TABLE IF NOT EXISTS Cities (
+      city_id INT AUTO_INCREMENT PRIMARY KEY,
+      name VARCHAR(255) NOT NULL UNIQUE
+    );
+  `;
+  await sequelize.query(query);
+};
 
-module.exports = City;
+

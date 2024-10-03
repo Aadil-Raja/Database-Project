@@ -117,9 +117,13 @@ const router = createBrowserRouter([
             },
            
             {
-                   path : '/categories/:serviceId/servicerequestform',
+                   path : 'categories/:serviceId/servicerequestform',
                    element : <ServiceRequestForm/>
       
+            },
+            {
+                        path :'ServiceProviderHome',
+                        element : <Sp/>
             },
              
             ]

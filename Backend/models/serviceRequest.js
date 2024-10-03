@@ -1,84 +1,33 @@
-const { DataTypes } = require('sequelize');
 const sequelize = require('../config/db');
 
-const ServiceRequest = sequelize.define('ServiceRequest', {
-  request_id: {
-    type: DataTypes.INTEGER,
-    primaryKey: true,
-    autoIncrement: true,
-  },
-  service_id: {
-    type: DataTypes.INTEGER,
-    references: {
-        model: 'Services',
-        key: 'service_id',
-      },
-      onDelete: 'SET NULL',
-      onUpdate: 'CASCADE',
-      allowNull: true,
- 
-  },
-  description : {
-    type :DataTypes.STRING,
-    allowNull: false
-  },
-  address: {
-    type :DataTypes.STRING,
-    allowNull: false
-  },
-  
-   city_id : {
-    type : DataTypes.INTEGER,
-    references: {
-        model: 'Cities', // Name of the table, not the model
-        key: 'city_id',
-      },
-      onDelete: 'SET NULL',
-      onUpdate: 'CASCADE',
-      allowNull: true, 
-   
-   },
-   client_id : {
-    type :DataTypes.INTEGER,
-    references: {
-        model: 'Clients', // Name of the table, not the model
-        key: 'client_id',
-      },
-      onDelete: 'SET NULL',
-      onUpdate: 'CASCADE',
-      allowNull: true, 
-   
+exports.createServiceRequestsTable = async () => {
+  const query = `
+    CREATE TABLE IF NOT EXISTS ServiceRequests (
+      request_id INT AUTO_INCREMENT PRIMARY KEY,
+      service_id INT,
+      description VARCHAR(255) NOT NULL,
+      address VARCHAR(255) NOT NULL,
+      city_id INT,
+      client_id INT,
+      sp_id INT,
+      status ENUM('pending', 'accepted', 'completed', 'cancelled') DEFAULT 'pending',
+      request_date DATETIME DEFAULT CURRENT_TIMESTAMP,
+      completed_date DATETIME NULL,
+      price DECIMAL(10, 2) NULL,
+      FOREIGN KEY (service_id) REFERENCES Services(service_id) 
+        ON DELETE SET NULL 
+        ON UPDATE CASCADE,
+      FOREIGN KEY (city_id) REFERENCES Cities(city_id) 
+        ON DELETE SET NULL 
+        ON UPDATE CASCADE,
+      FOREIGN KEY (client_id) REFERENCES Clients(client_id) 
+        ON DELETE SET NULL 
+        ON UPDATE CASCADE,
+      FOREIGN KEY (sp_id) REFERENCES ServiceProviders(sp_id) 
+        ON DELETE SET NULL 
+        ON UPDATE CASCADE
+    );
+  `;
+  await sequelize.query(query);
+};
 
-   },
-   sp_id : {
-    type :DataTypes.INTEGER,
-    references: {
-        model: 'serviceproviders',
-        key: 'sp_id',
-      },
-      onDelete: 'SET NULL',
-      onUpdate: 'CASCADE',
-      allowNull: true,
-    
-   },
-   status: {
-     type: DataTypes.ENUM('pending', 'accepted', 'completed', 'cancelled'),
-     defaultValue: 'pending', // Set default to pending when a request is created
-   },
-   request_date: {
-     type: DataTypes.DATE,
-     defaultValue: DataTypes.NOW, // Automatically set the current date/time when request is made
-   },
-   completed_date: {
-     type: DataTypes.DATE,
-     allowNull: true, // Set to NULL initially, updated when service is completed
-   },
-   price: {
-     type: DataTypes.DECIMAL(10, 2),
-     allowNull: true,
-   },
-   
-
-});
-
-module.exports = ServiceRequest;

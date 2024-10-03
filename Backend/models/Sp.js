@@ -1,87 +1,30 @@
-const { DataTypes } = require('sequelize');
 const sequelize = require('../config/db');
 
+exports.createServiceProviderTable = async () => {
+  const query = `
+    CREATE TABLE IF NOT EXISTS ServiceProviders (
+      sp_id INT AUTO_INCREMENT PRIMARY KEY,
+      firstName VARCHAR(255) NOT NULL,
+      lastName VARCHAR(255) NOT NULL,
+      email VARCHAR(255) NOT NULL UNIQUE,
+      password VARCHAR(255) NOT NULL,
+      phone VARCHAR(255) NOT NULL,
+      address VARCHAR(255) NOT NULL,
+      city_id INT,
+      gender ENUM('Male', 'Female', 'Other') NOT NULL,
+      dob DATE NOT NULL,
+      role ENUM('client', 'service_provider', 'both') DEFAULT 'service_provider',
+      status ENUM('active', 'inactive', 'locked') DEFAULT 'active',
+      tips BOOLEAN DEFAULT FALSE,
+      terms BOOLEAN NOT NULL,
+      resetPasswordToken VARCHAR(255),
+      resetPasswordExpires DATETIME,
+      first_time_login BOOLEAN DEFAULT TRUE,
+      createdAt TIMESTAMP DEFAULT CURRENT_TIMESTAMP,
+      updatedAt TIMESTAMP DEFAULT CURRENT_TIMESTAMP ON UPDATE CURRENT_TIMESTAMP,
+      FOREIGN KEY (city_id) REFERENCES Cities(city_id) ON DELETE SET NULL ON UPDATE CASCADE
+    );
+  `;
 
-const ServiceProvider = sequelize.define('ServiceProvider', {
-  sp_id: {
-    type: DataTypes.INTEGER,
-    primaryKey: true,
-    autoIncrement: true,
-  },
-  firstName: {
-    type: DataTypes.STRING,
-    allowNull: false,
-  },
-  lastName: {
-    type: DataTypes.STRING,
-    allowNull: false,
-  },
-  email: {
-    type: DataTypes.STRING,
-    allowNull: false,
-    unique: true, // Ensure emails are unique
-  },
-  password: {
-    type: DataTypes.STRING,
-    allowNull: false,
-  },
-  phone: {
-    type: DataTypes.STRING,
-    allowNull: false, // Add phone number for contact
-  },
-  address: {
-    type: DataTypes.STRING,
-    allowNull: false, // Add address for service provider
-  },
-  city_id: {
-    type: DataTypes.INTEGER,
-    references: {
-      model: 'Cities', // Name of the table, not the model
-      key: 'city_id',
-    },
-    onDelete: 'SET NULL',
-    onUpdate: 'CASCADE',
-    allowNull: true, // It can be set to null if the referenced city is deleted
-  },
-  gender: {
-    type: DataTypes.ENUM('Male', 'Female', 'Other'),
-    allowNull: false, // Add gender field
-  },
-  dob: {
-    type: DataTypes.DATEONLY,
-    allowNull: false, // Date of birth for the service provider
-  },
-  role: {
-    type: DataTypes.ENUM('client', 'service_provider', 'both'),
-    defaultValue: 'service_provider', // The default role for this model
-  },
-  status: {
-    type: DataTypes.ENUM('active', 'inactive', 'locked'),
-    defaultValue: 'active', // Status of the service provider account
-  },
-  tips: {
-    type: DataTypes.BOOLEAN,
-    defaultValue: false, // Whether the provider has opted into receiving tips
-  },
-  terms: {
-    type: DataTypes.BOOLEAN,
-    allowNull: false, // Agree to terms and conditions
-  },
-  resetPasswordToken: {
-    type: DataTypes.STRING,
-    allowNull: true, // This field can be null until a password reset is requested
-  },
-  resetPasswordExpires: {
-    type: DataTypes.DATE,
-    allowNull: true, // This field can be null until a password reset is requested
-  },
-  first_time_login: {
-    type: DataTypes.BOOLEAN,
-    defaultValue: true, // Set to true when the user signs up
-  },
-  
-}, {
-  timestamps: true, // Automatically create createdAt and updatedAt fields
-});
-
-module.exports = ServiceProvider;
+  await sequelize.query(query);
+};

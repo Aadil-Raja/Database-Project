@@ -4,12 +4,14 @@ const cors = require('cors');
 require('dotenv').config()
 const initializeCities = require('./seeds/initializeCities');
 const initializeCategoriesAndServices=require('./seeds/initializeCategoriesAndServices');
+
+const cities=require('./models/city');
 const Client = require('./models/client');
 const ServiceProvider = require('./models/Sp');
 const Category= require('./models/category');
 const Services =require('./models/service');
 const ServiceProviderServices=require('./models/spservices');
-const cities=require('./models/city');
+
 const ServiceRequest=require('./models/serviceRequest');
 const RequestCategoryService=require('./models/RequestsCategory');
 const app = express();
@@ -23,9 +25,19 @@ app.use('/images', express.static('public/images'));
 
 const initializeApp = async () => {
     try {
-      await sequelize.sync({sync:true }); // Ensures the database syncs
-      await initializeCities();              // Populate city table
-      await initializeCategoriesAndServices();
+      await sequelize.sync({force:true });
+      cities.createCitiesTable();
+      ServiceProvider.createServiceProviderTable();
+      Client.createClientsTable(); 
+      Category.createCategoriesTable();
+      Services.createServicesTable();
+      ServiceRequest.createServiceRequestsTable();
+      ServiceProviderServices.createServiceProviderServicesTable();
+      RequestCategoryService.createRequestCategoryTable();
+      
+      // Ensures the database syncs
+     await initializeCities();              // Populate city table
+     await initializeCategoriesAndServices();
       console.log('Database & tables initialized!');
     } catch (error) {
       console.error('Error initializing database:', error);

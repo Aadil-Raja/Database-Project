@@ -1,5 +1,4 @@
 
-const City = require('../models/city'); 
 const sequelize =require('../config/db');
 
 exports.getACity = async (req, res) => {
@@ -18,7 +17,10 @@ exports.getACity = async (req, res) => {
 
 exports.getCities = async (req, res) => {
   try {
-    const cities = await City.findAll();
+    const query = `SELECT * FROM cities`;
+    const [cities] = await sequelize.query(query);
+
+   
     res.json(cities);
   } catch (error) {
     res.status(500).json({ message: error.message });

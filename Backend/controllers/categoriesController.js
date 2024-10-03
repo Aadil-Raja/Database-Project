@@ -1,15 +1,16 @@
 
-const sequelize = require('../config/db');
-const Category = require('../models/category'); 
+const sequelize = require('../config/db'); // Assuming you're using sequelize for raw queries
 
 exports.getCategories = async (req, res) => {
   try {
-    const categories = await Category.findAll();
-    res.json(categories);
+    const query = `SELECT * FROM categories`;
+    const [categories] = await sequelize.query(query); // Using raw SQL query
+    res.json(categories); // Sending the fetched categories in response
   } catch (error) {
     res.status(500).json({ message: error.message });
   }
 };
+
 exports.AddaCategory = async( req,res ) => {
   try {
       const {name ,description} =req.body;

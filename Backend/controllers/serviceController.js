@@ -1,25 +1,21 @@
 
-const Service = require('../models/service'); 
+const sequelize = require('../config/db'); // Assuming you're using sequelize for raw queries
 
-const sequelize =require('../config/db');
 exports.getServicesByCategory = async (req, res) => {
   try {
-    const { categoryId } = req.params; 
+    const { categoryId } = req.params;
 
-    
-    const services = await Service.findAll({
-      where: {
-        category_id: categoryId,
-      },
-    });
+    // Raw SQL query to fetch services by category_id
+    const query = `SELECT * FROM services WHERE category_id = ${categoryId}`;
+    const [services] = await sequelize.query(query); // Executing the raw SQL query
 
-    
-    res.json(services);
+    res.json(services); // Returning the fetched services
   } catch (error) {
     console.error('Error fetching services:', error);
     res.status(500).json({ message: 'Server error fetching services' });
   }
 };
+
 exports.AddaService = async( req,res ) => {
   try {
       const {name ,description,category_id} =req.body;
