@@ -31,7 +31,7 @@ exports.login = async (req, res) => {
                     await sequelize.query(FirstTimeLogin);
                 }
 
-                return res.json({ message: "exist", token, role: "servicesproviders", first_time_login });
+                return res.json({ message: "exist", token, role: "servicesproviders", first_time_login ,user_ID:spUser.sp_id});
             } else {
                 return res.json({ message: "Invalid password" });
             }
@@ -47,7 +47,7 @@ exports.login = async (req, res) => {
             if (passwordMatch) {
                 console.log(`Login successful for Client: ${email}`);
                 const token = jwt.sign({ id: clientUser.client_id, email: clientUser.email }, process.env.JWT_SECRET, { expiresIn: '1h' });
-                return res.json({ message: "exist", token, role: "clients" });
+                return res.json({ message: "exist", token, role: "clients",user_ID:clientUser.client_id });
             } else {
                 return res.json({ message: "Invalid password" });
             }

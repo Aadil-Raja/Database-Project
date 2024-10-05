@@ -15,7 +15,7 @@ const serviceProviderProfile=require('../controllers/spProfileController.js');
 const servicerequestform=require('../controllers/serviceRequestController.js');
 const adminController =require('../controllers/adminController.js');
 const upload = require('../middleware/multer.js');
-
+const chatController=require('../controllers/chatController.js');
 
 const verifyToken = require('../middleware/auth');
 const { verify } = require('crypto');
@@ -64,6 +64,9 @@ router.get('/admin', adminController.getReqCategories);
 router.post('/Addcategories', upload.single('categoryImg'), categoryController.AddaCategory);
 
 router.post('/AddService',upload.single('serviceImg'),serviceController.AddaService);
+router.post('/saveMessage', chatController.saveMessage); // Route to save messages
+router.get('/getMessages', chatController.getMessages); 
+
 router.get('/verify-token', verifyToken, (req, res) => {
     // If the token is valid, return success
     res.json({ isValid: true });

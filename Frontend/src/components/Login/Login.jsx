@@ -26,7 +26,8 @@ const Login = () => {
       if (response.data.message === "exist") {
         console.log("Login successful!");
         localStorage.setItem('token',response.data.token);
-        
+        localStorage.setItem('user_ID',response.data.user_ID)
+        localStorage.setItem('usertype',response.data.role);    
         if(response.data.first_time_login=== "First time login")
         {
           navigate("/service-provider-form");
