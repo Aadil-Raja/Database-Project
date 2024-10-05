@@ -3,13 +3,13 @@ const sequelize = require("../config/db");
 
 
 exports.saveMessage = async (req, res) => {
-  const { sender_id, receiver_id, message_text, sender_type, receiver_type } = req.body;
+  const { sender_id, receiver_id, message_text, sender_type, receiver_type,room } = req.body;
 
   try {
     // Raw SQL query for inserting a new message
     const query = `
-      INSERT INTO Messages (sender_id, receiver_id, message_text, sender_type, receiver_type)
-      VALUES (${sender_id}, ${receiver_id}, '${message_text}', '${sender_type}', '${receiver_type}')
+      INSERT INTO Messages (sender_id, receiver_id, message_text, sender_type, receiver_type,room)
+      VALUES (${sender_id}, ${receiver_id}, '${message_text}', '${sender_type}', '${receiver_type}','${room}')
     `;
 
     // Execute the raw SQL query
@@ -23,16 +23,13 @@ exports.saveMessage = async (req, res) => {
 
 
 exports.getMessages = async (req, res) => {
-    const { sender_id, receiver_id } = req.query;
+    const { room } = req.query;
   
     try {
       // Raw SQL query for selecting messages between two users
       const query = `
         SELECT * FROM Messages 
-        WHERE 
-          (sender_id = ${sender_id} AND receiver_id = ${receiver_id})
-        OR 
-          (sender_id = ${receiver_id} AND receiver_id = ${sender_id})
+        where room = '${room}'
         ORDER BY created_at ASC
       `;
   

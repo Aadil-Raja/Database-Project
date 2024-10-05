@@ -32,7 +32,7 @@ const Login = () => {
         {
           navigate("/service-provider-form");
         }
-        else if(response.data.role==="servicesproviders"){
+        else if(response.data.role==="serviceproviders"){
           navigate("/ServiceProviderHome");
         }
         else if(response.data.role==="clients")

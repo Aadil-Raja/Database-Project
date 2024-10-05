@@ -9,6 +9,7 @@ exports.createMessageTable = async () => {
   receiver_id INT NOT NULL,      
   sender_type ENUM('clients', 'serviceproviders') NOT NULL, 
   receiver_type ENUM('clients', 'serviceproviders') NOT NULL,
+  room varchar(255),
   created_at TIMESTAMP DEFAULT CURRENT_TIMESTAMP
 );
 

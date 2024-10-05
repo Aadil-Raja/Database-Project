@@ -54,8 +54,7 @@ const SearchResults = () => {
   
   const initiateChat = (clientId) => {
     const serviceProviderId = localStorage.getItem('user_ID'); // Assuming you have the SP ID stored
-    const roomName = `room_${Math.min(clientId, serviceProviderId)}_${Math.max(clientId, serviceProviderId)}`;
-    
+      const roomName = `room_${clientId}_${serviceProviderId}`;
     // Redirect to the chat page and pass the room name and user IDs as params
     window.location.href = `/chat?room=${roomName}&client_id=${clientId}&sp_id=${serviceProviderId}`;
   };

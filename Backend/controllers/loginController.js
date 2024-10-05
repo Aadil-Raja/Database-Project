@@ -31,7 +31,7 @@ exports.login = async (req, res) => {
                     await sequelize.query(FirstTimeLogin);
                 }
 
-                return res.json({ message: "exist", token, role: "servicesproviders", first_time_login ,user_ID:spUser.sp_id});
+                return res.json({ message: "exist", token, role: "serviceproviders", first_time_login ,user_ID:spUser.sp_id});
             } else {
                 return res.json({ message: "Invalid password" });
             }

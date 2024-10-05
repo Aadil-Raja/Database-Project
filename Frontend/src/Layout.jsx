@@ -3,7 +3,7 @@ import { Outlet, useLocation } from "react-router-dom";
 import Header from "./components/Header/Header";
 import HeaderLogout from "./components/Header(logout)/Header(logout)"; // Importing Header(logout)
 import Footer from "./components/Footer/Footer";
-
+import NotificationComponent from "./components/Notification/NotifcationComponent";
 function Layout() {
     const location = useLocation();
 
@@ -20,7 +20,19 @@ function Layout() {
         "/SpProfile",
         "/Admin",
     ].includes(location.pathname);
-
+    const hideNotfication = [
+        "/register",
+        "/sp",
+        "/client",
+        "/login",
+        "/Requests",
+        "/forgotpassword",
+        "/resetPassword",
+        "/service-provider-form",
+        "/SpProfile",
+        "/Admin",
+        "/chat",
+    ].includes(location.pathname);
     // Conditions to hide the logout header (e.g., for Home, About, and Contact)
     const hideLogoutHeader = ["/","/About","/Contact", "/login", "/register","/forgotpassword","/resetPassword","/contact",
         "/SpProfile","/Admin",].includes(location.pathname);
@@ -44,6 +56,7 @@ function Layout() {
         <>
             {!hideLogoutHeader && <HeaderLogout />} {/* Show HeaderLogout if not hiding either */}
             {!hideRegularHeader && hideLogoutHeader && <Header />} {/* Show the original Header */}
+            { !hideNotfication && <NotificationComponent/>} 
             <Outlet />
             {!hideFooter && <Footer />}
         </>
