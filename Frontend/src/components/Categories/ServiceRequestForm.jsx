@@ -59,7 +59,7 @@ const ServiceRequestForm = () => {
         if(response.data==="Requests Sent!")
         {
             alert('Service request sent successfully');
-            Navigate("/About");
+            Navigate("/ClientDashBoard");
 
         }
     

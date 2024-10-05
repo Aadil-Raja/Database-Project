@@ -52,7 +52,13 @@ const SearchResults = () => {
     fetchRequests();
   }, []);
   
-
+  const initiateChat = (clientId) => {
+    const serviceProviderId = localStorage.getItem('user_ID'); // Assuming you have the SP ID stored
+      const roomName = `room_${clientId}_${serviceProviderId}`;
+    // Redirect to the chat page and pass the room name and user IDs as params
+    window.location.href = `/chat?room=${roomName}&client_id=${clientId}&sp_id=${serviceProviderId}`;
+  };
+  
   if (loading) {
     return <p>Loading...</p>;
   }
@@ -67,7 +73,8 @@ const SearchResults = () => {
             <p className="result-service">Service: {item.serviceName}</p>
             <p className="result-description">Description: {item.description}</p>
             <p className="result-address">Address: {item.address}</p>
-          
+            <button onClick={() => initiateChat(item.client_id)}>Send Message</button>
+
            
           </div>
         ))

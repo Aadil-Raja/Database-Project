@@ -26,6 +26,8 @@ import  SpProfile  from './components/SpProfile/SpProfile.jsx'
 import ServiceRequestForm from './components/Categories/ServiceRequestForm.jsx'
 import AdminDashboard from './components/Admin/Admin.jsx'
 import AddCategory from './components/Add-Category/Add-Category.jsx'
+import Chat from './components/Chat/ServiceProviderChat.jsx';
+import Notification from './components/Notification/NotifcationComponent.jsx';
 const router = createBrowserRouter([
   {
     path: '/',
@@ -98,7 +100,14 @@ const router = createBrowserRouter([
         path: 'Categories/:categoryId',  // Adds dynamic routing based on categoryId
         element: <CategoryDetails />
       },
-      
+      {
+           path : 'chat',
+           element  : <Chat/>
+      },
+      {
+             path: 'ClientDashBoard',
+             element :<Notification/>
+      },
       {
         
           
@@ -117,9 +126,13 @@ const router = createBrowserRouter([
             },
            
             {
-                   path : '/categories/:serviceId/servicerequestform',
+                   path : 'categories/:serviceId/servicerequestform',
                    element : <ServiceRequestForm/>
       
+            },
+            {
+                        path :'ServiceProviderHome',
+                        element : <Sp/>
             },
              
             ]
@@ -132,7 +145,7 @@ const router = createBrowserRouter([
 ]);
 
 ReactDOM.createRoot(document.getElementById('root')).render(
-  <React.StrictMode>
+ // <React.StrictMode>
     <RouterProvider router={router} />
-  </React.StrictMode>
+  //</React.StrictMode>
 );
