@@ -20,7 +20,7 @@ const initSocket = (server) => {
       console.log(`User with ID: ${socket.id} joined room: ${room}`);
     });
 
-    // Handle incoming messages
+    // Handle incoming messages (normal chat messages)
     socket.on('send_message_sp', ({ messageData, room }) => {
       console.log('Message received:', messageData);
     
@@ -48,7 +48,25 @@ const initSocket = (server) => {
       // Broadcast the message to all users in the room (including both client and service provider)
       socket.to(room).emit('receive_message_sp', messageData);
     });
+
+    // NEW: Handle service request event
     
+    socket.on('service_request', ({ messageData, room }) => {
+      console.log('Service request received:', messageData);
+
+      // Send the service request to the room (i.e., client to service provider)
+      
+      io.to(room).emit('receive_service_request', messageData);
+    });
+
+    // NEW: Handle service request acceptance by the service provider
+    socket.on('accept_service_request', ({ request_id, room }) => {
+      console.log(`Service request ${request_id} accepted`);
+
+      // Broadcast the acceptance of the request back to the room (to notify the client)
+      io.to(room).emit('service_request_accepted', { request_id });
+    });
+
     // Handle user disconnect
     socket.on('disconnect', () => {
       console.log(`User disconnected: ${socket.id}`);

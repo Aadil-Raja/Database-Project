@@ -1,14 +1,15 @@
-
+/* Header */
 .header {
     @apply fixed top-0 left-0 right-0 z-30 w-full bg-white shadow-md;
 }
 
+/* Navigation */
 .nav {
     @apply bg-white border-gray-200 px-4 lg:px-3 py-2.5;
 }
 
 .nav-container {
-    @apply flex flex-wrap justify-between items-center w-full max-w-screen-xl mx-auto;
+    @apply flex flex-wrap items-center justify-between w-full max-w-screen-xl mx-auto;
 }
 
 .logo {
@@ -55,38 +56,32 @@
     @apply text-gray-700 hover:text-orange-700;
 }
 
-
-
-/* hello */
-
-
-.nav-container {
-    @apply flex items-center justify-between w-full max-w-screen-xl mx-auto;
-}
-
-
+/* Service Page Header */
 .service-page-header {
     @apply flex items-center justify-start space-x-4 flex-grow;
 }
 
-
+/* Search Bar Container */
 .search-bar-container {
     @apply flex items-center border rounded-full bg-gray-100 p-1 w-full max-w-md mx-auto;
 }
 
-
-
-
-.service-page-header {
-    @apply flex items-center space-x-4;
-}
-
+/* Search Bar */
 .search-bar {
     @apply p-2 border rounded-lg border-gray-300;
 }
 
+.search-bar-input {
+    @apply bg-transparent outline-none pl-2 pr-2 py-1 w-full;
+}
+
+.search-bar-button {
+    @apply text-white bg-orange-700 rounded-full p-2;
+}
+
+/* Add Request Button */
 .add-request-button {
-    @apply text-white bg-orange-700 border border-gray-300 focus:ring-4 font-semibold font-medium rounded-lg text-sm px-4 py-2 font-semibold;
+    @apply text-white bg-orange-700 border border-gray-300 focus:ring-4 font-semibold rounded-lg text-sm px-4 py-2;
 }
 
 /* Profile Menu */
@@ -109,20 +104,3 @@
 .profile-options a {
     @apply block px-4 py-2 text-gray-700 hover:bg-gray-100;
 }
-
-/* Search Bar Styling */
-.search-bar-container {
-    @apply flex items-center border rounded-full bg-gray-100 p-1;
-    
-}
-
-.search-bar-input {
-    @apply bg-transparent outline-none pl-2 pr-2 py-1 w-full;
-}
-
-.search-bar-button {
-    @apply  text-white rounded-full p-2;
-}
-
-
-

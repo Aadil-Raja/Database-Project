@@ -1,66 +1,84 @@
 import React from "react";
 import { Outlet, useLocation } from "react-router-dom";
 import Header from "./components/Header/Header";
-import HeaderLogout from "./components/Header(logout)/Header(logout)"; // Importing Header(logout)
+import HeaderLogout from "./components/Header(logout)/Header(logout)";
 import Footer from "./components/Footer/Footer";
-import NotificationComponent from "./components/Notification/NotifcationComponent";
+import NotificationComponent from "./components/Notification/NotifcationComponent.jsx";
+
 function Layout() {
-    const location = useLocation();
+  const location = useLocation();
 
-    // Conditions to hide the regular header (e.g., for login/register pages)
-    const hideRegularHeader = [
-        "/register",
-        "/sp",
-        "/client",
-        "/login",
-        "/Requests",
-        "/forgotpassword",
-        "/resetPassword",
-        "/service-provider-form",
-        "/SpProfile",
-        "/Admin",
-    ].includes(location.pathname);
-    const hideNotfication = [
-        "/register",
-        "/sp",
-        "/client",
-        "/login",
-        "/Requests",
-        "/forgotpassword",
-        "/resetPassword",
-        "/service-provider-form",
-        "/SpProfile",
-        "/Admin",
-        "/chat",
-    ].includes(location.pathname);
-    // Conditions to hide the logout header (e.g., for Home, About, and Contact)
-    const hideLogoutHeader = ["/","/About","/Contact", "/login", "/register","/forgotpassword","/resetPassword","/contact",
-        "/SpProfile","/Admin",].includes(location.pathname);
+  // Conditions to hide components based on the path
+  const hideRegularHeader = [
+    "/register",
+    "/sp",
+    "/client",
+    "/login",
+    "/Requests",
+    "/forgotpassword",
+    "/resetPassword",
+    "/service-provider-form",
+    "/SpProfile",
+    "/Admin",
+  ].includes(location.pathname);
 
-    // Conditions to hide the footer
-    const hideFooter = [
-        "/register",
-        "/sp",
-        "/client",
-        "/login",
-        "/ServicePage",
-        "/Requests",
-        "/forgotpassword",
-        "/resetPassword",
-        "/service-provider-form",
-        "/SpProfile",
-        "/Admin",
-    ].includes(location.pathname);
+  const hideNotification = [
+    "/register",
+    "/sp",
+    "/client",
+    "/login",
+    "/Requests",
+    "/forgotpassword",
+    "/resetPassword",
+    "/service-provider-form",
+    "/SpProfile",
+    "/Admin",
+    "/chat",
+  ].includes(location.pathname);
 
-    return (
-        <>
-            {!hideLogoutHeader && <HeaderLogout />} {/* Show HeaderLogout if not hiding either */}
-            {!hideRegularHeader && hideLogoutHeader && <Header />} {/* Show the original Header */}
-            { !hideNotfication && <NotificationComponent/>} 
-            <Outlet />
-            {!hideFooter && <Footer />}
-        </>
-    );
+  const hideLogoutHeader = [
+    "/",
+    "/About",
+    "/Contact",
+    "/login",
+    "/register",
+    "/forgotpassword",
+    "/resetPassword",
+    "/contact",
+    "/SpProfile",
+    "/Admin",
+  ].includes(location.pathname);
+
+  const hideFooter = [
+    "/register",
+    "/sp",
+    "/client",
+    "/login",
+    "/ServicePage",
+    "/Requests",
+    "/forgotpassword",
+    "/resetPassword",
+    "/service-provider-form",
+    "/SpProfile",
+    "/Admin",
+  ].includes(location.pathname);
+
+  return (
+    <div className="page-container">
+      {!hideLogoutHeader && <HeaderLogout />}
+      {!hideRegularHeader && hideLogoutHeader && <Header />}
+    
+
+      <div className="content-wrap">
+        <div className="content-body">
+        {!hideNotification && <NotificationComponent />}
+          <Outlet />
+        </div>
+      </div>
+
+     
+    </div>
+  );
 }
 
 export default Layout;

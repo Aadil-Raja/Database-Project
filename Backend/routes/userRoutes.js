@@ -67,6 +67,8 @@ router.post('/AddService',upload.single('serviceImg'),serviceController.AddaServ
 router.post('/saveMessage', chatController.saveMessage); // Route to save messages
 router.get('/getMessages', chatController.getMessages); 
 
+router.post('/getPendingRequestofClient',servicerequestform.getPendingRequestofClient);
+router.post('/addAcceptedRequest',servicerequestform.addAcceptedRequest);
 router.get('/verify-token', verifyToken, (req, res) => {
     // If the token is valid, return success
     res.json({ isValid: true });
