@@ -59,3 +59,18 @@ exports.addAcceptedRequest=async(req,res)=>{
       res.status(500).json({error:error.message});
    }
 }
+
+exports.cancelServiceRequest= async(req,res)=>{
+
+   try {
+      const {request_id}=req.body;
+      const query=`update servicerequests set status='pending' where request_id=${request_id}`;
+      await sequelize.query(query);
+      
+   }
+   catch(error)
+   {
+      console.error(error.message);
+      res.status(500).json({error:error.message});
+   }
+};

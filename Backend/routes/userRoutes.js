@@ -69,6 +69,7 @@ router.get('/getMessages', chatController.getMessages);
 
 router.post('/getPendingRequestofClient',servicerequestform.getPendingRequestofClient);
 router.post('/addAcceptedRequest',servicerequestform.addAcceptedRequest);
+router.post('/cancelServiceRequest',servicerequestform.cancelServiceRequest);
 router.get('/verify-token', verifyToken, (req, res) => {
     // If the token is valid, return success
     res.json({ isValid: true });

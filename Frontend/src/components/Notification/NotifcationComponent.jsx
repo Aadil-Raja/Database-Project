@@ -55,9 +55,9 @@ const NotificationComponent = () => {
   const handleNotificationClick = (room, sp_id, client_id) => {
     // Navigate to the chat room with the specific room, sp_id, and client_id
     if (userType === 'clients') {
-      navigate(`/chat?room=${room}&client_id=${userID}&sp_id=${sp_id}`);
+      navigate(`/Clientchat?room=${room}&client_id=${userID}&sp_id=${sp_id}`);
     } else if (userType === 'serviceproviders') {
-      navigate(`/chat?room=${room}&client_id=${client_id}&sp_id=${userID}`);
+      navigate(`/SPchat?room=${room}&client_id=${client_id}&sp_id=${userID}`);
     }
   };
 

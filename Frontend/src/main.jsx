@@ -26,7 +26,8 @@ import  SpProfile  from './components/SpProfile/SpProfile.jsx'
 import ServiceRequestForm from './components/Categories/ServiceRequestForm.jsx'
 import AdminDashboard from './components/Admin/Admin.jsx'
 import AddCategory from './components/Add-Category/Add-Category.jsx'
-import Chat from './components/Chat/ServiceProviderChat.jsx';
+import SpChat from './components/Chat/ServiceProviderChat.jsx';
+import ClientChat from './components/Chat/ClientChat.jsx'
 import Notification from './components/Notification/NotifcationComponent.jsx';
 const router = createBrowserRouter([
   {
@@ -101,8 +102,12 @@ const router = createBrowserRouter([
         element: <CategoryDetails />
       },
       {
-           path : 'chat',
-           element  : <Chat/>
+           path : 'SPchat',
+           element  : <SpChat/>
+      },
+      {
+        path : 'Clientchat',
+        element  : <ClientChat/>
       },
       {
              path: 'ClientDashBoard',
