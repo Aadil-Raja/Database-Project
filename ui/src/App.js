@@ -5,15 +5,22 @@ import Client from './components/Register/Client/client';
 import Login from './components/Login/Login';
 import Sp from './components/Register/SP/sp';
 
+import Forgotpassword from "./components/Forgotpassword/Forgotpassword";
+
+
 function App() {
   return (
     <>
       <BrowserRouter>
+
+  
+       
         <Routes>
           <Route path="Register" element={<Register />}/>
           <Route path="Client" element={<Client />}/>
           <Route path="Sp" element={<Sp />}/>
           <Route path="login" element={<Login />}/>
+          <Route path="forgotpassword" element={<Forgotpassword/>}/>
         </Routes>
       </BrowserRouter>
     </>

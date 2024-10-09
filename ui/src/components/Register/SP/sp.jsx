@@ -1,8 +1,19 @@
 import React, { useState, useEffect } from "react";
 import axios from "axios";
-import "./sp.css";
-import { Link } from "react-router-dom";
+import {
+  MDBBtn,
+  MDBContainer,
+  MDBRow,
+  MDBCol,
+  MDBCard,
+  MDBCardBody,
+  MDBCheckbox,
+  MDBInput,
+  MDBIcon,
+  MDBRadio
+} from 'mdb-react-ui-kit';
 import { useNavigate } from "react-router-dom";
+import "./sp.css";
 
 const SP = () => {
   const [formData, setFormData] = useState({
@@ -12,7 +23,7 @@ const SP = () => {
     password: "",
     phone: "",
     address: "",
-    city_id: 0,  // Fix: use city_id
+    city_id: "",
     gender: "",
     dob: "",
     status: "active",
@@ -20,9 +31,9 @@ const SP = () => {
     terms: false,
   });
   const [cities, setCities] = useState([]);
-  const navigate=useNavigate();
+  const navigate = useNavigate();
+
   useEffect(() => {
-    // Fetch cities from backend when the component loads
     const fetchCities = async () => {
       try {
         const response = await axios.get("http://localhost:3000/cities");
@@ -52,180 +63,168 @@ const SP = () => {
       const response = await axios.post("http://localhost:3000/register/sp", formData);
       if (response.data.message === "Email already exists") {
         alert("The email address is already registered. Please use a different email.");
-      } else if (response.data.message==="User Created Successfully") {
-        console.log("Account created successfully:", response.data);
-
+      } else if (response.data.message === "User Created Successfully") {
         alert("Account created successfully!");
-        navigate("/Login");
+        navigate("/login");
       }
-        
-      
     } catch (error) {
-      
       console.error("There was an error creating the account:", error);
     }
   };
 
   return (
-    <div className="form-container">
-      <div className="social-login">
-        <button className="social-button apple">Continue with Apple</button>
-        <button className="social-button google">Continue with Google</button>
-      </div>
-      <div className="separator">
-        <span>or</span>
-      </div>
-      <form onSubmit={handleCreateAccount}>
-        {/* First Name Field */}
-        <div className="input-group">
-          <input
-            type="text"
-            placeholder="First Name"
-            name="firstName"
-            value={formData.firstName}
-            onChange={handleInputChange}
-            required
-          />
-        </div>
+    <MDBContainer fluid className="d-flex justify-content-center align-items-center" style={{ minHeight: "100vh" }}>
+      <MDBCard className="m-5" style={{ maxWidth: "800px" }}>
+        <MDBCardBody className="px-5">
+          <h3 className="text-center fw-bold mb-4">Service Provider Registration</h3>
+          <form onSubmit={handleCreateAccount}>
+            <MDBRow>
+              <MDBCol md="6">
+                <div className="d-flex flex-row align-items-center mb-4">
+                  <MDBIcon fas icon="user me-3" size="lg" />
+                  <MDBInput
+                    label="First Name"
+                    name="firstName"
+                    value={formData.firstName}
+                    onChange={handleInputChange}
+                    type="text"
+                    required
+                    className="w-100"
+                  />
+                </div>
+              </MDBCol>
+              <MDBCol md="6">
+                <div className="d-flex flex-row align-items-center mb-4">
+                  <MDBIcon fas icon="user me-3" size="lg" />
+                  <MDBInput
+                    label="Last Name"
+                    name="lastName"
+                    value={formData.lastName}
+                    onChange={handleInputChange}
+                    type="text"
+                    required
+                    className="w-100"
+                  />
+                </div>
+              </MDBCol>
+            </MDBRow>
+            
+            <div className="d-flex flex-row align-items-center mb-4">
+              <MDBIcon fas icon="envelope me-3" size="lg" />
+              <MDBInput
+                label="Email"
+                name="email"
+                value={formData.email}
+                onChange={handleInputChange}
+                type="email"
+                required
+                className="w-100"
+              />
+            </div>
 
-        {/* Last Name Field */}
-        <div className="input-group">
-          <input
-            type="text"
-            placeholder="Last Name"
-            name="lastName"
-            value={formData.lastName}
-            onChange={handleInputChange}
-            required
-          />
-        </div>
+            <div className="d-flex flex-row align-items-center mb-4">
+              <MDBIcon fas icon="lock me-3" size="lg" />
+              <MDBInput
+                label="Password"
+                name="password"
+                value={formData.password}
+                onChange={handleInputChange}
+                type="password"
+                required
+                className="w-100"
+              />
+            </div>
 
-        {/* Email Field */}
-        <div className="input-field">
-          <input
-            type="email"
-            placeholder="Email Address"
-            name="email"
-            value={formData.email}
-            onChange={handleInputChange}
-            required
-          />
-        </div>
+            <MDBRow>
+              <MDBCol md="6">
+                <div className="d-flex flex-row align-items-center mb-4">
+                  <MDBIcon fas icon="phone me-3" size="lg" />
+                  <MDBInput
+                    label="Phone Number"
+                    name="phone"
+                    value={formData.phone}
+                    onChange={handleInputChange}
+                    type="text"
+                    required
+                    className="w-100"
+                  />
+                </div>
+              </MDBCol>
+              <MDBCol md="6">
+                <div className="d-flex flex-row align-items-center mb-4">
+                  <MDBIcon fas icon="home me-3" size="lg" />
+                  <MDBInput
+                    label="Address"
+                    name="address"
+                    value={formData.address}
+                    onChange={handleInputChange}
+                    type="text"
+                    required
+                    className="w-100"
+                  />
+                </div>
+              </MDBCol>
+            </MDBRow>
 
-        {/* Password Field */}
-        <div className="input-field">
-          <input
-            type="password"
-            placeholder="Password (8 or more characters)"
-            name="password"
-            value={formData.password}
-            onChange={handleInputChange}
-            required
-          />
-        </div>
+            <div className="mb-4">
+              <select name="city_id" value={formData.city_id} onChange={handleInputChange} required className="form-select">
+                <option value="">Select City</option>
+                {cities.map((city) => (
+                  <option key={city.city_id} value={city.city_id}>
+                    {city.name}
+                  </option>
+                ))}
+              </select>
+            </div>
 
-        {/* Phone Field */}
-        <div className="input-field">
-          <input
-            type="text"
-            placeholder="Phone Number"
-            name="phone"
-            value={formData.phone}
-            onChange={handleInputChange}
-            required
-          />
-        </div>
+            <MDBRow className="mb-4">
+              <MDBCol md="6">
+                <MDBInput
+                  label="Date of Birth"
+                  name="dob"
+                  value={formData.dob}
+                  onChange={handleInputChange}
+                  type="date"
+                  required
+                  className="w-100"
+                />
+              </MDBCol>
+              <MDBCol md="6" className="d-flex align-items-center">
+                <h6 className="fw-bold me-3">Gender:</h6>
+                <MDBRadio name="gender" value="female" label="Female" inline onChange={handleInputChange} />
+                <MDBRadio name="gender" value="male" label="Male" inline onChange={handleInputChange} />
+                <MDBRadio name="gender" value="other" label="Other" inline onChange={handleInputChange} />
+              </MDBCol>
+            </MDBRow>
 
-        {/* Address Field */}
-        <div className="input-field">
-          <input
-            type="text"
-            placeholder="Address"
-            name="address"
-            value={formData.address}
-            onChange={handleInputChange}
-            required
-          />
-        </div>
+            <div className="mb-4">
+              <MDBCheckbox
+                name="tips"
+                label="Send me emails with tips on how to find talent that fits my needs."
+                checked={formData.tips}
+                onChange={handleInputChange}
+              />
+            </div>
 
-        {/* City Selection Field */}
-        <div className="input-field">
-          <select name="city_id" value={formData.city_id} onChange={handleInputChange} required>
-            <option value="">Select City</option>
-            {cities.map((city) => (
-              <option key={city.city_id} value={city.city_id}>
-                {city.name}
-              </option>
-            ))}
-          </select>
-        </div>
+            <div className="mb-4">
+              <MDBCheckbox
+                name="terms"
+                label={
+                  <span>
+                    Yes, I agree to the <a href="#">Terms of Service</a> and <a href="#">Privacy Policy</a>.
+                  </span>
+                }
+                checked={formData.terms}
+                onChange={handleInputChange}
+                required
+              />
+            </div>
 
-        {/* Gender Selection */}
-        <div className="input-field">
-          <select
-            name="gender"
-            value={formData.gender}
-            onChange={handleInputChange}
-            required
-          >
-            <option value="">Select Gender</option>
-            <option value="male">Male</option>
-            <option value="female">Female</option>
-            <option value="other">Other</option>
-          </select>
-        </div>
-
-        {/* Date of Birth Field */}
-        <div className="input-field">
-          <input
-            type="date"
-            name="dob"
-            value={formData.dob}
-            onChange={handleInputChange}
-            required
-          />
-        </div>
-
-        {/* Tips Checkbox */}
-        <div className="checkbox-group">
-          <input
-            type="checkbox"
-            id="tips"
-            name="tips"
-            checked={formData.tips}
-            onChange={handleInputChange}
-          />
-          <label htmlFor="tips">
-            Send me emails with tips on how to find talent that fits my needs.
-          </label>
-        </div>
-
-        {/* Terms and Conditions */}
-        <div className="checkbox-group">
-          <input
-            type="checkbox"
-            id="terms"
-            name="terms"
-            checked={formData.terms}
-            onChange={handleInputChange}
-            required
-          />
-          <label htmlFor="terms">
-            Yes, I understand and agree to the Service Provider Terms of Service, including the <a href="#">User Agreement</a> and <a href="#">Privacy Policy</a>.
-          </label>
-        </div>
-
-        {/* Submit Button */}
-        <button type="submit" className="submit-button">
-          Create my account
-        </button>
-      </form>
-
-      {/* Login Link */}
-      <div className="login-link">
-        Already have an account? <Link to="/login">Login</Link>
-      </div>
-    </div>
+            <MDBBtn type="submit" className='mb-4 w-100 sp-gradient-custom-4' size='lg'>Register</MDBBtn>
+          </form>
+        </MDBCardBody>
+      </MDBCard>
+    </MDBContainer>
   );
 };
 

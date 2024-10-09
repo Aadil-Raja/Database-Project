@@ -1,85 +1,114 @@
 import React, { useState } from "react";
-import { Link } from "react-router-dom";
 import axios from 'axios';
-import { useNavigate } from "react-router-dom";
-
-import "./Login.css";
+import {
+  MDBBtn,
+  MDBContainer,
+  MDBRow,
+  MDBCol,
+  MDBInput,
+  MDBCard,
+  MDBCardBody,
+  MDBCardImage
+} from 'mdb-react-ui-kit';
+import { Link, useNavigate } from "react-router-dom";
+import "./Login.css"; // For any additional styling if needed
 
 const Login = () => {
-  const[email,setEmail]=useState("");
-  const[password,setPassword]=useState("");
-  const emailHandler =(e)=>{
-    setEmail(e.target.value);
-  }
-  const passwordHandler =(e)=>{
-    setPassword(e.target.value);
-  }
-    const navigate=useNavigate();
+  const [email, setEmail] = useState("");
+  const [password, setPassword] = useState("");
+  const navigate = useNavigate();
 
-  const handlelogin = async (e) => {
+  const emailHandler = (e) => setEmail(e.target.value);
+  const passwordHandler = (e) => setPassword(e.target.value);
+
+  const handleLogin = async (e) => {
     e.preventDefault();
   
     try {
       const response = await axios.post("http://localhost:3000/login", { email, password });
-      console.log(response);  // Log the entire response
+      console.log(response);
      
       if (response.data.message === "exist") {
         console.log("Login successful!");
-        localStorage.setItem('token',response.data.token);
-        localStorage.setItem('user_ID',response.data.user_ID)
-        localStorage.setItem('usertype',response.data.role);    
-        if(response.data.first_time_login=== "First time login")
-        {
+        localStorage.setItem('token', response.data.token);
+        localStorage.setItem('user_ID', response.data.user_ID);
+        localStorage.setItem('usertype', response.data.role);    
+
+        if (response.data.first_time_login === "First time login") {
           navigate("/service-provider-form");
-        }
-        else if(response.data.role==="serviceproviders"){
+        } else if (response.data.role === "serviceproviders") {
           navigate("/ServiceProviderHome");
+        } else if (response.data.role === "clients") {
+          navigate("/About");
         }
-        else if(response.data.role==="clients")
-        {
-           navigate("/About");
-        }
-        
       } else if (response.data === "notexist") {
-        console.log("User does not exist, please sign up.");
         alert("Signup First");
-      }
-      else if(response.data.message === "Invalid password")
-        {
-          alert("Invalid Password!");
-        } 
-      else {
-        console.log("Unexpected response:", response.data);
+      } else if (response.data.message === "Invalid password") {
+        alert("Invalid Password!");
+      } else {
         alert("Failed to login");
       }
     } catch (err) {
       alert("Failed to login");
       console.error('Error during login:', err);
     }
-  }
-  
+  };
 
   return (
-    <div className="login-container">
-      <div className="login-header">
-        <h2>Login to Your Account</h2>
-      </div>
-      <form className="login-form">
-        <div className="input-field">
-          <input type="email" placeholder="Email Address" required onChange={emailHandler} />
-        </div>
-        <div className="input-field">
-          <input type="password" placeholder="Password" required  onChange={passwordHandler}/>
-        </div>
-        <div className="forgot-password">
-        <Link to="/forgotpassword" classname="submit">Forgot Password?</Link>
-        </div>
-        <button type="submit" className="login-button" onClick={handlelogin}>Log In</button>
-      </form>
-      <div className="signup-link">
-        Don't have an account? <Link to="/register">Sign Up</Link>
-      </div>
-    </div>
+    <MDBContainer fluid className='d-flex align-items-center justify-content-center bg-image' >
+      <MDBRow className="w-100 justify-content-center">
+        <MDBCol xl="30" lg="30
+        " md="9" sm="5" className='mb-5'>
+          <MDBCard className='m-5' style={{ width : '450px',padding: '20px', zIndex: 1 }}>
+            <MDBCardBody className='px-5'>
+              <div className="text-center">
+                <MDBCardImage 
+                  src="https://mdbcdn.b-cdn.net/img/Photos/new-templates/bootstrap-login-form/lotus.webp"
+                  style={{ width: '185px' }} 
+                  alt="logo" 
+                />
+                <h4 className="mt-1 mb-5 pb-1">Kaam karo</h4>
+              </div>
+              <p>Please login to your account</p>
+              <form onSubmit={handleLogin}>
+                <MDBInput 
+                  wrapperClass='mb-4' 
+                  label='Email address' 
+                  id='form1' 
+                  type='email' 
+                  value={email} 
+                  onChange={emailHandler} 
+                  required
+                />
+                <MDBInput 
+                  wrapperClass='mb-4' 
+                  label='Password' 
+                  id='form2' 
+                  type='password' 
+                  value={password} 
+                  onChange={passwordHandler} 
+                  required
+                />
+                <div className="text-center pt-1 mb-5 pb-1">
+                  <MDBBtn type="submit" className="mb-4 w-100 login-gradient-custom-2">Sign in</MDBBtn>
+                  <Link to="/forgotpassword" className="text-muted">Forgot password?</Link>
+                </div>
+              </form>
+              <div className="d-flex flex-row align-items-center justify-content-center pb-4 mb-4">
+                <p className="mb-0">Don't have an account?</p>
+                <Link to="/register">
+                  <MDBBtn outline className='mx-2' color='danger'>
+                    Create new
+                  </MDBBtn>
+                </Link>
+              </div>
+            </MDBCardBody>
+          </MDBCard>
+        </MDBCol>
+
+       
+      </MDBRow>
+    </MDBContainer>
   );
 };
 

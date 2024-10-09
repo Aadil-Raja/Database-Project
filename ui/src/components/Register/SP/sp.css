@@ -1,0 +1,10 @@
+.sp-gradient-custom-4{
+  /* fallback for old browsers */
+  background: #a86932;
+
+  /* Chrome 10-25, Safari 5.1-6 */
+  background: -webkit-linear-gradient(to right, rgba(168, 105, 50, 1),rgb(228, 158, 38));
+
+  /* W3C, IE 10+/ Edge, Firefox 16+, Chrome 26+, Opera 12+, Safari 7+ */
+  background: linear-gradient(to right, rgba(168, 105, 50, 1),rgba(252, 161, 3, 1));;
+}
