@@ -1,153 +1,16 @@
-/* Global Styles */
-#root {
-  max-width: 100%;
-  margin: 0 auto;
-  padding: 2rem;
-  text-align: center;
-}
-
-.logo {
-  height: 6em;
-  padding: 1.5em;
-  will-change: filter;
-  transition: filter 300ms;
-}
-.logo:hover {
-  filter: drop-shadow(0 0 2em #646cffaa);
-}
-.logo.react:hover {
-  filter: drop-shadow(0 0 2em #61dafbaa);
-}
-
-@keyframes logo-spin {
-  from {
-    transform: rotate(0deg);
-  }
-  to {
-    transform: rotate(360deg);
-  }
-}
-
-@media (prefers-reduced-motion: no-preference) {
-  a:nth-of-type(2) .logo {
-    animation: logo-spin infinite 20s linear;
-  }
-}
-
-.card {
-  padding: 2em;
-}
-
-.read-the-docs {
-  color: #888;
-}
-
-html,
-body {
-  margin: 0;
-  padding: 0;
-  height: 100%;
-  box-sizing: border-box;
-}
-
-*,
-*::before,
-*::after {
-  box-sizing: inherit;
-}
-
-/* Page Container */
 .page-container {
-  display: flex;
-  flex-direction: column;
-  min-height: 100vh;
-}
-
-/* Fixed Header */
-header {
-  width: 100%;
-  position: fixed;
-  top: 0;
-  left: 0;
-  z-index: 1000;
-  background-color: #f8f9fa;
-  box-shadow: 0px 2px 5px rgba(0, 0, 0, 0.1);
-
-  /* Adjust height and padding as needed */
-  height: 80px; /* Total height including any padding */
-  padding: 0;
-}
-
-/* Content Wrap */
-.content-wrap {
-  flex-grow: 1;
-  margin-top: 300px; /* Match this to header's height */
-  padding: 20px;
-  display: flex;
-  flex-direction: column;
-}
-
-/* Content Body */
-.content-body {
-  flex-grow: 1;
-  max-width: 1200px;
-  margin: 0 auto;
-  width: 100%;
-}
-
-/* Footer */
-footer {
-  width: 100%;
-  background-color: #222;
-  color: white;
-  text-align: center;
-  padding: 40px 0;
-}
-
-/* Footer Inner Container */
-footer .container {
-  display: flex;
-  justify-content: space-around;
-  align-items: center;
-  width: 100%; /* Ensure full width */
-  max-width: none;
-  margin: 0;
-  padding: 0 20px; /* Optional side padding */
-}
-
-/* Footer Columns */
-footer .col-md-4,
-footer .col-md-7,
-footer .col-md-5 {
-  flex: 1;
-  text-align: center;
-}
-
-/* Social Media Icons */
-footer .ftco-footer-social {
-  display: flex;
-  justify-content: center;
-  list-style: none;
-  padding: 0;
-  margin: 0;
-}
-
-footer .ftco-footer-social li {
-  margin: 0 10px;
-}
-
-/* Responsive Adjustments */
-@media (max-width: 768px) {
+    display: flex;
+    flex-direction: column;
+    min-height: 100vh;
+  }
   .content-wrap {
-    padding: 10px;
+    padding: 1em;
+    flex-grow: 1; /* This helps to push the footer to the bottom */
   }
-
-  footer {
-    padding: 20px 0;
-    flex-direction: column;
+  .page-container::after {
+    content: "";
+    display: table;
+    clear: both;
   }
-
-  footer .container {
-    flex-direction: column;
-  }
-}
+    
+  

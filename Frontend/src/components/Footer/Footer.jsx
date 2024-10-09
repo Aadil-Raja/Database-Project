@@ -1,132 +1,161 @@
-import React from "react";
-import { Link } from "react-router-dom";
-import "./Footer.css";
-export default function Footer() {
-    return (
-        <>
-            <link rel="stylesheet" href="https://cdn.jsdelivr.net/npm/bootstrap@4.1.3/dist/css/bootstrap.min.css" integrity="sha384-MCw98/SFnGE8fJT3GXwEOngsV7Zt27NXFoaoApmYm81iuXoPkFOJwJ8ERdknLPMO" crossorigin="anonymous"></link>
-            <link href="https://fonts.googleapis.com/css?family=Poppins:300,400,500,600,700,800,900" rel="stylesheet"></link>
-            <link href="https://fonts.googleapis.com/css?family=Nunito+Sans:300,400,600,700&display=swap" rel="stylesheet"></link>
+// Footer.jsx
+import React from 'react';
+import './Footer.css';
 
-            <div className="site-container">
-                <footer className="footer-10">
+const Footer = () => {
+  return (
+    <footer className="footer">
+      {/* Top Section with Contact Information */}
+      <div className="footer-top">
+        <div className="footer-contact-item">
+          <div className="footer-icon">
+            {/* Phone Icon */}
+            <svg
+              xmlns="http://www.w3.org/2000/svg"
+              width="24"
+              height="24"
+              fill="#fff"
+              viewBox="0 0 16 16"
+            >
+              <path d="M3.654 1.328a.678.678 0 00-1.015-.063L1.605 2.3c-.483.484-.661 1.169-.45 1.77a17.6 17.6 0 004.168 6.608 17.6 17.6 0 006.608 4.168c.601.211 1.286.033 1.77-.45l1.034-1.034a.678.678 0 00-.063-1.015l-2.307-1.794a.68.68 0 00-.58-.122l-2.19.547a1.75 1.75 0 01-1.657-.459L5.482 8.062a1.75 1.75 0 01-.46-1.657l.548-2.19a.68.68 0 00-.122-.58z" />
+            </svg>
+          </div>
+          <div className="footer-text">
+            <span>(+00) 1234 5678</span>
+          </div>
+        </div>
 
-                    <div className="row mb-5 pb-3 no-gutters">
-                        <div className="col-md-4 mb-md-0 mb-4 d-flex">
-                            <div className="con con-1 w-100 py-5">
-                                <div className="con-info w-100 text-center">
-                                    <div className="icon d-flex align-items-center justify-content-center">
-                                        <svg xmlns="http://www.w3.org/2000/svg" width="16" height="16" fill="currentColor" className="bi bi-telephone" viewBox="0 0 16 16">
-                                            <path d="M3.654 1.328a.678.678 0 0 0-1.015-.063L1.605 2.3c-.483.484-.661 1.169-.45 1.77a17.6 17.6 0 0 0 4.168 6.608 17.6 17.6 0 0 0 6.608 4.168c.601.211 1.286.033 1.77-.45l1.034-1.034a.678.678 0 0 0-.063-1.015l-2.307-1.794a.68.68 0 0 0-.58-.122l-2.19.547a1.75 1.75 0 0 1-1.657-.459L5.482 8.062a1.75 1.75 0 0 1-.46-1.657l.548-2.19a.68.68 0 0 0-.122-.58zM1.884.511a1.745 1.745 0 0 1 2.612.163L6.29 2.98c.329.423.445.974.315 1.494l-.547 2.19a.68.68 0 0 0 .178.643l2.457 2.457a.68.68 0 0 0 .644.178l2.189-.547a1.75 1.75 0 0 1 1.494.315l2.306 1.794c.829.645.905 1.87.163 2.611l-1.034 1.034c-.74.74-1.846 1.065-2.877.702a18.6 18.6 0 0 1-7.01-4.42 18.6 18.6 0 0 1-4.42-7.009c-.362-1.03-.037-2.137.703-2.877z" />
-                                        </svg>
-                                        <span className="ion-ios-call"></span>
-                                    </div>
-                                    <div className="text">
-                                        <span>(+00) 1234 5678</span>
-                                    </div>
-                                </div>
-                            </div>
-                        </div>
-                        <div className="col-md-4 mb-md-0 mb-4 d-flex">
-                            <div className="con con-2 w-100 py-5">
-                                <div className="con-info w-100 text-center">
-                                    <div className="icon d-flex align-items-center justify-content-center">
-                                        <svg xmlns="http://www.w3.org/2000/svg" width="16" height="16" fill="currentColor" className="bi bi-envelope" viewBox="0 0 16 16">
-                                            <path d="M0 4a2 2 0 0 1 2-2h12a2 2 0 0 1 2 2v8a2 2 0 0 1-2 2H2a2 2 0 0 1-2-2zm2-1a1 1 0 0 0-1 1v.217l7 4.2 7-4.2V4a1 1 0 0 0-1-1zm13 2.383-4.708 2.825L15 11.105zm-.034 6.876-5.64-3.471L8 9.583l-1.326-.795-5.64 3.47A1 1 0 0 0 2 13h12a1 1 0 0 0 .966-.741M1 11.105l4.708-2.897L1 5.383z" />
-                                        </svg>
-                                        <span className="ion-ios-mail"></span>
-                                    </div>
-                                    <div className="text">
-                                        <span>info@email.com</span>
-                                    </div>
-                                </div>
-                            </div>
-                        </div>
-                        <div className="col-md-4 mb-md-0 mb-4 d-flex">
-                            <div className="con con-3 w-100 py-5">
-                                <div className="con-info w-100 text-center">
-                                    <div className="icon d-flex align-items-center justify-content-center">
-                                        <svg xmlns="http://www.w3.org/2000/svg" width="16" height="16" fill="currentColor" className="bi bi-globe-asia-australia" viewBox="0 0 16 16">
-                                            <path d="m10.495 6.92 1.278-.619a.483.483 0 0 0 .126-.782c-.252-.244-.682-.139-.932.107-.23.226-.513.373-.816.53l-.102.054c-.338.178-.264.626.1.736a.48.48 0 0 0 .346-.027ZM7.741 9.808V9.78a.413.413 0 1 1 .783.183l-.22.443a.6.6 0 0 1-.12.167l-.193.185a.36.36 0 1 1-.5-.516l.112-.108a.45.45 0 0 0 .138-.326M5.672 12.5l.482.233A.386.386 0 1 0 6.32 12h-.416a.7.7 0 0 1-.419-.139l-.277-.206a.302.302 0 1 0-.298.52z" />
-                                            <path d="M8 0a8 8 0 1 0 0 16A8 8 0 0 0 8 0M1.612 10.867l.756-1.288a1 1 0 0 1 1.545-.225l1.074 1.005a.986.986 0 0 0 1.36-.011l.038-.037a.88.88 0 0 0 .26-.755c-.075-.548.37-1.033.92-1.099.728-.086 1.587-.324 1.728-.957.086-.386-.114-.83-.361-1.2-.207-.312 0-.8.374-.8.123 0 .24-.055.318-.15l.393-.474c.196-.237.491-.368.797-.403.554-.064 1.407-.277 1.583-.973.098-.391-.192-.634-.484-.88-.254-.212-.51-.426-.515-.741a7 7 0 0 1 3.425 7.692 1 1 0 0 0-.087-.063l-.316-.204a1 1 0 0 0-.977-.06l-.169.082a1 1 0 0 1-.741.051l-1.021-.329A1 1 0 0 0 11.205 9h-.165a1 1 0 0 0-.945.674l-.172.499a1 1 0 0 1-.404.514l-.802.518a1 1 0 0 0-.458.84v.455a1 1 0 0 0 1 1h.257a1 1 0 0 1 .542.16l.762.49a1 1 0 0 0 .283.126 7 7 0 0 1-9.49-3.409Z" />
-                                        </svg>
-                                        <span className="ion-ios-pin"></span>
-                                    </div>
-                                    <div className="text">
-                                        <span>Fast NUCES University,Karachi</span>
-                                    </div>
-                                </div>
-                            </div>
-                        </div>
-                    </div>
-                    <div className="row">
-                        <div className="col-md-7">
-                            <div className="row">
-                                <div className="col-md-4 mb-md-0 mb-4">
-                                    <h2 className="footer-heading">About</h2>
-                                    <ul className="list-unstyled">
-                                        <li><a href="#" className="d-block">Our story</a></li>
-                                        <li><a href="#" className="d-block">Awards</a></li>
-                                        <li><a href="#" className="d-block">Our Team</a></li>
-                                        <li><a href="#" className="d-block">Career</a></li>
-                                    </ul>
-                                </div>
-                                <div className="col-md-4 mb-md-0 mb-4">
-                                    <h2 className="footer-heading">Company</h2>
-                                    <ul className="list-unstyled">
-                                        <li><a href="#" className="d-block">Our services</a></li>
-                                        <li><a href="#" className="d-block">Clients</a></li>
-                                        <li><a href="#" className="d-block">Contact</a></li>
-                                        <li><a href="#" className="d-block">Press</a></li>
-                                    </ul>
-                                </div>
-                                
-                            </div>
-                        </div>
-                        <div className="col-md-5 mb-md-0 mb-4">
-                            <h2 className="footer-heading">Subscribe</h2>
-                            <form action="#" className="subscribe-form">
-                                <div className="form-group d-flex mr-4">
-                                    <input type="text" className="form-control rounded-left" placeholder="Enter email address"></input>
-                                    <button type="submit" className="form-control submit rounded-right">Subscribe</button>
-                                </div>
-                                <span className="subheading">Get digital marketing updates in your mailbox</span>
-                            </form>
-                        </div>
-                    </div>
-                    <div className="row mt-5 pt-4 border-top">
-                        <div className="col-md-6 col-lg-8 mb-md-0 mb-4">
-                            <p className="copyright mb-0">
-                                Copyright @ 2024 All rights reserved
-                            </p>
-                        </div>
-                        <div className="col-md-6 col-lg-4 text-md-right">
-                            <ul className="ftco-footer-social p-0">
-                                <li><a href="#" title="Twitter"><span className="ion-logo-twitter"><svg xmlns="http://www.w3.org/2000/svg" width="16" height="16" fill="currentColor" className="bi bi-twitter-x" viewBox="0 0 16 16">
-                                    <path d="M12.6.75h2.454l-5.36 6.142L16 15.25h-4.937l-3.867-5.07-4.425 5.07H.316l5.733-6.57L0 .75h5.063l3.495 4.633L12.601.75Zm-.86 13.028h1.36L4.323 2.145H2.865z" />
-                                </svg></span></a></li>
-                                <li><a href="#" title="Facebook"><span className="ion-logo-facebook">
-                                    <svg xmlns="http://www.w3.org/2000/svg" width="16" height="16" fill="currentColor" className="bi bi-facebook" viewBox="0 0 16 16">
-                                        <path d="M16 8.049c0-4.446-3.582-8.05-8-8.05C3.58 0-.002 3.603-.002 8.05c0 4.017 2.926 7.347 6.75 7.951v-5.625h-2.03V8.05H6.75V6.275c0-2.017 1.195-3.131 3.022-3.131.876 0 1.791.157 1.791.157v1.98h-1.009c-.993 0-1.303.621-1.303 1.258v1.51h2.218l-.354 2.326H9.25V16c3.824-.604 6.75-3.934 6.75-7.951" />
-                                    </svg></span></a></li>
-                                <li><a href="#" title="Instagram"><span className="ion-logo-instagram"><svg xmlns="http://www.w3.org/2000/svg" width="16" height="16" fill="currentColor" className="bi bi-instagram" viewBox="0 0 16 16">
-                                    <path d="M8 0C5.829 0 5.556.01 4.703.048 3.85.088 3.269.222 2.76.42a3.9 3.9 0 0 0-1.417.923A3.9 3.9 0 0 0 .42 2.76C.222 3.268.087 3.85.048 4.7.01 5.555 0 5.827 0 8.001c0 2.172.01 2.444.048 3.297.04.852.174 1.433.372 1.942.205.526.478.972.923 1.417.444.445.89.719 1.416.923.51.198 1.09.333 1.942.372C5.555 15.99 5.827 16 8 16s2.444-.01 3.298-.048c.851-.04 1.434-.174 1.943-.372a3.9 3.9 0 0 0 1.416-.923c.445-.445.718-.891.923-1.417.197-.509.332-1.09.372-1.942C15.99 10.445 16 10.173 16 8s-.01-2.445-.048-3.299c-.04-.851-.175-1.433-.372-1.941a3.9 3.9 0 0 0-.923-1.417A3.9 3.9 0 0 0 13.24.42c-.51-.198-1.092-.333-1.943-.372C10.443.01 10.172 0 7.998 0zm-.717 1.442h.718c2.136 0 2.389.007 3.232.046.78.035 1.204.166 1.486.275.373.145.64.319.92.599s.453.546.598.92c.11.281.24.705.275 1.485.039.843.047 1.096.047 3.231s-.008 2.389-.047 3.232c-.035.78-.166 1.203-.275 1.485a2.5 2.5 0 0 1-.599.919c-.28.28-.546.453-.92.598-.28.11-.704.24-1.485.276-.843.038-1.096.047-3.232.047s-2.39-.009-3.233-.047c-.78-.036-1.203-.166-1.485-.276a2.5 2.5 0 0 1-.92-.598 2.5 2.5 0 0 1-.6-.92c-.109-.281-.24-.705-.275-1.485-.038-.843-.046-1.096-.046-3.233s.008-2.388.046-3.231c.036-.78.166-1.204.276-1.486.145-.373.319-.64.599-.92s.546-.453.92-.598c.282-.11.705-.24 1.485-.276.738-.034 1.024-.044 2.515-.045zm4.988 1.328a.96.96 0 1 0 0 1.92.96.96 0 0 0 0-1.92m-4.27 1.122a4.109 4.109 0 1 0 0 8.217 4.109 4.109 0 0 0 0-8.217m0 1.441a2.667 2.667 0 1 1 0 5.334 2.667 2.667 0 0 1 0-5.334" />
-                                </svg></span></a></li>
-                            </ul>
-                        </div>
-                    </div>
+        <div className="footer-contact-item">
+          <div className="footer-icon">
+            {/* Email Icon */}
+            <svg
+              xmlns="http://www.w3.org/2000/svg"
+              width="24"
+              height="24"
+              fill="#fff"
+              viewBox="0 0 16 16"
+            >
+              <path d="M0 4a2 2 0 012-2h12a2 2 0 012 2v8a2 2 0 01-2 2H2a2 2 0 01-2-2V4zm2-1a1 1 0 00-1 1v.217l7 4.2 7-4.2V4a1 1 0 00-1-1H2zm13 2.383l-4.708 2.825L15 11.105V5.383zM1 5.383v5.722l4.708-2.897L1 5.383z" />
+            </svg>
+          </div>
+          <div className="footer-text">
+            <span>info@example.com</span>
+          </div>
+        </div>
 
-                </footer>
-            </div>
+        <div className="footer-contact-item">
+          <div className="footer-icon">
+            {/* Location Icon */}
+            <svg
+              xmlns="http://www.w3.org/2000/svg"
+              width="24"
+              height="24"
+              fill="#fff"
+              viewBox="0 0 16 16"
+            >
+              <path d="M8 0a5.53 5.53 0 00-5.53 5.53c0 3.04 5.53 9.47 5.53 9.47s5.53-6.43 5.53-9.47A5.53 5.53 0 008 0zm0 8.3a2.77 2.77 0 110-5.53 2.77 2.77 0 010 5.53z" />
+            </svg>
+          </div>
+          <div className="footer-text">
+            <span>Fast NUCES University, Karachi</span>
+          </div>
+        </div>
+      </div>
 
+      {/* Middle Section with Links and Subscription */}
+      <div className="footer-middle">
+        <div className="footer-links-section">
+          <h2>About</h2>
+          <ul>
+            <li>
+              <a href="#">Our Story</a>
+            </li>
+            <li>
+              <a href="#">Awards</a>
+            </li>
+            <li>
+              <a href="#">Our Team</a>
+            </li>
+            <li>
+              <a href="#">Career</a>
+            </li>
+          </ul>
+        </div>
 
+        <div className="footer-links-section">
+          <h2>Company</h2>
+          <ul>
+            <li>
+              <a href="#">Our Services</a>
+            </li>
+            <li>
+              <a href="#">Clients</a>
+            </li>
+            <li>
+              <a href="#">Contact</a>
+            </li>
+            <li>
+              <a href="#">Press</a>
+            </li>
+          </ul>
+        </div>
 
-            <script src="https://code.jquery.com/jquery-3.3.1.slim.min.js" integrity="sha384-q8i/X+965DzO0rT7abK41JStQIAqVgRVzpbzo5smXKp4YfRvH+8abtTE1Pi6jizo" crossorigin="anonymous"></script>
-            <script src="https://cdn.jsdelivr.net/npm/popper.js@1.14.3/dist/umd/popper.min.js" integrity="sha384-ZMP7rVo3mIykV+2+9J3UJ46jBk0WLaUAdn689aCwoqbBJiSnjAK/l8WvCWPIPm49" crossOrigin="anonymous"></script>
-            <script src="https://cdn.jsdelivr.net/npm/bootstrap@4.1.3/dist/js/bootstrap.min.js" integrity="sha384-ChfqqxuZUCnJSK3+MXmPNIyE6ZbWh2IMqE241rYiqJxyMiZ6OW/JmZQ5stwEULTy" crossOrigin="anonymous"></script>
+        <div className="footer-subscribe">
+          <h2>Subscribe</h2>
+          <form>
+            <input type="email" placeholder="Enter email address" />
+            <button type="submit">Subscribe</button>
+          </form>
+          <span className="subheading">
+            Get digital marketing updates in your mailbox
+          </span>
+        </div>
+      </div>
 
+      {/* Bottom Section with Social Media Links */}
+      <div className="footer-bottom">
+        <p>&copy; 2024 All rights reserved</p>
+        <div className="footer-social">
+          <a href="#" title="Twitter">
+            {/* Twitter Icon */}
+            <svg
+              xmlns="http://www.w3.org/2000/svg"
+              width="24"
+              height="24"
+              fill="#fff"
+              viewBox="0 0 16 16"
+            >
+              <path d="M5.026 15c6.038 0 9.341-5.003 9.341-9.334 0-.14 0-.28-.008-.42A6.673 6.673 0 0016 3.542a6.658 6.658 0 01-1.889.518 3.301 3.301 0 001.447-1.817 6.533 6.533 0 01-2.084.797A3.286 3.286 0 007.875 5.03a9.325 9.325 0 01-6.766-3.429 3.289 3.289 0 001.017 4.381A3.323 3.323 0 01.64 6.575v.045a3.288 3.288 0 002.632 3.218 3.203 3.203 0 01-.865.114 3.23 3.23 0 01-.614-.057 3.288 3.288 0 003.067 2.28A6.588 6.588 0 010 13.58a9.29 9.29 0 005.031 1.475" />
+            </svg>
+          </a>
+          <a href="#" title="Facebook">
+            {/* Facebook Icon */}
+            <svg
+              xmlns="http://www.w3.org/2000/svg"
+              width="24"
+              height="24"
+              fill="#fff"
+              viewBox="0 0 16 16"
+            >
+              <path d="M8.942 8.049H7.342v5.625H5.312V8.049H4.032V6.275h1.28V5.225c0-1.284.783-2.033 1.925-2.033.544 0 1.012.04 1.148.058v1.328h-.788c-.617 0-.737.293-.737.724v.952h1.475l-.192 1.774z" />
+            </svg>
+          </a>
+          <a href="#" title="Instagram">
+            {/* Instagram Icon */}
+            <svg
+              xmlns="http://www.w3.org/2000/svg"
+              width="24"
+              height="24"
+              fill="#fff"
+              viewBox="0 0 16 16"
+            >
+              <path d="M8 0c1.65 0 1.853.006 2.503.036.651.03 1.092.132 1.48.278a3.367 3.367 0 011.182.764 3.367 3.367 0 01.764 1.182c.146.388.248.829.278 1.48.03.65.036.853.036 2.503s-.006 1.853-.036 2.503c-.03.651-.132 1.092-.278 1.48a3.367 3.367 0 01-.764 1.182 3.367 3.367 0 01-1.182.764c-.388.146-.829.248-1.48.278-.65.03-.853.036-2.503.036s-1.853-.006-2.503-.036c-.651-.03-1.092-.132-1.48-.278a3.367 3.367 0 01-1.182-.764 3.367 3.367 0 01-.764-1.182c-.146-.388-.248-.829-.278-1.48C.006 9.853 0 9.65 0 8s.006-1.853.036-2.503c.03-.651.132-1.092.278-1.48a3.367 3.367 0 01.764-1.182A3.367 3.367 0 012.26.314C2.648.168 3.089.066 3.74.036 4.39.006 4.593 0 6.243 0h1.513zm0 1.513H6.243c-1.597 0-1.796.006-2.429.036-.597.029-.925.126-1.14.21-.285.11-.487.243-.7.456-.212.212-.345.414-.456.7-.084.214-.181.543-.21 1.14-.03.633-.036.832-.036 2.429v1.513c0 1.597.006 1.796.036 2.429.029.597.126.925.21 1.14.11.285.243.487.456.7.212.212.414.345.7.456.214.084.543.181 1.14.21.633.03.832.036 2.429.036h1.513c1.597 0 1.796-.006 2.429-.036.597-.029.925-.126 1.14-.21.285-.11.487-.243.7-.456.212-.212.345-.414.456-.7.084-.214.181-.543.21-1.14.03-.633.036-.832.036-2.429V6.243c0-1.597-.006-1.796-.036-2.429-.029-.597-.126-.925-.21-1.14-.11-.285-.243-.487-.456-.7a2.85 2.85 0 00-.7-.456c-.214-.084-.543-.181-1.14-.21C9.796.006 9.597 0 8 0zM8 3.888a4.112 4.112 0 110 8.224 4.112 4.112 0 010-8.224zm0 1.513a2.599 2.599 0 100 5.198 2.599 2.599 0 000-5.198zm3.406-.897a.96.96 0 110 1.92.96.96 0 010-1.92z" />
+            </svg>
+          </a>
+        </div>
+      </div>
+    </footer>
+  );
+};
 
-        </>
-    )
-
-}
+export default Footer;

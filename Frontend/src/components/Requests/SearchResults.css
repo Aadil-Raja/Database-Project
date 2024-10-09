@@ -7,12 +7,13 @@
 }
 
 .search-results {
-    padding: 20px;
+    
+    padding: 50px;
     background-color: #f9f9f9;
     display: flex;
     flex-wrap: wrap;
     gap: 16px;
-    margin-top: 0; /* Ensure results are directly below the header */
+    margin-top: 01px; /* Ensure results are directly below the header */
 }
 
 .result-item {
