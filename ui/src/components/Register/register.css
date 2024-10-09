@@ -1,4 +1,4 @@
-body {
+.register-body {
     font-family: Arial, sans-serif;
     background-color: #f9f9f9;
     display: flex;
@@ -8,26 +8,26 @@ body {
     margin: 0;
 }
 
-/* .container {
+ .register-container {
     text-align: center;
     background-color: #fff;
     padding: 20px;
     border-radius: 8px;
     box-shadow: 0 0 10px rgba(0, 0, 0, 0.1);
-} */
+} 
 
-h1 {
+.register-h1 {
     font-size: 34px;
     margin-bottom: 20px;
 }
 
-.options {
+.register-options {
     display: flex;
     justify-content: space-around;
     margin-bottom: 20px;
 }
 
-.option {
+.register-option {
     border: 1px solid #e0e0e0;
     border-radius: 8px;
     padding: 15px;
@@ -37,39 +37,39 @@ h1 {
     text-align: center;
 }
 
-.option:hover {
+.register-option:hover {
     border-color: #d36115;
 }
 
-.option.selected {
+.register-option.selected {
     border-color: #d36115;
     background-color: #f0f8ff;
 }
 
-.option input[type="radio"] {
+.register-option input[type="radio"] {
     display: none;
 }
 
-.option label {
+.register-option label {
     cursor: pointer;
     display: block;
 }
 
-.option .icon {
+.register-option .icon {
     display: flex;
     justify-content: center;
     align-items: center;
     margin-bottom: 10px;
 }
 
-.client-img,
-.service-provider-img {
+.register-client-img,
+.register-service-provider-img {
     width: 30px; /* Adjust the width as needed */
     height: auto;
     object-fit: contain;
 }
 
-.create-account {
+.register-create-account {
     background-color: #e0e0e0;
     color: #fff;
     padding: 10px 20px;
@@ -79,20 +79,20 @@ h1 {
     transition: background-color 0.3s;
 }
 
-.create-account:not([disabled]) {
+.register-create-account:not([disabled]) {
     background-color: #0073b1;
     cursor: pointer;
 }
 
-.create-account:not([disabled]):hover {
+.register-create-account:not([disabled]):hover {
     background-color: #005f90;
 }
 
-.login {
+.register-login {
     margin-top: 10px;
 }
 
-.login a {
+.register-login a {
     color: #0073b1;
     text-decoration: none;
 }

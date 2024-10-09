@@ -14,6 +14,7 @@ import {
 } from 'mdb-react-ui-kit';
 import { useNavigate } from "react-router-dom";
 import "./sp.css";
+import '../../Header/Header.jsx'
 
 const SP = () => {
   const [formData, setFormData] = useState({
@@ -73,7 +74,7 @@ const SP = () => {
   };
 
   return (
-    <MDBContainer fluid className="d-flex justify-content-center align-items-center" style={{ minHeight: "100vh" }}>
+    <MDBContainer fluid className="d-flex justify-content-center align-items-center" >
       <MDBCard className="m-5" style={{ maxWidth: "800px" }}>
         <MDBCardBody className="px-5">
           <h3 className="text-center fw-bold mb-4">Service Provider Registration</h3>
