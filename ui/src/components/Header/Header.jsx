@@ -1,4 +1,5 @@
 import React, { useState } from 'react';
+import './Header.css'
 import {
   MDBContainer,
   MDBNavbar,
@@ -21,10 +22,10 @@ export default function App() {
 
   return (
     
-      <MDBNavbar expand='lg' light bgColor='light' >
-      <MDBContainer fluid>
+      <MDBNavbar expand='lg' className='main-navbar'>
+      <MDBContainer fluid >
         <MDBNavbarBrand href='#'>Brand</MDBNavbarBrand>
-
+        
         <MDBNavbarToggler
           aria-controls='navbarSupportedContent'
           aria-expanded='false'
@@ -37,12 +38,16 @@ export default function App() {
         <MDBCollapse navbar open={openBasic}>
           <MDBNavbarNav className='mr-auto mb-2 mb-lg-0'>
             <MDBNavbarItem>
-              <MDBNavbarLink active aria-current='page' href='#'>
+              <MDBNavbarLink className='nav-buttons' href='#'>
                 Home
               </MDBNavbarLink>
             </MDBNavbarItem>
             <MDBNavbarItem>
-              <MDBNavbarLink href='#'>Link</MDBNavbarLink>
+              <MDBNavbarLink className='nav-buttons' href='#'>About</MDBNavbarLink>
+            </MDBNavbarItem>
+            
+            <MDBNavbarItem>
+              <MDBNavbarLink className='nav-buttons' href='#'>Contact Us</MDBNavbarLink>
             </MDBNavbarItem>
 
             <MDBNavbarItem>
@@ -58,17 +63,9 @@ export default function App() {
               </MDBDropdown>
             </MDBNavbarItem>
 
-            <MDBNavbarItem>
-              <MDBNavbarLink disabled href='#' tabIndex={-1} aria-disabled='true'>
-                Disabled
-              </MDBNavbarLink>
-            </MDBNavbarItem>
           </MDBNavbarNav>
 
-          <form className='d-flex input-group w-auto'>
-            <input type='search' className='form-control' placeholder='Type query' aria-label='Search' />
-            <MDBBtn color='primary'>Search</MDBBtn>
-          </form>
+
         </MDBCollapse>
       </MDBContainer>
     </MDBNavbar>

@@ -6,7 +6,7 @@ import Login from './components/Login/Login';
 import Sp from './components/Register/SP/sp';
 import Header from './components/Header/Header';
 import Forgotpassword from "./components/Forgotpassword/Forgotpassword";
-
+import Footer from './components/Footer/Footer';
 
 function App() {
   return (
@@ -22,6 +22,7 @@ function App() {
           <Route path="login" element={<Login />}/>
           <Route path="forgotpassword" element={<Forgotpassword/>}/>
         </Routes>
+      <Footer/>
       </BrowserRouter>
     </>
   );
