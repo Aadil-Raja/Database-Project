@@ -27,16 +27,17 @@ import AddCategory from './components/Add-Category/Add-Category.jsx';
 import SpChat from './components/Chat/ServiceProviderChat.jsx';
 import ClientChat from './components/Chat/ClientChat.jsx';
 import Notification from './components/Notification/NotifcationComponent.jsx';
-
+import Header from './components/Header/Header.jsx';
 function App() {
   return (
 <>
 
       {/* If you want to include headers and footers, you can add them here */}
       {/* Since you don't want to include header/footer logic in App.jsx, we'll proceed without them */}
-
+    
       <Routes>
         {/* Public Routes */}
+        
         <Route path="/" element={<Home />} />
         <Route path="/About" element={<About />} />
         <Route path="/Contact" element={<Contact />} />

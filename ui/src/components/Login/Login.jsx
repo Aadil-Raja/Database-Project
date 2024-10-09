@@ -56,10 +56,10 @@ const Login = () => {
 
   return (
     <MDBContainer fluid className='d-flex align-items-center justify-content-center bg-image' >
-      <MDBRow className="w-100 justify-content-center">
+     
         <MDBCol xl="30" lg="30
-        " md="9" sm="5" className='mb-5'>
-          <MDBCard className='m-5' style={{ width : '450px',padding: '20px', zIndex: 1 }}>
+        " md="9" sm="5" className='d-flex justify-content-center'>
+          <MDBCard className='m-5' style={{ width : '500px',padding: '20px', zIndex: 1 }}>
             <MDBCardBody className='px-5'>
               <div className="text-center">
                 <MDBCardImage 
@@ -107,7 +107,7 @@ const Login = () => {
         </MDBCol>
 
        
-      </MDBRow>
+   
     </MDBContainer>
   );
 };
