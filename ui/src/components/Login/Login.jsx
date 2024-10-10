@@ -91,14 +91,14 @@ const Login = () => {
                 />
                 <div className="text-center pt-1 mb-5 pb-1">
                   <MDBBtn type="submit" className="mb-4 w-100 login-gradient-custom-2">Sign in</MDBBtn>
-                  <Link to="/forgotpassword" className="text-muted">Forgot password?</Link>
+                  <Link to="/forgotpassword" className="text-muted"><p className="login-forpass">Forgot password?</p></Link>
                 </div>
               </form>
               <div className="d-flex flex-row align-items-center justify-content-center pb-4 mb-4">
                 <p className="mb-0">Don't have an account?</p>
                 <Link to="/register">
 
-                  <MDBBtn outline className='mx-2 create-new' color='danger' >
+                  <MDBBtn outline className='mx-2 login-create-new' color='danger' >
                     Create new
                   </MDBBtn>
                 </Link>
