@@ -39,7 +39,7 @@ function Forgotpassword() {
           <h2>Forgot Password</h2>
         </div>
         <form class="forgot-password-form">
-          <div class="input-field">
+          <div class="forgot-password-input-field">
             <label for="email">Enter your email</label>
             <input
               type="email"
@@ -57,7 +57,7 @@ function Forgotpassword() {
             Send Reset Password Link
           </button>
         </form>
-        <div class="signup-link">
+        <div class="forgot-password-signup-link">
         </div>
       </div>
     </>

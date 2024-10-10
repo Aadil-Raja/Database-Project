@@ -21,9 +21,9 @@ export default function Header() {
   const [openBasic, setOpenBasic] = useState(false);
 
   return (
-    <MDBNavbar expand='lg' className='main-navbar'>
+    <MDBNavbar expand='lg' className='header-main-navbar'>
       <MDBContainer fluid>
-        <MDBNavbarBrand className='web-name'>
+        <MDBNavbarBrand className='header-web-name'>
           <Link to="/" className='navbar-brand'>Service Provider</Link>
         </MDBNavbarBrand>
         
@@ -39,27 +39,27 @@ export default function Header() {
         <MDBCollapse navbar open={openBasic}>
           <MDBNavbarNav className='mr-auto mb-2 mb-lg-0'>
             <MDBNavbarItem>
-              <Link to="/Home" className='nav-link nav-buttons'>
+              <Link to="/Home" className='nav-link header-nav-buttons'>
                 Home
               </Link>
             </MDBNavbarItem>
             <MDBNavbarItem>
-              <Link to="/About" className='nav-link nav-buttons'>
+              <Link to="/About" className='nav-link header-nav-buttons'>
                 About
               </Link>
             </MDBNavbarItem>
             <MDBNavbarItem>
-              <Link to="/Contact" className='nav-link nav-buttons'>
+              <Link to="/Contact" className='nav-link header-nav-buttons'>
                 Contact Us
               </Link>
             </MDBNavbarItem>
 
             <MDBNavbarItem>
               <MDBDropdown>
-                <MDBDropdownToggle tag='a' className='nav-link nav-buttons' role='button'>
+                <MDBDropdownToggle tag='a' className='nav-link header-nav-buttons' role='button'>
                   Profile
                 </MDBDropdownToggle>
-                <MDBDropdownMenu className='drop-down'>
+                <MDBDropdownMenu className='header-drop-down'>
                   <MDBDropdownItem className='drop-buttons' link>
                     View Profile
                   </MDBDropdownItem>

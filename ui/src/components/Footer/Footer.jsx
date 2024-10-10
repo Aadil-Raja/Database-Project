@@ -1,31 +1,32 @@
 import React from 'react';
 import { MDBFooter, MDBContainer, MDBRow, MDBCol, MDBIcon } from 'mdb-react-ui-kit';
-import './Footer.css'
+import './Footer.css';
+
 export default function App() {
   return (
     <MDBFooter bgColor='black' className='text-center text-lg-start text-muted main-footer'>
-      <section className='d-flex justify-content-center justify-content-lg-between p-4 ' style={{ borderColor: 'black' }}>
+      <section className='d-flex justify-content-center justify-content-lg-between p-4' style={{ borderColor: 'black' }}>
         <div className='me-5 d-none d-lg-block'>
           <span>Get connected with us on social networks:</span>
         </div>
 
-        <div className='hover-icons'>
-          <a href='' className='me-4 text-reset icons' style={{ color: 'white' }}>
+        <div className='footer-hover-icons'>
+          <a href='' className='me-4 footer-text-reset footer-icon' style={{ color: 'white' }}>
             <MDBIcon fab icon="facebook-f" />
           </a>
-          <a href='' className='me-4 text-reset' style={{ color: 'white' }}>
+          <a href='' className='me-4 footer-text-reset footer-icon' style={{ color: 'white' }}>
             <MDBIcon fab icon="twitter" />
           </a>
-          <a href='' className='me-4 text-reset' style={{ color: 'white' }}>
+          <a href='' className='me-4 footer-text-reset footer-icon' style={{ color: 'white' }}>
             <MDBIcon fab icon="google" />
           </a>
-          <a href='' className='me-4 text-reset' style={{ color: 'white' }}>
+          <a href='' className='me-4 footer-text-reset footer-icon' style={{ color: 'white' }}>
             <MDBIcon fab icon="instagram" />
           </a>
-          <a href='' className='me-4 text-reset' style={{ color: 'white' }}>
+          <a href='' className='me-4 footer-text-reset footer-icon' style={{ color: 'white' }}>
             <MDBIcon fab icon="linkedin" />
           </a>
-          <a href='' className='me-4 text-reset' style={{ color: 'white' }}>
+          <a href='' className='me-4 footer-text-reset footer-icon' style={{ color: 'white' }}>
             <MDBIcon fab icon="github" />
           </a>
         </div>
@@ -44,26 +45,26 @@ export default function App() {
                 consectetur adipisicing elit.
               </p>
             </MDBCol>
-            
+
             <MDBCol md="2" lg="2" xl="2" className='mx-auto mb-4'>
               <h6 className='text-uppercase fw-bold mb-4' style={{ color: 'white' }}>Products</h6>
               <p>
-                <a href='#!' className='text-reset'>
+                <a href='#!' className='footer-text-reset'  style={{ color: 'white' }}>
                   Angular
                 </a>
               </p>
               <p>
-                <a href='#!' className='text-reset'>
+                <a href='#!' className='footer-text-reset'  style={{ color: 'white' }}>
                   React
                 </a>
               </p>
               <p>
-                <a href='#!' className='text-reset'>
+                <a href='#!' className='footer-text-reset'  style={{ color: 'white' }}>
                   Vue
                 </a>
               </p>
               <p>
-                <a href='#!' className='text-reset'>
+                <a href='#!' className='footer-text-reset'  style={{ color: 'white' }}>
                   Laravel
                 </a>
               </p>
@@ -72,22 +73,22 @@ export default function App() {
             <MDBCol md="3" lg="2" xl="2" className='mx-auto mb-4'>
               <h6 className='text-uppercase fw-bold mb-4' style={{ color: 'white' }}>Useful links</h6>
               <p>
-                <a href='#!' className='text-reset' style={{ color: 'white' }}>
+                <a href='#!' className='footer-text-reset' style={{ color: 'white' }}>
                   Pricing
                 </a>
               </p>
               <p>
-                <a href='#!' className='text-reset' style={{ color: 'white' }}>
+                <a href='#!' className='footer-text-reset' style={{ color: 'white' }}>
                   Settings
                 </a>
               </p>
               <p>
-                <a href='#!' className='text-reset' style={{ color: 'white' }}>
+                <a href='#!' className='footer-text-reset' style={{ color: 'white' }}>
                   Orders
                 </a>
               </p>
               <p>
-                <a href='#!' className='text-reset' style={{ color: 'white' }}>
+                <a href='#!' className='footer-text-reset' style={{ color: 'white' }}>
                   Help
                 </a>
               </p>
@@ -114,9 +115,9 @@ export default function App() {
         </MDBContainer>
       </section>
 
-      <div className='text-center p-4 ' style={{ backgroundColor: 'black', color: 'white' }}>
+      <div className='text-center p-4' style={{ backgroundColor: 'black', color: 'white' }}>
         © 2021 Copyright:
-        <a className='text-reset fw-bold' href='https://mdbootstrap.com/' style={{ color: 'white' }}>
+        <a className='footer-text-reset fw-bold' href='https://mdbootstrap.com/' style={{ color: 'white' }}>
           MDBootstrap.com
         </a>
       </div>

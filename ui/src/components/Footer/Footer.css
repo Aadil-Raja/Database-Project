@@ -1,16 +1,11 @@
+.footer-hover-icons .footer-icon {
+  transition: color 0.3s ease;
+}
 
-.hover-icons .icons {
-    transition: color 0.3s ease;
-  }
+.footer-hover-icons .footer-icon:hover {
+  color: orange; /* Smooth hover effect */
+}
 
-  .hover-icons .icons:hover {
-    color: orange; /* Smooth hover effect */
-  }
-  
-  .hover-icons .icons:hover {
-    color: orange; /* Smooth hover effect */
-  }
-  
-  .text-reset:hover {
-    color: orange !important;
-  }
+.footer-text-reset:hover {
+  color: orange !important;
+}

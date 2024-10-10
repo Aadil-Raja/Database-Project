@@ -14,7 +14,7 @@
   transition: background 0.3s ease;
 }
 
-.create-new:hover{
+.login-create-new:hover{
   background:#b34608;
   color: white;
   transition: color background 0.3s ease;
