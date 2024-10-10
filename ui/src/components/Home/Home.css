@@ -1,0 +1,29 @@
+.home-section {
+    background: linear-gradient(135deg, rgba(0,128,128,0.9), rgba(255,111,97,0.9));
+    min-height: 100vh;
+    display: flex;
+    align-items: center;
+    justify-content: center;
+  }
+  
+  .home-banner {
+    padding: 50px;
+    background: linear-gradient(135deg, rgba(0,128,128,0.9), rgba(255,111,97,0.9));
+    background-size: cover;
+    color: white;
+  }
+  
+  .home-text {
+    text-align: left;
+  }
+  
+  .home-heading {
+    font-size: 3rem;
+    font-weight: bold;
+  }
+
+  .home-buttons:hover{
+    background-color: white;
+    color: rgb(54, 190, 177);
+  }
+  

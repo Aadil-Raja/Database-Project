@@ -1,4 +1,5 @@
 import React, { useState } from 'react';
+import './Header.css';
 import {
   MDBContainer,
   MDBNavbar,
@@ -7,7 +8,6 @@ import {
   MDBIcon,
   MDBNavbarNav,
   MDBNavbarItem,
-  MDBNavbarLink,
   MDBBtn,
   MDBDropdown,
   MDBDropdownToggle,
@@ -15,16 +15,18 @@ import {
   MDBDropdownItem,
   MDBCollapse,
 } from 'mdb-react-ui-kit';
+import { Link } from 'react-router-dom';
 
-export default function App() {
+export default function Header() {
   const [openBasic, setOpenBasic] = useState(false);
 
   return (
-    
-      <MDBNavbar expand='lg' light bgColor='light' >
+    <MDBNavbar expand='lg' className='main-navbar'>
       <MDBContainer fluid>
-        <MDBNavbarBrand href='#'>Brand</MDBNavbarBrand>
-
+        <MDBNavbarBrand className='web-name'>
+          <Link to="/" className='navbar-brand'>Service Provider</Link>
+        </MDBNavbarBrand>
+        
         <MDBNavbarToggler
           aria-controls='navbarSupportedContent'
           aria-expanded='false'
@@ -37,38 +39,40 @@ export default function App() {
         <MDBCollapse navbar open={openBasic}>
           <MDBNavbarNav className='mr-auto mb-2 mb-lg-0'>
             <MDBNavbarItem>
-              <MDBNavbarLink active aria-current='page' href='#'>
+              <Link to="/Home" className='nav-link nav-buttons'>
                 Home
-              </MDBNavbarLink>
+              </Link>
             </MDBNavbarItem>
             <MDBNavbarItem>
-              <MDBNavbarLink href='#'>Link</MDBNavbarLink>
+              <Link to="/About" className='nav-link nav-buttons'>
+                About
+              </Link>
+            </MDBNavbarItem>
+            <MDBNavbarItem>
+              <Link to="/Contact" className='nav-link nav-buttons'>
+                Contact Us
+              </Link>
             </MDBNavbarItem>
 
             <MDBNavbarItem>
               <MDBDropdown>
-                <MDBDropdownToggle tag='a' className='nav-link' role='button'>
-                  Dropdown
+                <MDBDropdownToggle tag='a' className='nav-link nav-buttons' role='button'>
+                  Profile
                 </MDBDropdownToggle>
-                <MDBDropdownMenu>
-                  <MDBDropdownItem link>Action</MDBDropdownItem>
-                  <MDBDropdownItem link>Another action</MDBDropdownItem>
-                  <MDBDropdownItem link>Something else here</MDBDropdownItem>
+                <MDBDropdownMenu className='drop-down'>
+                  <MDBDropdownItem className='drop-buttons' link>
+                    View Profile
+                  </MDBDropdownItem>
+                  <MDBDropdownItem className='drop-buttons' link>
+                    View Requests
+                  </MDBDropdownItem>
+                  <MDBDropdownItem className='drop-buttons' link>
+                    Log out
+                  </MDBDropdownItem>
                 </MDBDropdownMenu>
               </MDBDropdown>
             </MDBNavbarItem>
-
-            <MDBNavbarItem>
-              <MDBNavbarLink disabled href='#' tabIndex={-1} aria-disabled='true'>
-                Disabled
-              </MDBNavbarLink>
-            </MDBNavbarItem>
           </MDBNavbarNav>
-
-          <form className='d-flex input-group w-auto'>
-            <input type='search' className='form-control' placeholder='Type query' aria-label='Search' />
-            <MDBBtn color='primary'>Search</MDBBtn>
-          </form>
         </MDBCollapse>
       </MDBContainer>
     </MDBNavbar>
