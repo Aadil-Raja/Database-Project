@@ -1,5 +1,16 @@
-.main-footer{
-    background-color: black;
-}
 
+.hover-icons .icons {
+    transition: color 0.3s ease;
+  }
 
+  .hover-icons .icons:hover {
+    color: orange; /* Smooth hover effect */
+  }
+  
+  .hover-icons .icons:hover {
+    color: orange; /* Smooth hover effect */
+  }
+  
+  .text-reset:hover {
+    color: orange !important;
+  }
