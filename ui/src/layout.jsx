@@ -6,9 +6,15 @@ import Footer from "./components/Footer/Footer";
 function Layout() {
   const location = useLocation();
 
-  const hideRegularHeader = location.pathname.startsWith("/register");
-  const hideFooter = location.pathname.startsWith("/register");
+  const hideRegularHeader = [
+    "/register",
+    
+].includes(location.pathname);
 
+const hideFooter = [
+  "/register",
+
+].includes(location.pathname);
   return (
     <>
       {!hideRegularHeader && <Header />}

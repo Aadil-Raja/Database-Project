@@ -23,7 +23,7 @@ export default function Header() {
   return (
     <MDBNavbar expand='lg' className='header-main-navbar'>
       <MDBContainer fluid>
-        <MDBNavbarBrand className='header-web-name'>
+        <MDBNavbarBrand tag ="div" className='header-web-name'>
           <Link to="/" className='header-navbar-brand'>Service Provider</Link>
         </MDBNavbarBrand>
         
@@ -55,11 +55,11 @@ export default function Header() {
             </MDBNavbarItem>
 
             <MDBNavbarItem>
-              <MDBDropdown>
+              <MDBDropdown >
                 <MDBDropdownToggle tag='a' className='nav-link header-nav-buttons' role='button'>
                   Profile
                 </MDBDropdownToggle>
-                <MDBDropdownMenu className='header-drop-down'>
+                <MDBDropdownMenu style={{ margin: 0 }} className='header-drop-down'>
                   <MDBDropdownItem className='drop-buttons' link>
                     View Profile
                   </MDBDropdownItem>
