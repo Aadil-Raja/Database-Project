@@ -19,7 +19,9 @@ import ResetPassword from './components/Resetpassword/Resetpassword.jsx'
 
 import ClientChat from './components/Chat/ClientChat.jsx';
 import SpChat from './components/Chat/SpChat.jsx';
-
+import Categories from './components/Categories/Categories.jsx'
+import Services from './components/Categories/Services.jsx';
+import ServiceRequestForm from './components/Categories/ServiceRequestForm.jsx';
 const router = createBrowserRouter([
   {
     path: '/',
@@ -78,7 +80,18 @@ const router = createBrowserRouter([
         path:'SpChat',
         element:<SpChat/>
       },
-      
+      {
+          path :'Categories',
+          element :<Categories/>
+      },
+       { 
+           path :'Categories/:categoryId',
+           element:<Services/>
+       },
+       {
+        path: "categories/:serviceId/servicerequestform",
+        element :<ServiceRequestForm />
+       }
     ]
   }
 ]);
