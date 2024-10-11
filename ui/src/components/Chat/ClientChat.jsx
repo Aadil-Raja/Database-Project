@@ -1,7 +1,6 @@
 import { useEffect, useState } from 'react';
 import io from 'socket.io-client';
 import { useLocation } from 'react-router-dom';
-import './ClientChat.css';
 import axios from 'axios';
 import {
   MDBContainer,
@@ -14,6 +13,8 @@ import {
   MDBInputGroup,
 } from 'mdb-react-ui-kit';
 
+import './ClientChat.css';
+
 const socket = io('http://localhost:3002');
 
 const Chat = () => {
@@ -22,13 +23,13 @@ const Chat = () => {
   const [room, setRoom] = useState('');
   const [clientId, setClientId] = useState(null);
   const [spId, setSpId] = useState(null);
-  const [sender, setSender] = useState('clients');
-  const [receiver, setReceiver] = useState('serviceproviders');
   const [senderID, setSenderID] = useState(null);
   const [receiverID, setReceiverID] = useState(null);
   const [pendingRequests, setPendingRequests] = useState([]);
+  const [selectedRequestId, setSelectedRequestId] = useState('');
   const [selectedRequest, setSelectedRequest] = useState(null);
-  const [chatOpen, setChatOpen] = useState(false);
+  const[receiverName,setreceiverName]=useState('');
+  const [chatOpen, setChatOpen] = useState(true);
   const location = useLocation();
 
   useEffect(() => {
@@ -46,35 +47,26 @@ const Chat = () => {
 
     fetchPreviousMessages(roomName);
     fetchPendingRequests(client_id);
+    fetchUserName(sp_id);
   }, [location.search]);
-
+ 
+  const fetchUserName = async(sp_id) =>{
+    try{
+      const response =await axios.get(`http://localhost:3000/getUserName?user_id=${sp_id}&user_type=serviceproviders`);
+      setreceiverName(response.data.name);
+    }
+    catch(error)
+    {
+      console.error('Error Fetching previous messages',error);
+    }
+  }
+ 
   const fetchPreviousMessages = async (roomName) => {
     try {
       const response = await axios.get(`http://localhost:3000/getMessages?room=${roomName}`);
       setMessages(response.data);
     } catch (error) {
       console.error('Error fetching previous messages:', error);
-    }
-  };
-
-  const sendMessage = async() => {
-    const messageData = {
-      sender_id: senderID,
-      receiver_id: receiverID,
-      message_text: message,
-      sender_type: sender, 
-      receiver_type: receiver,
-      room : room,
-      timestamp: Date.now(),
-    };
-
-    socket.emit('client_send_message', { messageData, room });
-    setMessages([...messages, messageData]);
-    setMessage('');
-    try {
-      await axios.post('http://localhost:3000/saveMessage', messageData);
-    } catch(error) {
-      console.log(error);
     }
   };
 
@@ -87,11 +79,71 @@ const Chat = () => {
     }
   };
 
+  const sendMessage = async() => {
+    const messageData = {
+      sender_id: senderID,
+      receiver_id: receiverID,
+      message_text: message,
+      sender_type: 'clients', 
+      receiver_type: 'serviceproviders',
+      room: room,
+      timestamp: Date.now(),
+    };
+
+    socket.emit('client_send_message', { messageData, room });
+    setMessages((prevMessages) => [...prevMessages, messageData]);
+    setMessage('');
+    try {
+      await axios.post('http://localhost:3000/saveMessage', messageData);
+    } catch(error) {
+      console.error('Error saving message:', error);
+    }
+  };
+
+  const cancelServiceRequest = async (requestId) => {
+    setMessages((prevMessages) =>
+      prevMessages.map((msg) =>
+        msg.request_id === requestId ? { ...msg, status: 'cancelled' } : msg
+      )
+    );
+    setSelectedRequestId('');
+    setSelectedRequest(null);
+    socket.emit('cancel_service_request', { request_id: requestId, room });
+  };
+
+  const sendSelectedRequest = () => {
+    if (selectedRequest) {
+      const requestData = {
+        sender_id: senderID,
+        receiver_id: receiverID,
+        message_text: `Request for ${selectedRequest.name}`,
+        request_id: selectedRequest.request_id,
+        room: room,
+        timestamp: Date.now(),
+        type: 'service_request',
+      };
+  
+      socket.emit('service_request', { messageData: requestData, room });
+      setMessages((prevMessages) => [...prevMessages, requestData]);
+  
+      setSelectedRequestId('');
+      setSelectedRequest(null);
+    }
+  };
+
   useEffect(() => {
     socket.on('all_receive_message', (data) => {
-      if(data.sender_id !== senderID) {
+      if (data.sender_id !== senderID) {
         setMessages((prevMessages) => [...prevMessages, data]);
       }
+    });
+
+    socket.on('service_request_accepted', (data) => {
+      setMessages((prevMessages) =>
+        prevMessages.map((msg) =>
+          msg.request_id === data.request_id ? { ...msg, status: 'accepted' } : msg
+        )
+      );
     });
   }, [senderID]);
 
@@ -99,7 +151,7 @@ const Chat = () => {
     <MDBContainer fluid className="py-5" style={{ backgroundColor: "#CDC4F9" }}>
       <MDBRow>
         <MDBCol md="4">
-          <MDBCard id="chat-heads-card" style={{ borderRadius: "15px" }}>
+          <MDBCard style={{ borderRadius: "15px" }}>
             <MDBCardBody>
               <MDBInputGroup className="rounded mb-3">
                 <input
@@ -107,7 +159,7 @@ const Chat = () => {
                   placeholder="Search"
                   type="search"
                 />
-                <span className="input-group-text border-0" id="search-addon">
+                <span className="input-group-text border-0">
                   <MDBIcon fas icon="search" />
                 </span>
               </MDBInputGroup>
@@ -139,11 +191,6 @@ const Chat = () => {
                             </p>
                           </div>
                         </div>
-                        <div className="pt-1">
-                          <p className="small text-muted mb-1">
-                            {req.time}
-                          </p>
-                        </div>
                       </a>
                     </li>
                   ))}
@@ -154,22 +201,62 @@ const Chat = () => {
         </MDBCol>
 
         <MDBCol md="8">
-          <MDBCard id="chat-box-card" style={{ borderRadius: "15px" }}>
+          <MDBCard style={{ borderRadius: "15px" }}>
             <MDBCardBody>
               <div className="chat-box-header d-flex justify-content-between align-items-center">
-                <h4>Chat</h4>
+                <h4>Chat with Service Provider</h4>
+                <MDBIcon
+                  fas
+                  icon="times"
+                  onClick={() => setChatOpen(!chatOpen)}
+                  className="text-muted"
+                  style={{ cursor: "pointer" }}
+                />
               </div>
               <div className="chat-scrollbar" style={{ height: "400px" }}>
                 {messages.map((msg, index) => (
                   <div
                     key={index}
-                    className={`message ${msg.sender_type === sender ? 'sent' : 'received'}`}
+                    className={`message ${msg.sender_type === 'clients' ? 'sent' : 'received'}`}
                   >
                     {msg.message_text}
+                    {msg.type === 'service_request' && (
+                      <span>
+                        Status: {msg.status ? msg.status.charAt(0).toUpperCase() + msg.status.slice(1) : 'Pending'}
+                        {!msg.status && (
+                          <button onClick={() => cancelServiceRequest(msg.request_id)}>Cancel Request</button>
+                        )}
+                      </span>
+                    )}
                   </div>
                 ))}
               </div>
-              <div className="chat-box-footer d-flex align-items-center">
+              <div className="request-selection mt-3">
+                <select
+                  value={selectedRequestId}
+                  onChange={(e) => {
+                    const requestId = e.target.value;
+                    setSelectedRequestId(requestId);
+                    const request = pendingRequests.find((req) => req.request_id === parseInt(requestId));
+                    setSelectedRequest(request);
+                  }}
+                >
+                  <option value="">Select Request</option>
+                  {pendingRequests.map((req) => (
+                    <option key={req.request_id} value={req.request_id}>
+                      {req.name}
+                    </option>
+                  ))}
+                </select>
+                <MDBIcon
+                  fas
+                  icon="paper-plane"
+                  onClick={sendSelectedRequest}
+                  className="text-muted ms-2"
+                  style={{ cursor: "pointer" }}
+                />
+              </div>
+              <div className="chat-box-footer d-flex align-items-center mt-3">
                 <input
                   type="text"
                   value={message}
@@ -193,4 +280,4 @@ const Chat = () => {
   );
 };
 
-export default Chat;
+export default Chat

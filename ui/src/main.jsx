@@ -22,6 +22,7 @@ import SpChat from './components/Chat/SpChat.jsx';
 import Categories from './components/Categories/Categories.jsx'
 import Services from './components/Categories/Services.jsx';
 import ServiceRequestForm from './components/Categories/ServiceRequestForm.jsx';
+import Requests from './components/Requests/Requests.jsx';
 const router = createBrowserRouter([
   {
     path: '/',
@@ -73,11 +74,11 @@ const router = createBrowserRouter([
         element:<ResetPassword/>
      },
      {
-          path:'ClientChat',
+          path:'Clientchat',
           element:<ClientChat/>
      },
       {
-        path:'SpChat',
+        path:'Spchat',
         element:<SpChat/>
       },
       {
@@ -91,7 +92,11 @@ const router = createBrowserRouter([
        {
         path: "categories/:serviceId/servicerequestform",
         element :<ServiceRequestForm />
-       }
+       },
+       {
+           path :'Requests',
+           element : <Requests/>
+       },
     ]
   }
 ]);

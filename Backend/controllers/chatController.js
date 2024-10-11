@@ -41,3 +41,29 @@ exports.getMessages = async (req, res) => {
       res.status(500).json({ message: 'Error retrieving messages' });
     }
   };
+  exports.getUserName =async(req,res)=>{
+    const {user_id,user_type}=req.query;
+    let query='';
+   
+    try {  
+      
+    if( user_type==="clients")
+      {
+      
+        query=`select name from clients where client_id=${user_id};`;
+        
+      }
+      else if(user_type="serviceproviders")
+      {
+        query=`SELECT CONCAT(firstName, ' ', lastName) AS name FROM serviceproviders WHERE sp_id = ${user_id};`
+    }
+   
+    const[name]=await sequelize.query(query);
+    res.json(name[0]);
+  }
+    catch(error)
+    {
+      res.status(500).json({ message: 'Error' });
+    }
+
+  }

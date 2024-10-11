@@ -26,6 +26,7 @@ const Chat = () => {
   const [receiver, setReceiver] = useState('clients');
   const [senderID, setSenderID] = useState(null);
   const [receiverID, setReceiverID] = useState(null);
+  const[receiverName,setreceiverName]=useState('');
   const location = useLocation();
 
   useEffect(() => {
@@ -42,8 +43,20 @@ const Chat = () => {
 
     socket.emit('join_room', roomName);
     fetchPreviousMessages(roomName);
+    fetchUserName(client_id);
   }, [location.search]);
 
+  const fetchUserName = async(client_id) =>{
+    try{
+      const response =await axios.get(`http://localhost:3000/getUserName?user_id=${client_id}&user_type=clients`);
+      setreceiverName(response.data.name);
+    }
+    catch(error)
+    {
+      console.error('Error Fetching previous messages',error);
+    }
+  }
+ 
   const fetchPreviousMessages = async (roomName) => {
     try {
       const response = await axios.get(`http://localhost:3000/getMessages?room=${roomName}`);
@@ -150,7 +163,7 @@ const Chat = () => {
                           />
                         </div>
                         <div className="pt-1">
-                          <p className="fw-bold mb-0">Marie Horwitz</p>
+                          <p className="fw-bold mb-0">{receiverName}</p>
                           <p className="small text-muted">Hello, are you there?</p>
                         </div>
                       </div>
