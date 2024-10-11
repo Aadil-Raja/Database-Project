@@ -1,0 +1,54 @@
+#chat3 .form-control {
+    border-color: transparent;
+  }
+  
+  #chat3 .form-control:focus {
+    border-color: transparent;
+    box-shadow: inset 0px 0px 0px 1px transparent;
+  }
+  
+  .badge-dot {
+    border-radius: 50%;
+    height: 10px;
+    width: 10px;
+    margin-left: 2.9rem;
+    margin-top: -0.75rem;
+  }
+
+  .chat-scrollbar {
+    overflow-y: auto;
+    max-height: 400px;
+  }
+  
+  .chat-scrollbar::-webkit-scrollbar {
+    width: 8px;
+  }
+  
+  .chat-scrollbar::-webkit-scrollbar-track {
+    background: #f1f1f1;
+  }
+  
+  .chat-scrollbar::-webkit-scrollbar-thumb {
+    background-color: #008080;
+    border-radius: 10px;
+  }
+  
+  .message {
+    padding: 10px;
+    margin: 5px;
+  }
+  
+  .message.sent {
+    text-align: right;
+    background-color: #d1f0e0;
+  }
+  
+  .message.received {
+    text-align: left;
+    background-color: #f1f1f1;
+  }
+  
+  .chat-box-footer {
+    margin-top: 10px;
+  }
+  

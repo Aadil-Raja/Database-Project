@@ -15,7 +15,10 @@ import 'mdb-react-ui-kit/dist/css/mdb.min.css';
 import "@fortawesome/fontawesome-free/css/all.min.css";
 
 import Forgotpassword from './components/Forgotpassword/Forgotpassword.jsx'
+import ResetPassword from './components/Resetpassword/Resetpassword.jsx'
 
+import ClientChat from './components/Chat/ClientChat.jsx';
+import SpChat from './components/Chat/SpChat.jsx';
 
 const router = createBrowserRouter([
   {
@@ -63,10 +66,19 @@ const router = createBrowserRouter([
         path: 'Register',
         element: <Register />
       },
-     
-     
-
-
+     {
+        path:'resetpassword',
+        element:<ResetPassword/>
+     },
+     {
+          path:'ClientChat',
+          element:<ClientChat/>
+     },
+      {
+        path:'SpChat',
+        element:<SpChat/>
+      },
+      
     ]
   }
 ]);
