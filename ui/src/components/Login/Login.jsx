@@ -34,7 +34,7 @@ const Login = () => {
         localStorage.setItem('usertype', response.data.role);
 
         if (response.data.first_time_login === "First time login") {
-          navigate("/service-provider-form");
+          navigate("/ServiceProviderForm");
         } else if (response.data.role === "serviceproviders") {
           navigate("/ServiceProviderHome");
         } else if (response.data.role === "clients") {

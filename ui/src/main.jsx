@@ -23,6 +23,8 @@ import Categories from './components/Categories/Categories.jsx'
 import Services from './components/Categories/Services.jsx';
 import ServiceRequestForm from './components/Categories/ServiceRequestForm.jsx';
 import Requests from './components/Requests/Requests.jsx';
+import ServiceProviderForm from './components/ServiceProviderForm/ServiceProviderForm.jsx'
+import SpProfile from './components/SpProfile/SpProfile.jsx';
 const router = createBrowserRouter([
   {
     path: '/',
@@ -96,6 +98,14 @@ const router = createBrowserRouter([
        {
            path :'Requests',
            element : <Requests/>
+       },
+       {
+             path:'ServiceProviderForm',
+             element :<ServiceProviderForm/>
+       },
+       {
+           path :'SpProfile',
+           element : <SpProfile/>
        },
     ]
   }

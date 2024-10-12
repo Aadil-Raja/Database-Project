@@ -18,7 +18,8 @@ const hideFooter = [
 ].includes(location.pathname);
 
 const hideNotification = [
-  "/Clientchat","/Spchat"
+  "/Clientchat","/Spchat","","/","/Register","/Home","/About"
+  ,"/Contact","/Categories","/Requests","/sp","/login","/SpProfile"
 
 ].includes(location.pathname);
   return (
