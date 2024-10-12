@@ -1,0 +1,39 @@
+.categories-body{
+  min-height: 60vh;
+}
+
+.category-card {
+    background: linear-gradient(135deg, rgba(46, 190, 190, 0.9), rgba(255, 129, 118, 0.9));
+    transition: transform 0.3s, box-shadow 0.3s;
+  }
+  
+  .category-card:hover {
+    transform: translateY(-5px);
+    box-shadow: 0 4px 15px rgba(0, 0, 0, 0.2);
+  }
+  
+  .category-icon-wrapper {
+    display: flex;
+    justify-content: center;
+    align-items: center;
+    background-color: #008080; /* Teal background */
+    border-radius: 50%;
+    padding: 20px;
+    width: 80px;
+    height: 80px;
+    margin: 0 auto;
+  }
+  
+  .category-icon {
+    width: 40px;
+    height: 40px;
+  }
+  
+  .category-name {
+    color: #333333; /* Dark gray text */
+  }
+  
+  .category-description {
+    color: #666666; /* Slightly lighter gray for description */
+  }
+  

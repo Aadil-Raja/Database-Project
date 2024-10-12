@@ -1,7 +1,8 @@
 import React, { useState, useEffect } from "react";
 import { useParams, Link } from "react-router-dom";
 import axios from "axios";
-import { MDBContainer, MDBRow, MDBCol, MDBRipple } from "mdb-react-ui-kit";
+import { MDBContainer, MDBRow, MDBCol } from "mdb-react-ui-kit";
+import "./categoryDetails.css"; // Import custom CSS for additional styling
 
 export default function CategoryDetails() {
   const { categoryId } = useParams();
@@ -27,7 +28,7 @@ export default function CategoryDetails() {
   if (!category) return <p>Loading...</p>;
 
   return (
-    <MDBContainer fluid className="my-5 text-center">
+    <MDBContainer fluid className="my-5 text-center services-body">
       {category.status === 'active' && (
         <>
           <h4 className="mt-4 mb-5">
@@ -37,40 +38,22 @@ export default function CategoryDetails() {
 
           <MDBRow className="mt-6 space-y-12 lg:space-y-0">
             {services
-              .filter(service => service.status === 'active')
+              .filter((service) => service.status === 'active')
               .map((service, index) => (
                 <MDBCol key={index} md="6" lg="4" className="mb-4">
-                  <MDBRipple
-                    rippleColor="dark"
-                    rippleTag="div"
-                    className="bg-image rounded hover-zoom shadow-1-strong"
-                  >
-                    <img
-                      src={`http://localhost:3000/images/${service.name.toLowerCase().replace(/ /g, '-')}.jpg`}
-                      alt={service.name}
-                      className="w-100 h-100 object-cover"
-                    />
-                    <Link to={`/categories/${service.service_id}/servicerequestform`}>
-                      <div
-                        className="mask"
-                        style={{ backgroundColor: "rgba(0, 0, 0, 0.3)" }}
-                      >
-                        <div className="d-flex justify-content-start align-items-start h-100">
-                          <h5>
-                            <span className="badge bg-light pt-2 ms-3 mt-3 text-dark">
-                              {service.name}
-                            </span>
-                          </h5>
-                        </div>
+                  <Link to={`/categories/${service.service_id}/servicerequestform`} className="service-link">
+                    <div className="service-card shadow-sm p-3 rounded">
+                      <div className="service-icon-wrapper">
+                        <img
+                          src={`http://localhost:3000/images/${service.name.toLowerCase().replace(/ /g, '-')}.png`}
+                          alt={service.name}
+                          className="service-icon"
+                        />
                       </div>
-                      <div className="hover-overlay">
-                        <div
-                          className="mask"
-                          style={{ backgroundColor: "rgba(251, 251, 251, 0.15)" }}
-                        ></div>
-                      </div>
-                    </Link>
-                  </MDBRipple>
+                      <h5 className="service-name mt-3">{service.name}</h5>
+                      <p className="service-description mt-2">{service.description}</p>
+                    </div>
+                  </Link>
                 </MDBCol>
               ))}
           </MDBRow>

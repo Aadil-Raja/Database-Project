@@ -1,6 +1,7 @@
 import React from 'react';
 import { MDBContainer, MDBRow, MDBCol, MDBBtn } from 'mdb-react-ui-kit';
 import './Home.css';
+import { Link } from 'react-router-dom';
 
 export default function Home() {
   return (
@@ -14,12 +15,14 @@ export default function Home() {
             <p className='lead mb-4'>
               Connecting you with top professionals in various services. Get work done easily and efficiently with our trusted service providers.
             </p>
-            <MDBBtn outline color='light' size='lg' className='ms-3 home-buttons'>
-              Find Services
+            <div className='home-buttons'>
+            <MDBBtn outline color='light' size='lg' className='ms-3'>
+              <Link to='/Register'>
+              Register Now 
+              </Link>
             </MDBBtn>
-            <MDBBtn outline color='light' size='lg' className='ms-3 home-buttons'>
-              Become a Provider
-            </MDBBtn>
+
+            </div>
           </MDBCol>
         </MDBRow>
       </MDBContainer>

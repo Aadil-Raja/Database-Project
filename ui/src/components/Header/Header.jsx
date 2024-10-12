@@ -23,10 +23,10 @@ export default function Header() {
   return (
     <MDBNavbar expand='lg' className='header-main-navbar'>
       <MDBContainer fluid>
-        <MDBNavbarBrand tag ="div" className='header-web-name'>
+        <MDBNavbarBrand tag="div" className='header-web-name'>
           <Link to="/" className='header-navbar-brand'>Service Provider</Link>
         </MDBNavbarBrand>
-        
+
         <MDBNavbarToggler
           aria-controls='navbarSupportedContent'
           aria-expanded='false'
@@ -37,9 +37,9 @@ export default function Header() {
         </MDBNavbarToggler>
 
         <MDBCollapse navbar open={openBasic}>
-          <MDBNavbarNav className='mr-auto mb-2 mb-lg-0'>
+          <MDBNavbarNav className='mr-auto mb-2 mb-lg-0 header-nav-buttons'>
             <MDBNavbarItem>
-              <Link to="/Home" className='nav-link header-nav-buttons'>
+              <Link to="/Home" className='nav-link'>
                 Home
               </Link>
             </MDBNavbarItem>
@@ -53,7 +53,6 @@ export default function Header() {
                 Contact Us
               </Link>
             </MDBNavbarItem>
-
             <MDBNavbarItem>
               <MDBDropdown >
                 <MDBDropdownToggle tag='a' className='nav-link header-nav-buttons' role='button'>
@@ -75,6 +74,6 @@ export default function Header() {
           </MDBNavbarNav>
         </MDBCollapse>
       </MDBContainer>
-    </MDBNavbar>
+    </MDBNavbar >
   );
 }

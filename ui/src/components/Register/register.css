@@ -38,12 +38,13 @@
 }
 
 .register-option:hover {
-    border-color: #d36115;
+    border-color: black;
+    background-color: #81ccbc;
 }
 
 .register-option.selected {
-    border-color: #d36115;
-    background-color: #f0f8ff;
+    border-color: black;
+    background-color: #81ccbc;
 }
 
 .register-option input[type="radio"] {
@@ -70,8 +71,6 @@
 }
 
 .register-create-account {
-    background-color: #e0e0e0;
-    color: #fff;
     padding: 10px 20px;
     border: none;
     border-radius: 20px;
@@ -80,12 +79,14 @@
 }
 
 .register-create-account:not([disabled]) {
-    background-color: #0073b1;
+    background-color: white;
+    border: 1px rgb(6, 119, 95) solid;
+    color: black;
     cursor: pointer;
 }
 
 .register-create-account:not([disabled]):hover {
-    background-color: #005f90;
+    background-color: #f58a4d;
 }
 
 .register-login {
@@ -94,5 +95,10 @@
 
 .register-login a {
     color: #0073b1;
+    text-decoration: none;
+}
+
+.register-login a:hover{
+    color: #083d5a;
     text-decoration: none;
 }
