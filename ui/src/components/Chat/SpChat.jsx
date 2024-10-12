@@ -27,14 +27,16 @@ const Chat = () => {
   const [senderID, setSenderID] = useState(null);
   const [receiverID, setReceiverID] = useState(null);
   const[receiverName,setreceiverName]=useState('');
+  const [chatHeads, setChatHeads] = useState([]);
   const location = useLocation();
 
   useEffect(() => {
-    const queryParams = new URLSearchParams(location.search);
-    const roomName = queryParams.get('room');
-    const client_id = queryParams.get('client_id');
-    const sp_id = queryParams.get('sp_id');
-    
+
+
+   
+    const { room, client_id } = location.state || {};
+    const sp_id = localStorage.getItem('user_ID');
+  const roomName=room;
     setRoom(roomName);
     setClientId(client_id);
     setSpId(sp_id);
@@ -43,20 +45,30 @@ const Chat = () => {
 
     socket.emit('join_room', roomName);
     fetchPreviousMessages(roomName);
-    fetchUserName(client_id);
-  }, [location.search]);
 
-  const fetchUserName = async(client_id) =>{
-    try{
-      const response =await axios.get(`http://localhost:3000/getUserName?user_id=${client_id}&user_type=clients`);
-      setreceiverName(response.data.name);
+    console.log(sp_id);
+    fetchChatHeads(sp_id);
+  }, [location.search]);
+  
+  const loadChat = async (roomName, client_id) => {
+    setRoom(roomName);
+    setClientId(client_id);
+    setReceiverID(client_id);
+    socket.emit('join_room', roomName);
+    fetchPreviousMessages(roomName);
+   
+  };
+
+  const fetchChatHeads = async (sp_id) => {
+    try {
+      const response = await axios.get(`http://localhost:3000/getChatHeads?user_id=${sp_id}&user_type=serviceproviders`);
+      setChatHeads(response.data);
+    } catch (error) {
+      console.error('Error fetching chat heads:', error);
     }
-    catch(error)
-    {
-      console.error('Error Fetching previous messages',error);
-    }
-  }
- 
+  };
+
+
   const fetchPreviousMessages = async (roomName) => {
     try {
       const response = await axios.get(`http://localhost:3000/getMessages?room=${roomName}`);
@@ -82,7 +94,17 @@ const Chat = () => {
     setMessage('');
     
     try {
+     
       await axios.post('http://localhost:3000/saveMessage', messageData);
+    console.log("hi");
+      const chatHeadData = {
+        room: room,
+        client_id: receiverID,
+        sp_id: senderID,
+        last_message: message,
+      };
+      
+      await axios.post('http://localhost:3000/createORupdateChatHead', chatHeadData);
     } catch(error) {
       console.log(error);
     }
@@ -150,25 +172,31 @@ const Chat = () => {
               </MDBInputGroup>
               <div className="chat-scrollbar" style={{ height: "400px" }}>
                 <MDBTypography listUnStyled className="mb-0">
-                  {/* Replace with dynamic user list */}
-                  <li className="p-2 border-bottom">
-                    <a href="#!" className="d-flex justify-content-between">
-                      <div className="d-flex flex-row">
-                        <div>
-                          <img
-                            src="https://mdbcdn.b-cdn.net/img/Photos/new-templates/bootstrap-chat/ava1-bg.webp"
-                            alt="avatar"
-                            className="d-flex align-self-center me-3"
-                            width="60"
-                          />
+                {chatHeads.map((chat) => (
+         <li
+         className="p-2 border-bottom"
+         key={chat.client_id}
+         onClick={() => loadChat(chat.room, chat.client_id)}
+         style={{ cursor: 'pointer' }}
+       >
+                    
+                        <div className="d-flex flex-row">
+                          <div>
+                            <img
+                              src="https://mdbcdn.b-cdn.net/img/Photos/new-templates/bootstrap-chat/ava1-bg.webp"
+                              alt="avatar"
+                              className="d-flex align-self-center me-3"
+                              width="60"
+                            />
+                          </div>
+                          <div className="pt-1">
+                            <p className="fw-bold mb-0">{chat.client_name}</p>
+                            <p className="small text-muted">{chat.last_message}</p>
+                          </div>
                         </div>
-                        <div className="pt-1">
-                          <p className="fw-bold mb-0">{receiverName}</p>
-                          <p className="small text-muted">Hello, are you there?</p>
-                        </div>
-                      </div>
-                    </a>
-                  </li>
+                  
+                    </li>
+                  ))}
                 </MDBTypography>
               </div>
             </MDBCardBody>

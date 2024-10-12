@@ -17,6 +17,7 @@ const ServiceRequest=require('./models/serviceRequest');
 
 const RequestCategoryService=require('./models/RequestsCategory');
 const messsages =require('./models/message');
+const ChatHeads=require('./models/ChatHead');
 const app = express();
 const PORT = process.env.PORT || 3000;
 
@@ -46,6 +47,7 @@ const initializeApp = async () => {
       ServiceProviderServices.createServiceProviderServicesTable();
       RequestCategoryService.createRequestCategoryTable();
       messsages.createMessageTable();
+      ChatHeads.createChatHeadTable();
       // Ensures the database syncs
      await initializeCities();              // Populate city table
      await initializeCategoriesAndServices();

@@ -16,6 +16,7 @@ const servicerequestform=require('../controllers/serviceRequestController.js');
 const adminController =require('../controllers/adminController.js');
 const upload = require('../middleware/multer.js');
 const chatController=require('../controllers/chatController.js');
+const ChatHeads=require('../controllers/chatHeadController.js');
 
 const verifyToken = require('../middleware/auth');
 const { verify } = require('crypto');
@@ -71,6 +72,9 @@ router.post('/getPendingRequestofClient',servicerequestform.getPendingRequestofC
 router.post('/addAcceptedRequest',servicerequestform.addAcceptedRequest);
 router.post('/cancelServiceRequest',servicerequestform.cancelServiceRequest);
 router.get('/getUserName',chatController.getUserName);
+
+router.post('/createORupdateChatHead',ChatHeads.createOrUpdateChatHead);
+router.get('/getChatHeads',ChatHeads.getChatHeadsForUser);
 router.get('/verify-token', verifyToken, (req, res) => {
     // If the token is valid, return success
     res.json({ isValid: true });

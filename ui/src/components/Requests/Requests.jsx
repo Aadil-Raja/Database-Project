@@ -1,5 +1,6 @@
 import React, { useEffect, useState } from 'react';
 import axios from 'axios';
+import { Navigate, useNavigate } from 'react-router-dom';
 import {
   MDBCard,
   MDBCardImage,
@@ -15,6 +16,7 @@ import {
 const SearchResults = () => {
   const [data, setData] = useState([]);
   const [loading, setLoading] = useState(true);
+  const navigate=useNavigate();
 
   useEffect(() => {
     const fetchRequests = async () => {
@@ -56,10 +58,26 @@ const SearchResults = () => {
     fetchRequests();
   }, []);
 
-  const initiateChat = (clientId) => {
-    const serviceProviderId = localStorage.getItem('user_ID');
-    const roomName = `room_${clientId}_${serviceProviderId}`;
-    window.location.href = `/Spchat?room=${roomName}&client_id=${clientId}&sp_id=${serviceProviderId}`;
+  const initiateChat = async (clientId) => {
+    try{
+      const serviceProviderId = localStorage.getItem('user_ID');
+      const roomName = `room_${clientId}_${serviceProviderId}`;
+      const chatHeadData = {
+        room: roomName,
+        client_id: clientId,
+        sp_id: serviceProviderId,
+        last_message: ' ',
+      };
+      
+      await axios.post('http://localhost:3000/createORupdateChatHead', chatHeadData);
+      navigate('/Spchat', { state: chatHeadData });
+
+    }
+    catch(error)
+    {
+      console.log(error);
+    }
+    
   };
 
   if (loading) {
