@@ -3,7 +3,6 @@ import axios from 'axios';
 import {
   MDBBtn,
   MDBContainer,
-  MDBRow,
   MDBCol,
   MDBInput,
   MDBCard,
@@ -23,16 +22,16 @@ const Login = () => {
 
   const handleLogin = async (e) => {
     e.preventDefault();
-  
+
     try {
       const response = await axios.post("http://localhost:3000/login", { email, password });
       console.log(response);
-     
+
       if (response.data.message === "exist") {
         console.log("Login successful!");
         localStorage.setItem('token', response.data.token);
         localStorage.setItem('user_ID', response.data.user_ID);
-        localStorage.setItem('usertype', response.data.role);    
+        localStorage.setItem('usertype', response.data.role);
 
         if (response.data.first_time_login === "First time login") {
           navigate("/service-provider-form");
@@ -55,60 +54,60 @@ const Login = () => {
   };
 
   return (
-    <MDBContainer fluid className='d-flex align-items-center justify-content-center bg-image' >
-     
-        <MDBCol xl="30" lg="30
-        " md="9" sm="5" className='d-flex justify-content-center'>
-          <MDBCard className='m-5' style={{ width : '500px',padding: '20px', zIndex: 1 }}>
-            <MDBCardBody className='px-5'>
-              <div className="text-center">
-                <MDBCardImage 
-                  src="https://mdbcdn.b-cdn.net/img/Photos/new-templates/bootstrap-login-form/lotus.webp"
-                  style={{ width: '185px' }} 
-                  alt="logo" 
-                />
-                <h4 className="mt-1 mb-5 pb-1">Kaam karo</h4>
-              </div>
-              <p>Please login to your account</p>
-              <form onSubmit={handleLogin}>
-                <MDBInput 
-                  wrapperClass='mb-4' 
-                  label='Email address' 
-                  id='form1' 
-                  type='email' 
-                  value={email} 
-                  onChange={emailHandler} 
-                  required
-                />
-                <MDBInput 
-                  wrapperClass='mb-4' 
-                  label='Password' 
-                  id='form2' 
-                  type='password' 
-                  value={password} 
-                  onChange={passwordHandler} 
-                  required
-                />
-                <div className="text-center pt-1 mb-5 pb-1">
-                  <MDBBtn type="submit" className="mb-4 w-100 login-gradient-custom-2">Sign in</MDBBtn>
-                  <Link to="/forgotpassword" className="text-muted"><p className="login-forpass">Forgot password?</p></Link>
-                </div>
-              </form>
-              <div className="d-flex flex-row align-items-center justify-content-center pb-4 mb-4">
-                <p className="mb-0">Don't have an account?</p>
-                <Link to="/register">
-
-                  <MDBBtn outline className='mx-2 login-create-new' color='danger' >
-                    Create new
-                  </MDBBtn>
+    <MDBContainer fluid className="d-flex align-items-center justify-content-center login-bg">
+      <MDBCol xl="30" lg="30" md="9" sm="5" className="d-flex justify-content-center">
+        <MDBCard className="login-card">
+          <MDBCardBody className="px-5">
+            <div className="text-center">
+              <MDBCardImage
+                src="https://mdbcdn.b-cdn.net/img/Photos/new-templates/bootstrap-login-form/lotus.webp"
+                style={{ width: '185px' }}
+                alt="logo"
+              />
+              <h4 className="mt-1 mb-5 pb-1">Kaam karo</h4>
+            </div>
+            <p className="login-text">Please login to your account</p>
+            <form onSubmit={handleLogin}>
+              <MDBInput
+                wrapperClass="mb-4"
+                label="Email address"
+                id="form1"
+                type="email"
+                value={email}
+                onChange={emailHandler}
+                required
+                className="login-input"
+              />
+              <MDBInput
+                wrapperClass="mb-4"
+                label="Password"
+                id="form2"
+                type="password"
+                value={password}
+                onChange={passwordHandler}
+                required
+                className="login-input"
+              />
+              <div className="text-center pt-1 mb-5 pb-1">
+                <MDBBtn type="submit" className="mb-4 w-100 login-gradient-custom">Sign in</MDBBtn>
+                <Link to="/forgotpassword" className="text-muted">
+                  <p className="login-forpass">Forgot password?</p>
                 </Link>
               </div>
-            </MDBCardBody>
-          </MDBCard>
-        </MDBCol>
-
-       
-   
+            </form>
+            <div className="d-flex flex-row align-items-center justify-content-center pb-4 mb-4">
+              <p className="mb-0">Don't have an account?</p>
+              <Link to="/register">
+                <div className="login-create-new">
+                  <MDBBtn outline className="mx-2" color="danger">
+                    Create new
+                  </MDBBtn>
+                </div>
+              </Link>
+            </div>
+          </MDBCardBody>
+        </MDBCard>
+      </MDBCol>
     </MDBContainer>
   );
 };

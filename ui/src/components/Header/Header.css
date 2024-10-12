@@ -14,7 +14,7 @@
     transition: background 0.3s ease;
 }
 
-.header-nav-buttons:hover{
+.header-nav-buttons a:hover{
     color:rgb(253, 129, 79);
     transition: background 0.3s ease;
 }

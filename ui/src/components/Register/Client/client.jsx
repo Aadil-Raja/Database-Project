@@ -62,7 +62,7 @@ const Client = () => {
   };
 
   return (
-    <MDBContainer fluid className='d-flex align-items-center justify-content-center bg-image' >
+    <MDBContainer fluid className='d-flex align-items-center justify-content-center bg-image register-client-body' >
      
      <MDBCol xl="10" lg="9" md="9" sm="9" xs="5" className='d-flex justify-content-center'>
       <MDBCard className='m-5' style={{ width: '600px', padding: '50px', zIndex: 1 }}>

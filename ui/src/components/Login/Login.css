@@ -1,34 +1,50 @@
-.login-gradient-custom-2 {
-  /* fallback for old browsers */
-  background: #fccb90;
 
-  /* Chrome 10-25, Safari 5.1-6 */
-  background: -webkit-linear-gradient(to right, #ee7724, #d8363a, #dd3675, #b44593);
-
-  /* W3C, IE 10+/ Edge, Firefox 16+, Chrome 26+, Opera 12+, Safari 7+ */
-  background: linear-gradient(to right, #ee7724, #d8363a, #dd3675, #b44593);
+.login-bg {
+  background-color: rgb(207, 241, 234); 
+  min-height: 100vh;
 }
 
-.login-gradient-custom-2:hover {
-  background: linear-gradient(to right, #612e0a, #8a0002, #99003d, #6b0151);
+.login-card {
+  width: 500px;
+  padding: 20px;
+  z-index: 1;
+  background-color: #ffffff; 
+  border-radius: 10px;
+  box-shadow: 0 4px 12px rgba(0, 0, 0, 0.1);
+}
+
+.login-text {
+  color: #333333;
+  font-size: 18px;
+}
+
+.login-input {
+  border: 1px solid #008080; /* Teal border */
+  border-radius: 6px;
+}
+
+.login-gradient-custom {
+  /* Matching your theme's gradient */
+  background: linear-gradient(to right, #008080, #ff6f61);
+}
+
+.login-gradient-custom:hover {
+  background: linear-gradient(to right, #004d4d, #cc523d); /* Darkened colors on hover */
   transition: background 0.3s ease;
 }
 
-.login-create-new:hover{
-  background:#b34608;
+.login-create-new button:hover {
+  background: #ff6f61; /* Coral color for create new button */
   color: white;
   transition: color background 0.3s ease;
 }
 
-@media (min-width: 768px) {
-  .gradient-form {
-    height: 100vh !important;
-  }
+.login-forpass {
+  color: #008080; /* Teal color */
 }
 
-@media (min-width: 769px) {
-  .gradient-custom-2 {
-    border-top-right-radius: .3rem;
-    border-bottom-right-radius: .3rem;
+@media (min-width: 768px) {
+  .login-bg {
+    height: 100vh !important;
   }
 }

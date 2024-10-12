@@ -22,11 +22,18 @@
     font-weight: bold;
   }
 
-  .home-buttons:hover{
-    background-color: white;
-    color: rgb(54, 190, 177);
+  .home-buttons a{
+    color: white;
   }
-  
+
+  .home-buttons a:hover{
+    color:rgb(54, 190, 177) ;
+  }
+
+  .home-buttons button:hover{
+    background-color: white;
+  }
+
   .login-forpass:hover{
     color: rgb(180, 180, 180);
   }

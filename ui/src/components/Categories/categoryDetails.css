@@ -1,0 +1,47 @@
+.services-body{
+  min-height: 60vh;
+}
+
+.service-link {
+    text-decoration: none; /* Remove underline from the link */
+    color: inherit; /* Ensure the text color remains unchanged */
+  }
+  
+  .service-card {
+    background-color: #fff; /* Background for each service card */
+    border-radius: 8px; /* Rounded corners for the card */
+    transition: transform 0.2s; /* Animation for card hover effect */
+  }
+  
+  .service-card:hover {
+    transform: scale(1.05); /* Slightly enlarge the card on hover */
+  }
+  
+  .service-icon-wrapper {
+    display: flex;
+    justify-content: center;
+    align-items: center;
+    background-color: #008080; /* Teal background */
+    border-radius: 50%;
+    padding: 20px;
+    width: 80px;
+    height: 80px;
+    margin: 0 auto;
+  }
+  
+  .service-icon {
+    width: 60px; /* Adjust icon size */
+    height: 60px;
+  }
+  
+  .service-name {
+    font-size: 1.2rem;
+    font-weight: bold;
+    color: #333;
+  }
+  
+  .service-description {
+    font-size: 1rem;
+    color: #666;
+  }
+  
