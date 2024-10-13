@@ -1,0 +1,59 @@
+/* Service Provider Form Body */
+.sp-form-body {
+    min-height: 80vh;
+    background-color: #f8f9fa; /* Light background to contrast the cards */
+    padding: 2rem;
+    border-radius: 8px;
+  }
+  
+  /* Form Title */
+  .sp-form-title {
+    font-size: 2rem;
+    font-weight: bold;
+    color: #333; /* Dark text color for contrast */
+  }
+  
+  /* Card Styling */
+  .sp-card {
+    border: none;
+    background-color: #fff;
+    border-radius: 12px;
+    transition: transform 0.2s;
+  }
+  
+  .sp-card:hover {
+    transform: translateY(-5px); /* Slight lift effect on hover */
+  }
+  
+  /* Card Title */
+  .sp-card-title {
+    font-size: 1.5rem;
+    color: #444; /* Subtle color for card title */
+  }
+  
+  /* Checkbox Group */
+  .sp-checkbox-group {
+    max-height: 200px; /* Limit the height to avoid overflow */
+    overflow-y: auto; /* Scrollable if content exceeds height */
+  }
+  
+  /* Checkbox Styling */
+  .sp-checkbox {
+    font-size: 1rem;
+    color: #555;
+  }
+  
+  /* Submit Button Styling */
+  .sp-submit-btn {
+    font-size: 1.1rem;
+    padding: 0.8rem 2rem;
+    background-color: #008080; /* Primary theme color */
+    border: none;
+    border-radius: 5px;
+    transition: background-color 0.3s ease;
+  }
+  
+  .sp-submit-btn:hover {
+    background-color: #006666; /* Darker shade on hover */
+  }
+  
