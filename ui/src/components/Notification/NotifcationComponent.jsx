@@ -52,14 +52,23 @@ const NotificationComponent = () => {
   }, [userID, userType]);
 
   // Handle clicking on a notification to navigate to chat
-  const handleNotificationClick = (room, sp_id, client_id) => {
-    // Navigate to the chat room with the specific room, sp_id, and client_id
+  const handleNotificationClick = async(room, sp_id, client_id) => {
+    const chatHeadData = {
+      room: room,
+      client_id: client_id,
+      sp_id: sp_id,
+    };
+  
     if (userType === 'clients') {
-      navigate(`/Clientchat?room=${room}&client_id=${userID}&sp_id=${sp_id}`);
+        
+  navigate('/Clientchat', { state: chatHeadData });
     } else if (userType === 'serviceproviders') {
-      navigate(`/Spchat?room=${room}&client_id=${client_id}&sp_id=${userID}`);
+      
+  navigate('/Spchat', { state: chatHeadData });
     }
   };
+
+ 
 
   return (
     <div>

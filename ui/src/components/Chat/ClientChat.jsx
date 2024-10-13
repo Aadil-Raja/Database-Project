@@ -29,14 +29,14 @@ const Chat = () => {
   const [selectedRequestId, setSelectedRequestId] = useState('');
   const [selectedRequest, setSelectedRequest] = useState(null);
   const[receiverName,setreceiverName]=useState('');
+  const [chatHeads, setChatHeads] = useState([]);
   const [chatOpen, setChatOpen] = useState(true);
   const location = useLocation();
 
   useEffect(() => {
-    const queryParams = new URLSearchParams(location.search);
-    const roomName = queryParams.get('room');
-    const client_id = queryParams.get('client_id');
-    const sp_id = queryParams.get('sp_id');
+    const { room, sp_id } = location.state || {};
+    const client_id = localStorage.getItem('user_ID');;
+    const roomName=room;
     setRoom(roomName);
     setClientId(client_id);
     setSpId(sp_id);
@@ -47,20 +47,19 @@ const Chat = () => {
 
     fetchPreviousMessages(roomName);
     fetchPendingRequests(client_id);
-    fetchUserName(sp_id);
+    fetchChatHeads(client_id);
   }, [location.search]);
  
-  const fetchUserName = async(sp_id) =>{
-    try{
-      const response =await axios.get(`http://localhost:3000/getUserName?user_id=${sp_id}&user_type=serviceproviders`);
-      setreceiverName(response.data.name);
+  
+  const fetchChatHeads = async (client_id) => {
+    try {
+      const response = await axios.get(`http://localhost:3000/getChatHeads?user_id=${client_id}&user_type=clients`);
+      setChatHeads(response.data);
+    } catch (error) {
+      console.error('Error fetching chat heads:', error);
     }
-    catch(error)
-    {
-      console.error('Error Fetching previous messages',error);
-    }
-  }
- 
+  };
+
   const fetchPreviousMessages = async (roomName) => {
     try {
       const response = await axios.get(`http://localhost:3000/getMessages?room=${roomName}`);
@@ -77,6 +76,14 @@ const Chat = () => {
     } catch (error) {
       console.error('Error fetching pending requests:', error);
     }
+  };
+  const loadChat = async (roomName, sp_id) => {
+    setRoom(roomName);
+    setSpId(sp_id);
+    setReceiverID(sp_id);
+    socket.emit('join_room', roomName);
+    fetchPreviousMessages(roomName);
+   
   };
 
   const sendMessage = async() => {
@@ -95,12 +102,26 @@ const Chat = () => {
     setMessage('');
     try {
       await axios.post('http://localhost:3000/saveMessage', messageData);
+      const chatHeadData = {
+        room: room,
+        client_id: senderID,
+        sp_id: receiverID,
+        last_message: message,
+      };
+      
+      await axios.post('http://localhost:3000/createORupdateChatHead', chatHeadData);
     } catch(error) {
       console.error('Error saving message:', error);
     }
   };
 
   const cancelServiceRequest = async (requestId) => {
+    const requestData = {
+      request_id:requestId,
+      status: 'cancelled',
+    };
+          
+    await axios.put('http://localhost:3000/updateRequestMessage', requestData);
     setMessages((prevMessages) =>
       prevMessages.map((msg) =>
         msg.request_id === requestId ? { ...msg, status: 'cancelled' } : msg
@@ -111,18 +132,23 @@ const Chat = () => {
     socket.emit('cancel_service_request', { request_id: requestId, room });
   };
 
-  const sendSelectedRequest = () => {
+  const sendSelectedRequest = async () => {
     if (selectedRequest) {
       const requestData = {
         sender_id: senderID,
         receiver_id: receiverID,
         message_text: `Request for ${selectedRequest.name}`,
+        sender_type: 'clients', 
+      receiver_type: 'serviceproviders',
         request_id: selectedRequest.request_id,
         room: room,
         timestamp: Date.now(),
         type: 'service_request',
+        status: 'pending',
       };
-  
+      socket.emit('service_request', { messageData: requestData, room });
+      setMessages((prevMessages) => [...prevMessages, requestData]);
+      await axios.post('http://localhost:3000/saveRequestMessage', requestData);
       socket.emit('service_request', { messageData: requestData, room });
       setMessages((prevMessages) => [...prevMessages, requestData]);
   
@@ -150,8 +176,8 @@ const Chat = () => {
   return (
     <MDBContainer fluid className="py-5" style={{ backgroundColor: "#CDC4F9" }}>
       <MDBRow>
-        <MDBCol md="4">
-          <MDBCard style={{ borderRadius: "15px" }}>
+      <MDBCol md="4">
+          <MDBCard id="chat-heads-card" style={{ borderRadius: "15px" }}>
             <MDBCardBody>
               <MDBInputGroup className="rounded mb-3">
                 <input
@@ -159,22 +185,20 @@ const Chat = () => {
                   placeholder="Search"
                   type="search"
                 />
-                <span className="input-group-text border-0">
+                <span className="input-group-text border-0" id="search-addon">
                   <MDBIcon fas icon="search" />
                 </span>
               </MDBInputGroup>
               <div className="chat-scrollbar" style={{ height: "400px" }}>
                 <MDBTypography listUnStyled className="mb-0">
-                  {pendingRequests.map((req, index) => (
-                    <li key={index} className="p-2 border-bottom">
-                      <a
-                        href="#!"
-                        className="d-flex justify-content-between"
-                        onClick={() => {
-                          setSelectedRequest(req);
-                          setRoom(req.roomName);
-                        }}
-                      >
+                {chatHeads.map((chat) => (
+         <li
+         className="p-2 border-bottom"
+         key={chat.client_id}
+         onClick={() => loadChat(chat.room, chat.sp_id)}
+         style={{ cursor: 'pointer' }}
+       >
+                    
                         <div className="d-flex flex-row">
                           <div>
                             <img
@@ -185,13 +209,11 @@ const Chat = () => {
                             />
                           </div>
                           <div className="pt-1">
-                            <p className="fw-bold mb-0">{req.name}</p>
-                            <p className="small text-muted">
-                              {req.lastMessage || 'No messages yet'}
-                            </p>
+                            <p className="fw-bold mb-0">{chat.sp_name}</p>
+                            <p className="small text-muted">{chat.last_message}</p>
                           </div>
                         </div>
-                      </a>
+                  
                     </li>
                   ))}
                 </MDBTypography>
@@ -223,7 +245,7 @@ const Chat = () => {
                     {msg.type === 'service_request' && (
                       <span>
                         Status: {msg.status ? msg.status.charAt(0).toUpperCase() + msg.status.slice(1) : 'Pending'}
-                        {!msg.status && (
+                        {msg.status==='pending' && (
                           <button onClick={() => cancelServiceRequest(msg.request_id)}>Cancel Request</button>
                         )}
                       </span>

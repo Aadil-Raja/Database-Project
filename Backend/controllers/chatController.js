@@ -20,6 +20,46 @@ exports.saveMessage = async (req, res) => {
     res.status(500).json({ message: 'Error saving message' });
   }
 };
+exports.saveRequestMessage = async (req, res) => {
+  const { sender_id, receiver_id, message_text, sender_type, receiver_type,room,type,status,request_id } = req.body;
+
+  try {
+    // Raw SQL query for inserting a new message
+    const query = `
+      INSERT INTO Messages (sender_id, receiver_id, message_text, sender_type, receiver_type,room,type,status,request_id)
+      VALUES (${sender_id}, ${receiver_id}, '${message_text}', '${sender_type}', '${receiver_type}','${room}','${type}','${status}',${request_id});
+    `;
+
+    // Execute the raw SQL query
+    await sequelize.query(query);
+    
+    res.json({ message: 'Message saved successfully' });
+  } catch (error) {
+    res.status(500).json({ message: 'Error saving message' });
+  }
+};
+
+
+exports.updateRequestMessage = async (req, res) => {
+  try {
+    const { request_id, status } = req.body;
+
+    const query = `
+      UPDATE Messages
+      SET status = '${status}'
+      WHERE request_id = ${request_id}
+    `;
+
+    await sequelize.query(query);
+     
+    res.status(200).json({ message: 'Request message status updated successfully' });
+  } catch (error) {
+    console.error('Error updating request message:', error.message);
+    res.status(500).json({ error: 'Failed to update request message' });
+  }
+};
+
+
 
 
 exports.getMessages = async (req, res) => {

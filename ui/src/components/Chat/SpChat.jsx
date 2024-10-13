@@ -137,11 +137,20 @@ const Chat = () => {
   }, [senderID]);
 
   const handleAcceptRequest = async (requestId) => {
+    const requestData = {
+      request_id:requestId,
+      status: 'accepted',
+    };
+          
+    await axios.put('http://localhost:3000/updateRequestMessage', requestData);
+
     setMessages((prevMessages) =>
       prevMessages.map((msg) =>
         msg.request_id === requestId ? { ...msg, status: 'accepted' } : msg
       )
     );
+
+    
 
     socket.emit('accept_service_request', { request_id: requestId, room });
 
@@ -216,10 +225,10 @@ const Chat = () => {
                     className={`message ${msg.sender_type === sender ? 'sent' : 'received'}`}
                   >
                     {msg.message_text}
-                    {msg.type === 'service_request' && !msg.status && (
+                    {msg.type === 'service_request' && msg.status==='pending' &&(
                       <button onClick={() => handleAcceptRequest(msg.request_id)}>Accept Request</button>
                     )}
-                    {msg.status && (
+                    {msg.status!='pending' && (
                       <span>Status: {msg.status.charAt(0).toUpperCase() + msg.status.slice(1)}</span>
                     )}
                   </div>

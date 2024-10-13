@@ -66,7 +66,11 @@ router.post('/Addcategories', upload.single('categoryImg'), categoryController.A
 
 router.post('/AddService',upload.single('serviceImg'),serviceController.AddaService);
 router.post('/saveMessage', chatController.saveMessage); // Route to save messages
+
 router.get('/getMessages', chatController.getMessages); 
+
+router.post('/saveRequestMessage',chatController.saveRequestMessage);
+router.put('/updateRequestMessage', chatController.updateRequestMessage);
 
 router.post('/getPendingRequestofClient',servicerequestform.getPendingRequestofClient);
 router.post('/addAcceptedRequest',servicerequestform.addAcceptedRequest);
