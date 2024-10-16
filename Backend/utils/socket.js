@@ -31,7 +31,10 @@ const initSocket = (server) => {
     });
 
     // Handle incoming messages (normal chat messages)
-     
+    
+    socket.on('leave_room', (room) => {
+      socket.leave(room);
+    });
     socket.on('client_send_message', ({ messageData, room }) => {
       console.log('Message received:', messageData);
     
@@ -44,7 +47,7 @@ const initSocket = (server) => {
         });
       
     
-      socket.to(room).emit('all_receive_message', messageData);
+      io.to(room).emit('all_receive_message', messageData);
     });
     
 
@@ -62,7 +65,7 @@ const initSocket = (server) => {
       
     
       // Broadcast the message to all users in the room (including both client and service provider)
-      socket.to(room).emit('all_receive_message', messageData);
+      io.to(room).emit('all_receive_message', messageData);
     });
 
     // NEW: Handle service request event

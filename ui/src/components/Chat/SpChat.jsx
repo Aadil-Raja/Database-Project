@@ -29,6 +29,7 @@ const Chat = () => {
   const[receiverName,setreceiverName]=useState('');
   const [chatHeads, setChatHeads] = useState([]);
   const location = useLocation();
+  const [isInRoom, setIsInRoom] = useState(false);
 
   useEffect(() => {
 
@@ -42,15 +43,16 @@ const Chat = () => {
     setSpId(sp_id);
     setSenderID(sp_id);
     setReceiverID(client_id);
-
+ 
     socket.emit('join_room', roomName);
-    fetchPreviousMessages(roomName);
 
     console.log(sp_id);
     fetchChatHeads(sp_id);
   }, [location.search]);
   
   const loadChat = async (roomName, client_id) => {
+    setIsInRoom(true);
+    socket.emit('leave_room', room);
     setRoom(roomName);
     setClientId(client_id);
     setReceiverID(client_id);
@@ -96,7 +98,7 @@ const Chat = () => {
     try {
      
       await axios.post('http://localhost:3000/saveMessage', messageData);
-    console.log("hi");
+ 
       const chatHeadData = {
         room: room,
         client_id: receiverID,
@@ -120,11 +122,19 @@ const Chat = () => {
     });
 
     socket.on('receive_service_request', (data) => {
-      setMessages((prevMessages) => [...prevMessages, data]);
+      if (data.room === room && data.sender_type != sender)  {
+        setMessages((prevMessages) => [...prevMessages, data]);
+      }
+     
     });
 
+
     socket.on('all_receive_message', (data) => {
-      if (data.sender_id !== senderID) {
+      console.log("i am sp receiveing msg");
+      console.log(data.room,room,data.sender_type,sender);
+      console.log("HELLO",room);
+      if (data.room === room && data.sender_type != sender)  {
+        console.log("i am sp savingg msg");
         setMessages((prevMessages) => [...prevMessages, data]);
       }
     });
@@ -134,7 +144,7 @@ const Chat = () => {
       socket.off('receive_service_request');
       socket.off('all_receive_message');
     };
-  }, [senderID]);
+  }, [room]);
 
   const handleAcceptRequest = async (requestId) => {
     const requestData = {
@@ -211,7 +221,7 @@ const Chat = () => {
             </MDBCardBody>
           </MDBCard>
         </MDBCol>
-
+      {isInRoom && (
         <MDBCol md="8">
           <MDBCard id="chat-box-card" style={{ borderRadius: "15px" }}>
             <MDBCardBody>
@@ -228,8 +238,8 @@ const Chat = () => {
                     {msg.type === 'service_request' && msg.status==='pending' &&(
                       <button onClick={() => handleAcceptRequest(msg.request_id)}>Accept Request</button>
                     )}
-                    {msg.status!='pending' && (
-                      <span>Status: {msg.status.charAt(0).toUpperCase() + msg.status.slice(1)}</span>
+                    {msg.status!='pending' && msg.type === 'service_request' && (
+                      <span>Status: {msg.status}</span>
                     )}
                   </div>
                 ))}
@@ -253,6 +263,7 @@ const Chat = () => {
             </MDBCardBody>
           </MDBCard>
         </MDBCol>
+      )}
       </MDBRow>
     </MDBContainer>
   );

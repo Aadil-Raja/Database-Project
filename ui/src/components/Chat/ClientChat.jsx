@@ -25,12 +25,15 @@ const Chat = () => {
   const [spId, setSpId] = useState(null);
   const [senderID, setSenderID] = useState(null);
   const [receiverID, setReceiverID] = useState(null);
+  const [sender, setSender] = useState('clients');
+
   const [pendingRequests, setPendingRequests] = useState([]);
   const [selectedRequestId, setSelectedRequestId] = useState('');
   const [selectedRequest, setSelectedRequest] = useState(null);
   const[receiverName,setreceiverName]=useState('');
   const [chatHeads, setChatHeads] = useState([]);
   const [chatOpen, setChatOpen] = useState(true);
+  const [isInRoom, setIsInRoom] = useState(false);
   const location = useLocation();
 
   useEffect(() => {
@@ -45,7 +48,7 @@ const Chat = () => {
     setReceiverID(sp_id);
     socket.emit('join_room', roomName);
 
-    fetchPreviousMessages(roomName);
+   
     fetchPendingRequests(client_id);
     fetchChatHeads(client_id);
   }, [location.search]);
@@ -78,6 +81,8 @@ const Chat = () => {
     }
   };
   const loadChat = async (roomName, sp_id) => {
+    setIsInRoom(true);
+    socket.emit('leave_room', room);
     setRoom(roomName);
     setSpId(sp_id);
     setReceiverID(sp_id);
@@ -149,8 +154,7 @@ const Chat = () => {
       socket.emit('service_request', { messageData: requestData, room });
       setMessages((prevMessages) => [...prevMessages, requestData]);
       await axios.post('http://localhost:3000/saveRequestMessage', requestData);
-      socket.emit('service_request', { messageData: requestData, room });
-      setMessages((prevMessages) => [...prevMessages, requestData]);
+
   
       setSelectedRequestId('');
       setSelectedRequest(null);
@@ -159,7 +163,10 @@ const Chat = () => {
 
   useEffect(() => {
     socket.on('all_receive_message', (data) => {
-      if (data.sender_id !== senderID) {
+      console.log("i am client receiveing msg");
+      console.log(data.room,room,data.sender_type,sender);
+      if (data.room === room && data.sender_type != sender) {
+        console.log("i am client savingg msg");
         setMessages((prevMessages) => [...prevMessages, data]);
       }
     });
@@ -170,8 +177,15 @@ const Chat = () => {
           msg.request_id === data.request_id ? { ...msg, status: 'accepted' } : msg
         )
       );
+      setPendingRequests((prevRequests) =>
+        prevRequests.filter((req) => req.request_id !== data.request_id)
+      );
     });
-  }, [senderID]);
+    return () => {
+      socket.off('all_receive_message');
+      socket.off('service_request_accepted');
+    };
+  }, [room]);
 
   return (
     <MDBContainer fluid className="py-5" style={{ backgroundColor: "#CDC4F9" }}>
@@ -221,7 +235,7 @@ const Chat = () => {
             </MDBCardBody>
           </MDBCard>
         </MDBCol>
-
+        {isInRoom && (
         <MDBCol md="8">
           <MDBCard style={{ borderRadius: "15px" }}>
             <MDBCardBody>
@@ -297,6 +311,7 @@ const Chat = () => {
             </MDBCardBody>
           </MDBCard>
         </MDBCol>
+           )}
       </MDBRow>
     </MDBContainer>
   );
