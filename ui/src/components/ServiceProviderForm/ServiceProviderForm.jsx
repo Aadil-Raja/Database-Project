@@ -11,6 +11,7 @@ import {
   MDBBtn,
   MDBCardTitle,
 } from 'mdb-react-ui-kit';
+import './ServiceProviderForm.css';
 
 const ServiceProviderForm = () => {
   const [categories, setCategories] = useState([]);
@@ -76,33 +77,38 @@ const ServiceProviderForm = () => {
   };
 
   return (
-    <MDBContainer className="mt-5">
-      <h2 className="text-center mb-4">Service Provider Preferences</h2>
+    <MDBContainer className="mt-5 sp-form-body">
+      <h1 className="text-center mb-4 sp-form-title">Service Provider Preferences</h1>
       <form onSubmit={handleSubmit}>
-        <MDBRow>
+        <MDBRow className="justify-content-center">
           {categories.map((category) => (
-            <MDBCol md="4" key={category.category_id} className="mb-3">
-              <MDBCard>
+            <MDBCol md="6" lg="4" key={category.category_id} className="mb-4">
+              <MDBCard className="sp-card shadow-sm">
                 <MDBCardBody>
-                  <MDBCardTitle className="mb-3">{category.name}</MDBCardTitle>
-                  {servicesByCategory[category.category_id] && servicesByCategory[category.category_id].map((service) => (
-                    <div key={service.service_id} className="mb-2">
-                      <MDBCheckbox
-                        name="services"
-                        label={service.name}
-                        id={`service-${service.service_id}`}
-                        value={service.service_id}
-                        checked={selectedServices.includes(service.service_id)}
-                        onChange={() => handleServiceChange(service.service_id)}
-                      />
-                    </div>
-                  ))}
+                  <MDBCardTitle className="mb-3 sp-card-title">{category.name}</MDBCardTitle>
+                  <div className="sp-checkbox-group">
+                    {servicesByCategory[category.category_id] && servicesByCategory[category.category_id].map((service) => (
+                      <div key={service.service_id} className="mb-2">
+                        <MDBCheckbox
+                          name="services"
+                          label={service.name}
+                          id={`service-${service.service_id}`}
+                          value={service.service_id}
+                          checked={selectedServices.includes(service.service_id)}
+                          onChange={() => handleServiceChange(service.service_id)}
+                          className="sp-checkbox"
+                        />
+                      </div>
+                    ))}
+                  </div>
                 </MDBCardBody>
               </MDBCard>
             </MDBCol>
           ))}
         </MDBRow>
-        <MDBBtn type="submit" color="primary">Save Preferences</MDBBtn>
+        <div className="text-center mt-4">
+          <MDBBtn type="submit" color="primary" className="sp-submit-btn">Save Preferences</MDBBtn>
+        </div>
       </form>
     </MDBContainer>
   );
