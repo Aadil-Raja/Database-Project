@@ -37,7 +37,7 @@ app.use('/images', express.static('public/images'));
 
 const initializeApp = async () => {
     try {
-      await sequelize.sync({sync:true });
+      await sequelize.sync({force:true });
       cities.createCitiesTable();
       ServiceProvider.createServiceProviderTable();
       Client.createClientsTable(); 
