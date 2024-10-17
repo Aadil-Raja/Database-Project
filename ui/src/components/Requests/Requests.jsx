@@ -1,9 +1,8 @@
 import React, { useEffect, useState } from 'react';
 import axios from 'axios';
-import { Navigate, useNavigate } from 'react-router-dom';
+import { useNavigate } from 'react-router-dom';
 import {
   MDBCard,
-  MDBCardImage,
   MDBCardBody,
   MDBCardTitle,
   MDBCardText,
@@ -11,12 +10,12 @@ import {
   MDBCol,
   MDBBtn
 } from 'mdb-react-ui-kit';
-
+import './Requests.css';
 
 const SearchResults = () => {
   const [data, setData] = useState([]);
   const [loading, setLoading] = useState(true);
-  const navigate=useNavigate();
+  const navigate = useNavigate();
 
   useEffect(() => {
     const fetchRequests = async () => {
@@ -27,11 +26,11 @@ const SearchResults = () => {
         const cityNamesPromises = requests.map((request) =>
           axios.get(`http://localhost:3000/getCityName?city_id=${request.city_id}`)
         );
-        
+
         const clientNamesPromises = requests.map((request) =>
           axios.get(`http://localhost:3000/getClientName?client_id=${request.client_id}`)
         );
-        
+
         const serviceNamesPromises = requests.map((request) =>
           axios.get(`http://localhost:3000/getServiceName?service_id=${request.service_id}`)
         );
@@ -59,7 +58,7 @@ const SearchResults = () => {
   }, []);
 
   const initiateChat = async (clientId) => {
-    try{
+    try {
       const serviceProviderId = localStorage.getItem('user_ID');
       const roomName = `room_${clientId}_${serviceProviderId}`;
       const chatHeadData = {
@@ -68,54 +67,53 @@ const SearchResults = () => {
         sp_id: serviceProviderId,
         last_message: ' ',
       };
-      
+
       await axios.post('http://localhost:3000/createORupdateChatHead', chatHeadData);
       navigate('/Spchat', { state: chatHeadData });
 
-    }
-    catch(error)
-    {
+    } catch (error) {
       console.log(error);
     }
-    
   };
 
   if (loading) {
-    return <p>Loading...</p>;
+    return <p className="loading-text">Loading...</p>;
   }
 
   return (
-    <MDBRow className='row-cols-1 row-cols-md-2 g-4'>
-      {data.length > 0 ? (
-        data.map((item) => (
-          <MDBCol key={item.request_id}>
-            <MDBCard
-             >
-              <MDBCardBody>
-                <MDBCardTitle>Client: {item.clientName}</MDBCardTitle>
-                <MDBCardText>
-                  <strong>City:</strong> {item.cityName}
-                </MDBCardText>
-                <MDBCardText>
-                  <strong>Service:</strong> {item.serviceName}
-                </MDBCardText>
-                <MDBCardText>
-                  <strong>Description:</strong> {item.description}
-                </MDBCardText>
-                <MDBCardText>
-                  <strong>Address:</strong> {item.address}
-                </MDBCardText>
-                <MDBBtn onClick={() => initiateChat(item.client_id)}>
-                  Send Message
-                </MDBBtn>
-              </MDBCardBody>
-            </MDBCard>
-          </MDBCol>
-        ))
-      ) : (
-        <p>No results found</p>
-      )}
-    </MDBRow>
+    <div className="requests-container">
+      <h2 className="requests-header">Client Requests</h2>
+      <MDBRow className='row-cols-1 row-cols-md-2 g-4'>
+        {data.length > 0 ? (
+          data.map((item) => (
+            <MDBCol key={item.request_id}>
+              <MDBCard className="request-card">
+                <MDBCardBody>
+                  <MDBCardTitle>Client: {item.clientName}</MDBCardTitle>
+                  <MDBCardText>
+                    <strong>City:</strong> {item.cityName}
+                  </MDBCardText>
+                  <MDBCardText>
+                    <strong>Service:</strong> {item.serviceName}
+                  </MDBCardText>
+                  <MDBCardText>
+                    <strong>Description:</strong> {item.description}
+                  </MDBCardText>
+                  <MDBCardText>
+                    <strong>Address:</strong> {item.address}
+                  </MDBCardText>
+                  <MDBBtn className="message-btn" onClick={() => initiateChat(item.client_id)}>
+                    Send Message
+                  </MDBBtn>
+                </MDBCardBody>
+              </MDBCard>
+            </MDBCol>
+          ))
+        ) : (
+          <p className="no-results">No results found</p>
+        )}
+      </MDBRow>
+    </div>
   );
 };
 
