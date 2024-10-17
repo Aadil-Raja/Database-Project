@@ -79,6 +79,8 @@ router.get('/getUserName',chatController.getUserName);
 
 router.post('/createORupdateChatHead',ChatHeads.createOrUpdateChatHead);
 router.get('/getChatHeads',ChatHeads.getChatHeadsForUser);
+
+router.delete('/removeReqCategories/:id',adminController.removeReqCategories);
 router.get('/verify-token', verifyToken, (req, res) => {
     // If the token is valid, return success
     res.json({ isValid: true });

@@ -43,3 +43,20 @@ exports.getReqCategories = async (req, res) => {
     res.status(500).json({ error: 'Failed to fetch categories' });
   }
 };
+
+exports.removeReqCategories=async(req,res) =>
+{
+  
+  try {
+   const {id}= req.params;
+   console.log(id);
+    const query=`delete from requestcategories where id=${id} `;
+    await sequelize.query(query);
+    res.json({message:"Successful"});
+  }
+  catch(error)
+  {
+    console.error('Error delete category',error);
+
+  }
+}

@@ -25,6 +25,8 @@ import ServiceRequestForm from './components/Categories/ServiceRequestForm.jsx';
 import Requests from './components/Requests/Requests.jsx';
 import ServiceProviderForm from './components/ServiceProviderForm/ServiceProviderForm.jsx'
 import SpProfile from './components/SpProfile/SpProfile.jsx';
+import AdminDashboard from './components/Admin/Admin.jsx'
+import AddCategory from './components/About/Add-Category/Add-Category.jsx'
 const router = createBrowserRouter([
   {
     path: '/',
@@ -107,6 +109,15 @@ const router = createBrowserRouter([
            path :'SpProfile',
            element : <SpProfile/>
        },
+       {
+        path : 'Admin',
+        element :<AdminDashboard/>
+       }
+       ,
+      {
+      path :'RequestCategory',
+      element :<AddCategory/>
+      },
     ]
   }
 ]);

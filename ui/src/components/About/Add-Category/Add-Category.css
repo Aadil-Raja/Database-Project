@@ -1,0 +1,29 @@
+/* AddCategory.css */
+
+/* Container styling */
+.add-category-container {
+  max-width: 600px;
+  margin: 0 auto;
+  padding: 20px;
+}
+
+/* Card styling */
+.add-category-card {
+  border-radius: 15px;
+}
+
+/* Form input styling */
+.add-category-input input,
+.add-category-textarea textarea {
+  font-size: 16px;
+}
+
+/* Button styling */
+.add-category-button {
+  font-size: 16px;
+}
+
+/* Alert messages */
+.add-category-alert {
+  font-size: 16px;
+}

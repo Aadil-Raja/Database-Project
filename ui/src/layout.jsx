@@ -9,17 +9,20 @@ function Layout() {
 
   const hideRegularHeader = [
     "/register",
+
     
 ].includes(location.pathname);
 
 const hideFooter = [
-  "/register",
+  "/register",,"/Admin",
+
 
 ].includes(location.pathname);
 
 const hideNotification = [
   "/Clientchat","/Spchat","","/","/Register","/Home"
   ,"/Contact","/Categories","/Requests","/sp","/login","/SpProfile"
+  ,"/Admin",
 
 ].includes(location.pathname);
   return (
