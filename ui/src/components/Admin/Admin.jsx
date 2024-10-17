@@ -89,6 +89,11 @@ const AdminDashboard = () => {
   };
 
   const handleReject = async(id) => {
+    await axios.delete(`http://localhost:3000/removeReqCategories/${id}`)
+    setRequests((prevRequests) =>
+      prevRequests.filter((req) => req.id !== id)
+    );
+
     alert(`Rejected request with ID: ${id}`);
   };
 
