@@ -21,9 +21,8 @@ import {
   MDBIcon,
 } from 'mdb-react-ui-kit';
 import axios from 'axios';
-
-
- import data from './data.js';
+// Import your mock data if needed
+// import data from './data.js';
 
 const SpHistory = () => {
   const [services, setServices] = useState([]);
@@ -44,9 +43,9 @@ const SpHistory = () => {
   });
 
   useEffect(() => {
-
+    fetchSpInfo();
     fetchServices();
-
+    fetchReviews();
   }, []);
 
   useEffect(() => {
@@ -69,15 +68,15 @@ const SpHistory = () => {
   };
 
   const fetchServices = async () => {
-    // try {
-    //   const spId = localStorage.getItem('user_ID');
-    //   const response = await axios.get(`http://localhost:3000/sp/services/${spId}`);
-    //   setServices(response.data);
-    // } catch (error) {
-    //   console.error('Error fetching services:', error);
-     
-       setServices(data);
-   // }
+    try {
+      const spId = localStorage.getItem('user_ID');
+      const response = await axios.get(`http://localhost:3000/sp/services/${spId}`);
+      setServices(response.data);
+    } catch (error) {
+      console.error('Error fetching services:', error);
+      // If using mock data
+      // setServices(data);
+    }
   };
 
   const fetchReviews = async () => {
@@ -272,7 +271,7 @@ const SpHistory = () => {
 
           <MDBTabsContent>
             {/* Pending Orders */}
-            <MDBTabsPane open={activeTab === 'pending'}>
+            <MDBTabsPane show={activeTab === 'pending'}>
               <OrderTable
                 orders={services.filter((service) => service.status === 'pending')}
                 status="pending"
@@ -282,7 +281,7 @@ const SpHistory = () => {
             </MDBTabsPane>
 
             {/* Accepted Orders */}
-            <MDBTabsPane open={activeTab === 'accepted'}>
+            <MDBTabsPane show={activeTab === 'accepted'}>
               <OrderTable
                 orders={services.filter((service) => service.status === 'accepted')}
                 status="accepted"
@@ -292,7 +291,7 @@ const SpHistory = () => {
             </MDBTabsPane>
 
             {/* Completed Orders */}
-            <MDBTabsPane open={activeTab === 'completed'}>
+            <MDBTabsPane show={activeTab === 'completed'}>
               <OrderTable
                 orders={services.filter((service) => service.status === 'completed')}
                 status="completed"
@@ -302,7 +301,7 @@ const SpHistory = () => {
             </MDBTabsPane>
 
             {/* Cancelled Orders */}
-            <MDBTabsPane open={activeTab === 'cancelled'}>
+            <MDBTabsPane show={activeTab === 'cancelled'}>
               <OrderTable
                 orders={services.filter((service) => service.status === 'cancelled')}
                 status="cancelled"
@@ -312,7 +311,7 @@ const SpHistory = () => {
             </MDBTabsPane>
 
             {/* My Reviews */}
-            <MDBTabsPane open={activeTab === 'reviews'}>
+            <MDBTabsPane show={activeTab === 'reviews'}>
               <ReviewsTable reviews={reviews} />
             </MDBTabsPane>
           </MDBTabsContent>

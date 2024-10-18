@@ -1,51 +1,52 @@
 /* SpHistory.css */
 
 .SpHistory-container {
-  padding: 20px;
-  background-color: #f7f9fc;
-}
-
-.SpHistory-left {
-  background-color: #fff;
-  padding: 20px;
-}
-
-.SpHistory-info-card,
-.SpHistory-earnings-card {
-  border: none;
-}
-
-.SpHistory-sp-name {
-  font-size: 24px;
-  font-weight: bold;
-  margin-bottom: 20px;
-}
-
-.SpHistory-right {
-  padding: 20px;
-}
-
-.SpHistory-table th,
-.SpHistory-table td {
-  vertical-align: middle;
-}
-
-.SpHistory-table td {
-  word-break: break-word;
-}
-
-.SpHistory-period-buttons {
-  display: flex;
-  flex-wrap: wrap;
-}
-
-.SpHistory-period-btn {
-  margin-bottom: 10px;
-}
-
-@media (max-width: 768px) {
-  .SpHistory-left,
-  .SpHistory-right {
-    padding: 10px;
+    padding: 20px;
+    background-color: #f7f9fc;
   }
-}
+  
+  .SpHistory-left {
+    background-color: #fff;
+    padding: 20px;
+  }
+  
+  .SpHistory-info-card,
+  .SpHistory-earnings-card {
+    border: none;
+  }
+  
+  .SpHistory-sp-name {
+    font-size: 24px;
+    font-weight: bold;
+    margin-bottom: 20px;
+  }
+  
+  .SpHistory-right {
+    padding: 20px;
+  }
+  
+  .SpHistory-table th,
+  .SpHistory-table td {
+    vertical-align: middle;
+  }
+  
+  .SpHistory-table td {
+    word-break: break-word;
+  }
+  
+  .SpHistory-period-buttons {
+    display: flex;
+    flex-wrap: wrap;
+  }
+  
+  .SpHistory-period-btn {
+    margin-bottom: 10px;
+  }
+  
+  @media (max-width: 768px) {
+    .SpHistory-left,
+    .SpHistory-right {
+      padding: 10px;
+    }
+  }
+  
