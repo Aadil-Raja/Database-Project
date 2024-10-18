@@ -28,6 +28,7 @@ import SpProfile from './components/SpProfile/SpProfile.jsx';
 import AdminDashboard from './components/Admin/Admin.jsx'
 import AddCategory from './components/About/Add-Category/Add-Category.jsx'
 import ClientDashboard from './components/ClientDashboard/ClientDashboard.jsx'
+import SpHistory from './components/Sp_History/SpHistory.jsx'
 
 const router = createBrowserRouter([
   {
@@ -124,6 +125,10 @@ const router = createBrowserRouter([
         path :'ClientDashBoard',
         element :<ClientDashboard/>
       },
+      {
+        path :'SpHistory',
+        element : <SpHistory/>
+      }
     
     ]
   }
