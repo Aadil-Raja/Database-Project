@@ -18,6 +18,7 @@ const ServiceRequest=require('./models/serviceRequest');
 const RequestCategoryService=require('./models/RequestsCategory');
 const messsages =require('./models/message');
 const ChatHeads=require('./models/ChatHead');
+const feedback =require('./models/feedback');
 const app = express();
 const PORT = process.env.PORT || 3000;
 
@@ -37,7 +38,7 @@ app.use('/images', express.static('public/images'));
 
 const initializeApp = async () => {
     try {
-      await sequelize.sync({sync:true });
+      await sequelize.sync({force:true });
       cities.createCitiesTable();
       ServiceProvider.createServiceProviderTable();
       Client.createClientsTable(); 
@@ -48,6 +49,7 @@ const initializeApp = async () => {
       RequestCategoryService.createRequestCategoryTable();
       messsages.createMessageTable();
       ChatHeads.createChatHeadTable();
+      feedback.createfeedbackTable();
       // Ensures the database syncs
      await initializeCities();              // Populate city table
      await initializeCategoriesAndServices();

@@ -1,25 +1,46 @@
 import React, { useState, useEffect } from 'react';
 import {
-  MDBTabs,
-  MDBTabsItem,
-  MDBTabsLink,
-  MDBTabsContent,
-  MDBTabsPane,
-  MDBTable,
-  MDBTableHead,
-  MDBTableBody,
-  MDBBtn,
-  MDBBadge,
-  MDBIcon,
-  MDBCard,
-  MDBCardBody,
-  MDBCardTitle,
-  MDBCardText,
-  MDBContainer,
-  MDBRow,
-  MDBCol,
-} from 'mdb-react-ui-kit';
+    MDBTabs,
+    MDBTabsItem,
+    MDBTabsLink,
+    MDBTabsContent,
+    MDBTabsPane,
+    MDBTable,
+    MDBTableHead,
+    MDBTableBody,
+    MDBBtn,
+    MDBBadge,
+    MDBIcon,
+    MDBContainer,
+    MDBModal,
+    MDBModalDialog,
+    MDBModalContent,
+    MDBModalHeader,
+    MDBModalTitle,
+    MDBModalBody,
+    MDBModalFooter,
+    MDBTextArea,
+  } from 'mdb-react-ui-kit';
 import axios from 'axios';
+const StarRating = ({ rating, onRatingChange, readOnly = false }) => {
+    return (
+      <div>
+        {[1, 2, 3, 4, 5].map((star) => (
+          <MDBIcon
+            key={star}
+            icon="star"
+            fas
+            size="lg"
+            style={{
+              cursor: readOnly ? 'default' : 'pointer',
+              color: star <= rating ? '#ffc107' : '#e4e5e9',
+            }}
+            onClick={() => !readOnly && onRatingChange && onRatingChange(star)}
+          />
+        ))}
+      </div>
+    );
+  };
 const ClientDashboard = () => {
   const [activeTab, setActiveTab] = useState('pending');
   const [orders, setOrders] = useState({
@@ -27,7 +48,11 @@ const ClientDashboard = () => {
     accepted: [],
     completed: [],
   });
-
+  const [feedbackModalOpen, setFeedbackModalOpen] = useState(false);
+  const [feedbackOrderId, setFeedbackOrderId] = useState(null);
+  const [feedbackRating, setFeedbackRating] = useState(0);
+  const [feedbackComment, setFeedbackComment] = useState('');
+  const [feedback,setfeedback]=useState([]);
   useEffect(() => {
     // Fetch orders from your API and categorize them
     fetchOrders();
@@ -55,7 +80,7 @@ const ClientDashboard = () => {
       console.error('Error fetching orders:', error);
     }
   };
-
+   
   const handleTabClick = (value) => {
     if (value === activeTab) {
       return;
@@ -99,11 +124,48 @@ const ClientDashboard = () => {
   };
 
   const handleProvideFeedback = (orderId) => {
-
-    alert(`Providing feedback for order ID: ${orderId}`);
-
+    setFeedbackOrderId(orderId);
+    setFeedbackModalOpen(true);
   };
 
+  const handleFeedbackSubmit = async () => {
+    try {
+      // Send feedback to backend
+      if ( feedbackRating === 0 || !feedbackComment) {
+        alert('Please provide all feedback details.');
+        return;
+      }
+      setOrders((prevOrders) => ({
+        
+        ...prevOrders,
+        completed: prevOrders.completed.map((order) =>
+            
+          order.request_id === feedbackOrderId
+            ? { ...order, rating:feedbackRating,review: feedbackComment } // Update rating and review for the matched order
+            : order // Return other orders unchanged
+        ),
+      }));
+      // Close modal and reset feedback state
+      setFeedbackModalOpen(false);
+      setFeedbackOrderId(null);
+      setFeedbackRating(0);
+      setFeedbackComment('');
+
+      alert('Feedback submitted successfully.');
+      
+      await axios.post('http://localhost:3000/client/feedback', {
+        request_id: feedbackOrderId,
+        rating: feedbackRating,
+        comment: feedbackComment,
+      });
+       
+      
+    } catch (error) {
+      console.error('Error submitting feedback:', error);
+      alert('Error submitting feedback. Please try again.');
+    }
+  };
+ 
   const updateOrderStatus = async (orderId, status) => {
     try {
        
@@ -181,6 +243,34 @@ const ClientDashboard = () => {
           )}
         </MDBTabsPane>
       </MDBTabsContent>
+      <MDBModal open={feedbackModalOpen} setShow={setFeedbackModalOpen} tabIndex='-1'>
+        <MDBModalDialog centered>
+          <MDBModalContent>
+            <MDBModalHeader>
+              <MDBModalTitle>Provide Feedback</MDBModalTitle>
+              <MDBBtn className='btn-close' color='none' onClick={() => setFeedbackModalOpen(false)}></MDBBtn>
+            </MDBModalHeader>
+            <MDBModalBody>
+              <div className='mb-3'>
+                <label>Rating:</label>
+                <StarRating rating={feedbackRating} onRatingChange={setFeedbackRating} />
+              </div>
+              <div className='mb-3'>
+                <label>Comment:</label>
+                <MDBTextArea
+                  rows={4}
+                  value={feedbackComment}
+                  onChange={(e) => setFeedbackComment(e.target.value)}
+                />
+              </div>
+            </MDBModalBody>
+            <MDBModalFooter>
+              <MDBBtn color='secondary' onClick={() => setFeedbackModalOpen(false)}>Close</MDBBtn>
+              <MDBBtn color='primary' onClick={handleFeedbackSubmit}>Submit Feedback</MDBBtn>
+            </MDBModalFooter>
+          </MDBModalContent>
+        </MDBModalDialog>
+      </MDBModal>
     </MDBContainer>
   );
 };
@@ -244,10 +334,14 @@ const OrderTable = ({ orders, status, onCancel, onComplete, onFeedback, activeTa
                   Mark as Completed
                 </MDBBtn>
               )}
-              {status === 'completed' && (
-                <MDBBtn color="info" size="sm" onClick={() => onFeedback(order.request_id,index+1)}>
-                  Provide Feedback
-                </MDBBtn>
+              {status==='completed' && order.review && order.rating && (  <div>
+                    <StarRating rating={order.rating} readOnly={true} />
+                    <p>{order.review}</p>
+                  </div>)}
+              {status === 'completed' && !order.rating && (
+                 <MDBBtn color="info" size="sm" onClick={() => onFeedback(order.request_id)}>
+                 Provide Feedback
+               </MDBBtn>
               )}
               
             </td>
