@@ -174,10 +174,10 @@ const Chat = () => {
   const sortedMessages = [...messages].sort((a, b) => a.timestamp - b.timestamp);
 
   return (
-    <MDBContainer fluid className="py-5" style={{ backgroundColor: "#CDC4F9" }}>
+    <MDBContainer fluid className="py-5 chat-head-body">
       <MDBRow>
         <MDBCol md="4">
-          <MDBCard id="chat-heads-card" style={{ borderRadius: "15px" }}>
+          <MDBCard id="chat-heads-card" style={{ borderRadius: "15px", backgroundColor: "white" }}>
             <MDBCardBody>
               <MDBInputGroup className="rounded mb-3">
                 <input
@@ -191,29 +191,25 @@ const Chat = () => {
               </MDBInputGroup>
               <div className="chat-scrollbar" style={{ height: "400px" }}>
                 <MDBTypography listUnStyled className="mb-0">
-                {chatHeads.map((chat) => (
-         <li
-         className="p-2 border-bottom"
-         key={chat.client_id}
-         onClick={() => loadChat(chat.room, chat.client_id)}
-         style={{ cursor: 'pointer' }}
-       >
-                    
-                        <div className="d-flex flex-row">
-                          <div>
-                            <img
-                              src="https://mdbcdn.b-cdn.net/img/Photos/new-templates/bootstrap-chat/ava1-bg.webp"
-                              alt="avatar"
-                              className="d-flex align-self-center me-3"
-                              width="60"
-                            />
-                          </div>
-                          <div className="pt-1">
-                            <p className="fw-bold mb-0">{chat.client_name}</p>
-                            <p className="small text-muted">{chat.last_message}</p>
-                          </div>
+                  {chatHeads.map((chat) => (
+                    <li
+                      className="p-3 border-bottom chat-item"
+                      key={chat.client_id}
+                      onClick={() => loadChat(chat.room, chat.client_id)}
+                      style={{ cursor: "pointer" }}
+                    >
+                      <div className="d-flex align-items-center">
+                        <img
+                          src="https://mdbcdn.b-cdn.net/img/Photos/new-templates/bootstrap-chat/ava1-bg.webp"
+                          alt="avatar"
+                          className="rounded-circle me-3"
+                          width="50"
+                        />
+                        <div className="pt-1">
+                          <p className="fw-bold mb-0" style={{ color: "#008080" }}>{chat.client_name}</p>
+                          <p className="small text-muted text-truncate">{chat.last_message}</p>
                         </div>
-                  
+                      </div>
                     </li>
                   ))}
                 </MDBTypography>
@@ -221,52 +217,58 @@ const Chat = () => {
             </MDBCardBody>
           </MDBCard>
         </MDBCol>
-      {isInRoom && (
-        <MDBCol md="8">
-          <MDBCard id="chat-box-card" style={{ borderRadius: "15px" }}>
-            <MDBCardBody>
-              <div className="chat-box-header d-flex justify-content-between align-items-center">
-                <h4>Chat with Client</h4>
-              </div>
-              <div className="chat-scrollbar" style={{ height: "400px" }}>
-                {sortedMessages.map((msg, index) => (
-                  <div
-                    key={index}
-                    className={`message ${msg.sender_type === sender ? 'sent' : 'received'}`}
-                  >
-                    {msg.message_text}
-                    {msg.type === 'service_request' && msg.status==='pending' &&(
-                      <button onClick={() => handleAcceptRequest(msg.request_id)}>Accept Request</button>
-                    )}
-                    {msg.status!='pending' && msg.type === 'service_request' && (
-                      <span>Status: {msg.status}</span>
-                    )}
-                  </div>
-                ))}
-              </div>
-              <div className="chat-box-footer d-flex align-items-center">
-                <input
-                  type="text"
-                  value={message}
-                  onChange={(e) => setMessage(e.target.value)}
-                  placeholder="Type your message..."
-                  className="form-control me-2"
-                />
-                <MDBIcon
-                  fas
-                  icon="paper-plane"
-                  onClick={sendMessage}
-                  className="text-muted"
-                  style={{ cursor: "pointer" }}
-                />
-              </div>
-            </MDBCardBody>
-          </MDBCard>
-        </MDBCol>
-      )}
+        {isInRoom && (
+          <MDBCol md="8">
+            <MDBCard id="chat-box-card" style={{ borderRadius: "15px", backgroundColor: "white" }}>
+              <MDBCardBody>
+                <div className="chat-box-header d-flex justify-content-between align-items-center mb-3">
+                  <h5 className="mb-0" style={{ color: "#008080" }}>Chat with Client</h5>
+                </div>
+                <div className="chat-scrollbar mb-3" style={{ height: "400px" }}>
+                  {sortedMessages.map((msg, index) => (
+                    <div
+                      key={index}
+                      className={`message ${msg.sender_type === sender ? "sent" : "received"}`}
+                    >
+                      {msg.message_text}
+                      {msg.type === "service_request" && msg.status === "pending" && (
+                        <button
+                          className="btn btn-sm btn-link text-success ms-2"
+                          onClick={() => handleAcceptRequest(msg.request_id)}
+                        >
+                          Accept Request
+                        </button>
+                      )}
+                      {msg.type === "service_request" && msg.status !== "pending" && (
+                        <span className="text-muted small">Status: {msg.status}</span>
+                      )}
+                    </div>
+                  ))}
+                </div>
+                <div className="chat-box-footer d-flex align-items-center">
+                  <input
+                    type="text"
+                    value={message}
+                    onChange={(e) => setMessage(e.target.value)}
+                    placeholder="Type your message..."
+                    className="form-control me-2"
+                  />
+                  <MDBIcon
+                    fas
+                    icon="paper-plane"
+                    onClick={sendMessage}
+                    className="text-muted"
+                    style={{ cursor: "pointer" }}
+                  />
+                </div>
+              </MDBCardBody>
+            </MDBCard>
+          </MDBCol>
+        )}
       </MDBRow>
     </MDBContainer>
   );
 };
 
 export default Chat;
+
