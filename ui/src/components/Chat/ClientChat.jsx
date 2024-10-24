@@ -188,10 +188,10 @@ const Chat = () => {
   }, [room]);
 
   return (
-    <MDBContainer fluid className="py-5" style={{ backgroundColor: "#CDC4F9" }}>
+    <MDBContainer fluid className="py-5 chat-head-body">
       <MDBRow>
-      <MDBCol md="4">
-          <MDBCard id="chat-heads-card" style={{ borderRadius: "15px" }}>
+        <MDBCol md="4">
+          <MDBCard id="chat-heads-card" style={{ borderRadius: "15px", backgroundColor: "white" }}>
             <MDBCardBody>
               <MDBInputGroup className="rounded mb-3">
                 <input
@@ -205,29 +205,25 @@ const Chat = () => {
               </MDBInputGroup>
               <div className="chat-scrollbar" style={{ height: "400px" }}>
                 <MDBTypography listUnStyled className="mb-0">
-                {chatHeads.map((chat) => (
-         <li
-         className="p-2 border-bottom"
-         key={chat.client_id}
-         onClick={() => loadChat(chat.room, chat.sp_id)}
-         style={{ cursor: 'pointer' }}
-       >
-                    
-                        <div className="d-flex flex-row">
-                          <div>
-                            <img
-                              src="https://mdbcdn.b-cdn.net/img/Photos/new-templates/bootstrap-chat/ava1-bg.webp"
-                              alt="avatar"
-                              className="d-flex align-self-center me-3"
-                              width="60"
-                            />
-                          </div>
-                          <div className="pt-1">
-                            <p className="fw-bold mb-0">{chat.sp_name}</p>
-                            <p className="small text-muted">{chat.last_message}</p>
-                          </div>
+                  {chatHeads.map((chat) => (
+                    <li
+                      className="p-3 border-bottom chat-item"
+                      key={chat.client_id}
+                      onClick={() => loadChat(chat.room, chat.sp_id)}
+                      style={{ cursor: "pointer" }}
+                    >
+                      <div className="d-flex align-items-center">
+                        <img
+                          src="https://mdbcdn.b-cdn.net/img/Photos/new-templates/bootstrap-chat/ava1-bg.webp"
+                          alt="avatar"
+                          className="rounded-circle me-3"
+                          width="50"
+                        />
+                        <div className="pt-1">
+                          <p className="fw-bold mb-0" style={{ color: "#008080" }}>{chat.sp_name}</p>
+                          <p className="small text-muted text-truncate">{chat.last_message}</p>
                         </div>
-                  
+                      </div>
                     </li>
                   ))}
                 </MDBTypography>
@@ -236,85 +232,91 @@ const Chat = () => {
           </MDBCard>
         </MDBCol>
         {isInRoom && (
-        <MDBCol md="8">
-          <MDBCard style={{ borderRadius: "15px" }}>
-            <MDBCardBody>
-              <div className="chat-box-header d-flex justify-content-between align-items-center">
-                <h4>Chat with Service Provider</h4>
-                <MDBIcon
-                  fas
-                  icon="times"
-                  onClick={() => setChatOpen(!chatOpen)}
-                  className="text-muted"
-                  style={{ cursor: "pointer" }}
-                />
-              </div>
-              <div className="chat-scrollbar" style={{ height: "400px" }}>
-                {messages.map((msg, index) => (
-                  <div
-                    key={index}
-                    className={`message ${msg.sender_type === 'clients' ? 'sent' : 'received'}`}
-                  >
-                    {msg.message_text}
-                    {msg.type === 'service_request' && (
-                      <span>
-                        Status: {msg.status ? msg.status.charAt(0).toUpperCase() + msg.status.slice(1) : 'Pending'}
-                        {msg.status==='pending' && (
-                          <button onClick={() => cancelServiceRequest(msg.request_id)}>Cancel Request</button>
-                        )}
-                      </span>
-                    )}
-                  </div>
-                ))}
-              </div>
-              <div className="request-selection mt-3">
-                <select
-                  value={selectedRequestId}
-                  onChange={(e) => {
-                    const requestId = e.target.value;
-                    setSelectedRequestId(requestId);
-                    const request = pendingRequests.find((req) => req.request_id === parseInt(requestId));
-                    setSelectedRequest(request);
-                  }}
-                >
-                  <option value="">Select Request</option>
-                  {pendingRequests.map((req) => (
-                    <option key={req.request_id} value={req.request_id}>
-                      {req.name}
-                    </option>
+          <MDBCol md="8">
+            <MDBCard style={{ borderRadius: "15px", backgroundColor: "white" }}>
+              <MDBCardBody>
+                <div className="chat-box-header d-flex justify-content-between align-items-center mb-3">
+                  <h5 className="mb-0" style={{ color: "#008080" }}>Chat with Service Provider</h5>
+                  <MDBIcon
+                    fas
+                    icon="times"
+                    onClick={() => setChatOpen(!chatOpen)}
+                    className="text-muted"
+                    style={{ cursor: "pointer" }}
+                  />
+                </div>
+                <div className="chat-scrollbar mb-3" style={{ height: "400px" }}>
+                  {messages.map((msg, index) => (
+                    <div
+                      key={index}
+                      className={`message ${msg.sender_type === "clients" ? "sent" : "received"}`}
+                    >
+                      {msg.message_text}
+                      {msg.type === "service_request" && (
+                        <span className="text-muted small">
+                          Status: {msg.status ? msg.status.charAt(0).toUpperCase() + msg.status.slice(1) : "Pending"}
+                          {msg.status === "pending" && (
+                            <button
+                              className="btn btn-sm btn-link text-danger ms-2"
+                              onClick={() => cancelServiceRequest(msg.request_id)}
+                            >
+                              Cancel Request
+                            </button>
+                          )}
+                        </span>
+                      )}
+                    </div>
                   ))}
-                </select>
-                <MDBIcon
-                  fas
-                  icon="paper-plane"
-                  onClick={sendSelectedRequest}
-                  className="text-muted ms-2"
-                  style={{ cursor: "pointer" }}
-                />
-              </div>
-              <div className="chat-box-footer d-flex align-items-center mt-3">
-                <input
-                  type="text"
-                  value={message}
-                  onChange={(e) => setMessage(e.target.value)}
-                  placeholder="Type your message..."
-                  className="form-control me-2"
-                />
-                <MDBIcon
-                  fas
-                  icon="paper-plane"
-                  onClick={sendMessage}
-                  className="text-muted"
-                  style={{ cursor: "pointer" }}
-                />
-              </div>
-            </MDBCardBody>
-          </MDBCard>
-        </MDBCol>
-           )}
+                </div>
+                <div className="request-selection mb-3">
+                  <select
+                    className="form-select"
+                    value={selectedRequestId}
+                    onChange={(e) => {
+                      const requestId = e.target.value;
+                      setSelectedRequestId(requestId);
+                      const request = pendingRequests.find((req) => req.request_id === parseInt(requestId));
+                      setSelectedRequest(request);
+                    }}
+                  >
+                    <option value="">Select Request</option>
+                    {pendingRequests.map((req) => (
+                      <option key={req.request_id} value={req.request_id}>
+                        {req.name}
+                      </option>
+                    ))}
+                  </select>
+                  <MDBIcon
+                    fas
+                    icon="paper-plane"
+                    onClick={sendSelectedRequest}
+                    className="text-muted ms-2"
+                    style={{ cursor: "pointer" }}
+                  />
+                </div>
+                <div className="chat-box-footer d-flex align-items-center">
+                  <input
+                    type="text"
+                    value={message}
+                    onChange={(e) => setMessage(e.target.value)}
+                    placeholder="Type your message..."
+                    className="form-control me-2"
+                  />
+                  <MDBIcon
+                    fas
+                    icon="paper-plane"
+                    onClick={sendMessage}
+                    className="text-muted"
+                    style={{ cursor: "pointer" }}
+                  />
+                </div>
+              </MDBCardBody>
+            </MDBCard>
+          </MDBCol>
+        )}
       </MDBRow>
     </MDBContainer>
   );
 };
 
-export default Chat
+export default Chat;
