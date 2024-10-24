@@ -1,39 +1,111 @@
+/* General Styling */
 .home-section {
-    background: linear-gradient(135deg, rgba(0,128,128,0.9), rgba(255,111,97,0.9));
-    min-height: 100vh;
-    display: flex;
-    align-items: center;
-    justify-content: center;
-  }
-  
-  .home-banner {
-    padding: 50px;
-    background: linear-gradient(135deg, rgba(0,128,128,0.9), rgba(255,111,97,0.9));
-    background-size: cover;
-    color: white;
-  }
-  
-  .home-text {
-    text-align: left;
-  }
-  
-  .home-heading {
-    font-size: 3rem;
-    font-weight: bold;
-  }
+  background: linear-gradient(135deg, rgba(0,128,128,0.9), rgba(255,111,97,0.9));
+  min-height: 100vh;
+  display: flex;
+  align-items: center;
+  justify-content: center;
+  flex-direction: column;
+  text-align: center;
+}
 
-  .home-buttons a{
-    color: white;
-  }
+/* Banner Styling */
+.home-banner {
+  display: flex;
+  align-items: center;
+  justify-content: center;
+  padding: 50px;
+  background: linear-gradient(135deg, rgba(0,128,128,0.9), rgba(255,111,97,0.9));
+  color: white;
+  min-height: 80vh; /* Ensure full-screen height */
+}
 
-  .home-buttons a:hover{
-    color:rgb(54, 190, 177) ;
-  }
 
-  .home-buttons button:hover{
-    background-color: white;
-  }
 
-  .login-forpass:hover{
-    color: rgb(180, 180, 180);
-  }
+/* Section Titles */
+.services-section h2,
+.how-it-works-section h2,
+.testimonials-section h2,
+.featured-section h2 {
+  color: rgba(45, 82, 63, 0.9);
+  font-weight: bold;
+}
+
+/* Service Cards */
+.service-card, .testimonial-card {
+  background-color: white;
+  color: rgba(0,128,128,0.9);
+  border-radius: 15px;
+  margin-bottom: 20px;
+  padding: 30px;
+  transition: transform 0.3s ease;
+}
+
+.testimonial-card:hover {
+  transform: scale(1.05);
+}
+
+/* Services Section */
+
+
+.service-card {
+  transition: transform 0.3s ease-in-out, box-shadow 0.3s ease-in-out;
+  cursor: pointer;
+}
+
+.service-card:hover {
+  transform: translateY(-5px);
+  box-shadow: 0px 10px 20px rgba(0, 0, 0, 0.15);
+}
+
+.service-icon-wrapper {
+  display: flex;
+  justify-content: center;
+  align-items: center;
+  margin-bottom: 15px;
+}
+
+.service-icon {
+  width: 60px;
+  height: 60px;
+}
+
+.service-name {
+  font-size: 1.25rem;
+  font-weight: 600;
+}
+
+.service-description {
+  font-size: 0.95rem;
+  color: #6c757d;
+}
+
+/* Smooth transition for hover effects */
+.service-card:hover .service-icon {
+  transform: scale(1.1);
+  transition: transform 0.3s ease;
+}
+
+
+/* Featured Section */
+.featured-img {
+  width: 100px;
+  height: 100px;
+}
+
+.featured-section h6 {
+  font-weight: bold;
+}
+
+/* Button Styling */
+.home-buttons a {
+  color: white;
+}
+
+.home-buttons a:hover {
+  color: rgb(54, 190, 177);
+}
+
+.home-buttons button:hover {
+  background-color: white;
+}
