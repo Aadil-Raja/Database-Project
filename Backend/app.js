@@ -2,6 +2,7 @@ const express = require('express');
 const sequelize = require('./config/db');
 const http = require('http');
 const cors = require('cors');
+const cron = require('node-cron');
 require('dotenv').config()
 const initializeCities = require('./seeds/initializeCities');
 const initializeCategoriesAndServices=require('./seeds/initializeCategoriesAndServices');
@@ -19,6 +20,8 @@ const RequestCategoryService=require('./models/RequestsCategory');
 const messsages =require('./models/message');
 const ChatHeads=require('./models/ChatHead');
 const feedback =require('./models/feedback');
+const payment =require('./models/payment');
+const {generateMonthlyInvoices} = require('./controllers/BillingController');
 const app = express();
 const PORT = process.env.PORT || 3000;
 
@@ -34,6 +37,7 @@ app.use(cors());
 app.use(express.json());
 app.use('/', require('./routes/userRoutes'));
 app.use('/images', express.static('public/images'));
+app.use('/payments', express.static('public/payments'));
 
 
 const initializeApp = async () => {
@@ -50,6 +54,8 @@ const initializeApp = async () => {
       messsages.createMessageTable();
       ChatHeads.createChatHeadTable();
       feedback.createfeedbackTable();
+      payment.createPaymentsTable();
+      generateMonthlyInvoices();
       // Ensures the database syncs
      await initializeCities();              // Populate city table
      await initializeCategoriesAndServices();
@@ -61,9 +67,18 @@ const initializeApp = async () => {
   
   // Call the initialization function
   initializeApp();
+  cron.schedule('0 0 1 * *', () => {
+    console.log('Running monthly invoice generation task...');
+   
+  });
 app.get("/",(req,res)=>{
     res.send("Server running");
 })
+
+// cron.schedule('0 0 1 * *', () => {
+//   console.log('Running monthly invoice generation task...');
+//   generateMonthlyInvoices();
+// });
 
 app.listen(PORT, () => {
     console.log(`Server is running on portt ${PORT}`);

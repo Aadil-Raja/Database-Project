@@ -23,7 +23,14 @@ import {
   MDBFile,
   MDBListGroup,
   MDBListGroupItem,
+  MDBModal,
+  MDBModalDialog,
+  MDBModalContent,
+  MDBModalHeader,
+  MDBModalBody,
+MDBModalTitle,
 } from 'mdb-react-ui-kit';
+
 
 const AdminDashboard = () => {
   const [activeTab, setActiveTab] = useState('Requests');
@@ -35,6 +42,79 @@ const AdminDashboard = () => {
   const [categoryImg, setcategoryImg] = useState(null);
   const [serviceImg, setserviceImg] = useState(null);
   const [servicesByCategory, setServicesByCategory] = useState({});
+  const[payments,setPayments]=useState([]);
+
+  async function getFileUrl(baseUrl, fileName) {
+    const possibleExtensions = ['.png', '.jpeg', '.jpg', '.gif', '.pdf'];
+    for (let ext of possibleExtensions) {
+      const fileUrl = `${baseUrl}/${fileName}${ext}`;
+      try {
+        const response = await fetch(fileUrl, { method: 'HEAD' });
+        if (response.ok) {
+          return fileUrl;
+        }
+      } catch (error) {
+        console.error(`Error fetching ${fileUrl}:`, error);
+      }
+    }
+    return null;
+  }
+  
+  // DynamicImageLoader Component
+  const DynamicImageLoader = ({ proof_of_payment }) => {
+    const [fileSrc, setFileSrc] = useState(null);
+    const [showModal, setShowModal] = useState(false); // State for handling the modal
+
+    const toggleModal = () => setShowModal(!showModal); // Function to toggle modal
+  
+    useEffect(() => {
+      const fetchFile = async () => {
+        console.log(proof_of_payment);
+        const baseUrl = 'http://localhost:3000/payments'; // Base URL for file storage
+        const result = await getFileUrl(baseUrl, proof_of_payment);
+        setFileSrc(result);
+      };
+      fetchFile();
+    }, [proof_of_payment]);
+  
+    if (!fileSrc) {
+      return <p>File not found or still loading...</p>;
+    }
+  
+    return (
+      <>
+        <td onClick={toggleModal} style={{ cursor: 'pointer' }}>
+          {fileSrc.endsWith('.pdf') ? (
+            <a href={fileSrc} target="_blank" rel="noopener noreferrer">
+              View PDF
+            </a>
+          ) : (
+            <img src={fileSrc} alt="Proof of Payment" className="category-icon" />
+          )}
+        </td>
+  
+        {/* Modal for showing the full-size image or PDF */}
+        <MDBModal open={showModal} setShow={setShowModal} tabIndex="-1">
+          <MDBModalDialog>
+            <MDBModalContent>
+              <MDBModalHeader>
+                <MDBModalTitle>Proof of Payment</MDBModalTitle>
+                <button type="button" className="btn-close" aria-label="Close" onClick={toggleModal}></button>
+              </MDBModalHeader>
+              <MDBModalBody>
+                {fileSrc.endsWith('.pdf') ? (
+                  <iframe src={fileSrc} title="Proof of Payment PDF" width="100%" height="600px"></iframe>
+                ) : (
+                  <img src={fileSrc} alt="Proof of Payment" style={{ width: '100%' }} />
+                )}
+              </MDBModalBody>
+            </MDBModalContent>
+          </MDBModalDialog>
+        </MDBModal>
+      </>
+    );
+  };
+  
 
   const handlecategoryFileChange = (event) => {
     setcategoryImg(event.target.files[0]);
@@ -67,6 +147,7 @@ const AdminDashboard = () => {
 
   useEffect(() => {
     fetchRequests();
+    fetchpayments();
   }, []);
 
   const fetchRequests = async () => {
@@ -77,26 +158,46 @@ const AdminDashboard = () => {
       console.error('Error fetching requests:', error);
     }
   };
-
+  const fetchpayments = async () => {
+    try {
+      const response = await axios.get('http://localhost:3000/getPendingPayments');
+      setPayments(response.data);
+    } catch (error) {
+      console.error('Error fetching requests:', error);
+    }
+  };
   const handleApprove = async (id) => {
     alert(id);
-    await axios.delete(`http://localhost:3000/removeReqCategories/${id}`)
     setRequests((prevRequests) =>
       prevRequests.filter((req) => req.id !== id)
     );
+    await axios.delete(`http://localhost:3000/removeReqCategories/${id}`)
+   
 
     alert(`Approved request with ID: ${id}`);
   };
 
   const handleReject = async(id) => {
-    await axios.delete(`http://localhost:3000/removeReqCategories/${id}`)
     setRequests((prevRequests) =>
       prevRequests.filter((req) => req.id !== id)
     );
+    await axios.delete(`http://localhost:3000/removeReqCategories/${id}`)
+   
 
     alert(`Rejected request with ID: ${id}`);
   };
+  const handlePaidPayment = async(id) => {
+    setPayments((prevPayments) =>
+      prevPayments.filter((payment) => payment.payment_id !== id)
+    );
+    alert(`Payment Marked as Paid: ${id}`);
 
+    await axios.put(`http://localhost:3000/updatePaymentStatus/${id}`)
+   
+
+    
+  };
+  
   const handleAddCategory = async (e) => {
     e.preventDefault();
     try {
@@ -172,8 +273,13 @@ const AdminDashboard = () => {
             <MDBIcon fas icon="plus-square" className="me-2" /> Add Service
           </MDBTabsLink>
         </MDBTabsItem>
+        <MDBTabsItem>
+          <MDBTabsLink onClick={() => handleTabChange('Payment')} active={activeTab === 'Payment'}>
+            <MDBIcon fas icon="dollar-sign" className="me-2" /> Payments
+          </MDBTabsLink>
+        </MDBTabsItem>
       </MDBTabs>
-
+     
       <MDBTabsContent>
         {/* Pending Requests Tab */}
         <MDBTabsPane open={activeTab === 'Requests'}>
@@ -305,6 +411,41 @@ const AdminDashboard = () => {
                 <MDBFile label="Upload Service Image" onChange={handleserviceFileChange} className="mb-4" />
                 <MDBBtn type="submit">Add Service</MDBBtn>
               </form>
+            </MDBCardBody>
+          </MDBCard>
+        </MDBTabsPane>
+        <MDBTabsPane open={activeTab === 'Payment'}>
+          <MDBCard className="mb-4">
+            <MDBCardBody>
+              <h3 className="mb-4">Pending Payments</h3>
+              <MDBTable align="middle">
+                <MDBTableHead>
+                  <tr>
+                    <th scope="col">Payment_ID</th>
+                    <th scope="col">Full Name</th>
+                    <th scope="col">SP_ID</th>
+                    <th scope="col">Payment Proof</th>
+                  <th scope="col">Actions</th>
+                  </tr>
+                </MDBTableHead>
+                <MDBTableBody>
+                  {payments.map((payment) => (
+                    <tr key={payment.payment_id}>
+                      <td>{payment.payment_id}</td>
+                      <td>{payment.fullname}</td>
+                      <td>{payment.sp_id}</td>
+                      <DynamicImageLoader proof_of_payment={payment.proof_of_payment} />
+
+                      <td>
+                       
+                        <MDBBtn color="danger" size="sm" onClick={() => handlePaidPayment(payment.payment_id)}>
+                          Mark as Paid
+                        </MDBBtn>
+                      </td>
+                    </tr>
+                  ))}
+                </MDBTableBody>
+              </MDBTable>
             </MDBCardBody>
           </MDBCard>
         </MDBTabsPane>

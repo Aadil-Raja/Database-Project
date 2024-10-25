@@ -60,3 +60,24 @@ exports.removeReqCategories=async(req,res) =>
 
   }
 }
+
+
+exports.getPayments = async (req, res) => {
+  try {
+    // Fetch categories along with the service provider's name using SQL JOIN
+    const fetchQuery = `
+      SELECT p.*, CONCAT(sp.firstName, ' ', sp.lastName) as fullname
+
+      FROM payments p
+      JOIN serviceproviders sp ON p.sp_id = sp.sp_id
+      where p.status='Pending' and p.proof_of_payment is not null
+    `;
+
+    const [payments] = await sequelize.query(fetchQuery);
+    
+    res.status(200).json(payments);
+  } catch (error) {
+    console.error('Error fetching categories with service provider names:', error);
+    res.status(500).json({ error: 'Failed to fetch payments' });
+  }
+};

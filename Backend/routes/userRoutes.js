@@ -17,6 +17,7 @@ const adminController =require('../controllers/adminController.js');
 const upload = require('../middleware/multer.js');
 const chatController=require('../controllers/chatController.js');
 const ChatHeads=require('../controllers/chatHeadController.js');
+const Biling=require('../controllers/BillingController.js');
 
 const verifyToken = require('../middleware/auth');
 const { verify } = require('crypto');
@@ -81,10 +82,18 @@ router.post('/createORupdateChatHead',ChatHeads.createOrUpdateChatHead);
 router.get('/getChatHeads',ChatHeads.getChatHeadsForUser);
 
 router.delete('/removeReqCategories/:id',adminController.removeReqCategories);
+router.get('/getPendingPayments',adminController.getPayments);
 router.get('/client/orders/:client_id',clientController.getOrders);
 router.get('/sp/orders/:sp_id',spController.getOrders);
 router.put('/client/orders/:orderId',clientController.updateOrder);
 router.post('/client/feedback',clientController.addfeedback);
+
+router.get('/sp/getprofile/:sp_id',Biling.getProfile);
+router.get('/sp/invoices/:sp_id',Biling.getInvoices);
+router.get('/sp/invoiceDetails/:payment_id',Biling.getInvoiceDetails);
+router.put('/sp/invoice/payment', upload.single('proofOfPayment'), Biling.uploadProofOfPayment);
+
+router.put('/updatePaymentStatus/:id',Biling.updatePaymentStatus);
 router.get('/verify-token', verifyToken, (req, res) => {
     // If the token is valid, return success
     res.json({ isValid: true });
