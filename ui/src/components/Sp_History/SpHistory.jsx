@@ -21,6 +21,7 @@ import {
   MDBIcon,
 } from 'mdb-react-ui-kit';
 import axios from 'axios';
+import './SpHistory.css'
 
 const SpHistory = () => {
   const [services, setServices] = useState({
@@ -121,15 +122,15 @@ const SpHistory = () => {
     if (reviews.length === 0) {
       return null;
     }
-  
+
     let totalRating = 0;
     for (let i = 0; i < reviews.length; i++) {
       totalRating += reviews[i].rating;
     }
-  
+
     return (totalRating / reviews.length).toFixed(1);
   };
-  
+
   const calculateEarnings = () => {
     const now = new Date();
     const earnings = {
@@ -137,44 +138,44 @@ const SpHistory = () => {
       lastMonth: 0,
       lastSixMonths: 0,
     };
-  
+
     services.completed.forEach((service) => {
       const completedDate = new Date(service.completed_date);
-  
+
       // Ensure the date parsing is correct
       if (isNaN(completedDate)) {
         console.error("Invalid date format:", service.completed_date);
         return;
       }
-  
+
       const timeDiff = now - completedDate;
       const oneWeek = 7 * 24 * 60 * 60 * 1000;
       const oneMonth = 30 * 24 * 60 * 60 * 1000;
       const sixMonths = 6 * 30 * 24 * 60 * 60 * 1000;
-  
+
       if (timeDiff <= oneWeek) earnings.lastWeek += parseFloat(service.price) || 0;  // Ensuring the value is a number
       if (timeDiff <= oneMonth) earnings.lastMonth += parseFloat(service.price) || 0;
       if (timeDiff <= sixMonths) earnings.lastSixMonths += parseFloat(service.price) || 0;
     });
-  
+
     // Ensure the earnings are formatted to two decimal places
     earnings.lastWeek = earnings.lastWeek.toFixed(2);
     earnings.lastMonth = earnings.lastMonth.toFixed(2);
     earnings.lastSixMonths = earnings.lastSixMonths.toFixed(2);
-  
+
     setEarningsByPeriod(earnings);
     setTotalEarnings(earnings[selectedPeriod]);
   };
-  
+
   const calculateOverallEarnings = () => {
     let total = 0;
     services.completed.forEach(service => {
       total += parseFloat(service.price) || 0;  // Ensuring the value is a number
     });
-  
+
     setOverallTotalEarnings(total.toFixed(2));  // Format to two decimal places
   };
-  
+
 
   const updateStats = () => {
     setStats({
@@ -252,14 +253,13 @@ const SpHistory = () => {
   };
 
   return (
-    <MDBContainer fluid className="SpHistory-container">
+    <MDBContainer fluid className="sp-history-container">
       <MDBRow>
         {/* Left Side - SP Info */}
-        <MDBCol md="3" className="SpHistory-left">
-          <MDBCard className="SpHistory-info-card mb-4">
+        <MDBCol md="3" className="sp-history-left">
+          <MDBCard className="sp-history-info-card mb-4">
             <MDBCardBody>
               <MDBCardTitle>{spInfo.firstName} {spInfo.lastName}</MDBCardTitle>
-
               <MDBCardText>
                 <strong>Average Rating:</strong>{' '}
                 {spInfo.averageRating !== null ? (
@@ -275,27 +275,27 @@ const SpHistory = () => {
           </MDBCard>
 
           {/* Earnings by Period */}
-          <MDBCard className="SpHistory-earnings-card mb-4">
+          <MDBCard className="sp-history-earnings-card mb-4">
             <MDBCardBody>
               <MDBCardTitle>Earnings</MDBCardTitle>
-              <div className="SpHistory-period-buttons mb-3">
+              <div className="sp-history-period-buttons mb-3">
                 <MDBBtn
-                  color={selectedPeriod === 'lastWeek' ? 'primary' : 'light'}
-                  className="me-2 SpHistory-period-btn"
+                  color={selectedPeriod === 'lastWeek' ? 'white' : 'light'}
+                  className="me-2 sp-history-period-btn"
                   onClick={() => handlePeriodChange('lastWeek')}
                 >
                   Last Week
                 </MDBBtn>
                 <MDBBtn
-                  color={selectedPeriod === 'lastMonth' ? 'primary' : 'light'}
-                  className="me-2 SpHistory-period-btn"
+                  color={selectedPeriod === 'lastMonth' ? 'white' : 'light'}
+                  className="me-2 sp-history-period-btn"
                   onClick={() => handlePeriodChange('lastMonth')}
                 >
                   Last Month
                 </MDBBtn>
                 <MDBBtn
-                  color={selectedPeriod === 'lastSixMonths' ? 'primary' : 'light'}
-                  className="SpHistory-period-btn"
+                  color={selectedPeriod === 'lastSixMonths' ? 'white' : 'light'}
+                  className="sp-history-period-btn"
                   onClick={() => handlePeriodChange('lastSixMonths')}
                 >
                   Last 6 Months
@@ -312,7 +312,7 @@ const SpHistory = () => {
           </MDBCard>
 
           {/* Real-time Stats */}
-          <MDBCard className="SpHistory-stats-card">
+          <MDBCard className="sp-history-stats-card">
             <MDBCardBody>
               <MDBCardTitle>Order Stats</MDBCardTitle>
               <MDBCardText>
@@ -329,12 +329,13 @@ const SpHistory = () => {
         </MDBCol>
 
         {/* Right Side - Orders and Reviews */}
-        <MDBCol md="9" className="SpHistory-right">
-          <MDBTabs className="mb-3">
+        <MDBCol md="9" className="sp-history-right">
+          <MDBTabs className="mb-3 sp-history-tabs">
             <MDBTabsItem>
               <MDBTabsLink
                 onClick={() => handleTabClick('accepted')}
                 active={activeTab === 'accepted'}
+                className="sp-history-tab-link"
               >
                 Accepted
               </MDBTabsLink>
@@ -343,6 +344,7 @@ const SpHistory = () => {
               <MDBTabsLink
                 onClick={() => handleTabClick('completed')}
                 active={activeTab === 'completed'}
+                className="sp-history-tab-link"
               >
                 Completed
               </MDBTabsLink>
@@ -351,6 +353,7 @@ const SpHistory = () => {
               <MDBTabsLink
                 onClick={() => handleTabClick('cancelled')}
                 active={activeTab === 'cancelled'}
+                className="sp-history-tab-link"
               >
                 Cancelled
               </MDBTabsLink>
@@ -359,6 +362,7 @@ const SpHistory = () => {
               <MDBTabsLink
                 onClick={() => handleTabClick('reviews')}
                 active={activeTab === 'reviews'}
+                className="sp-history-tab-link"
               >
                 My Reviews
               </MDBTabsLink>
@@ -418,6 +422,7 @@ const SpHistory = () => {
       </MDBRow>
     </MDBContainer>
   );
+
 };
 
 // OrderTable Component
@@ -438,8 +443,8 @@ const OrderTable = ({
   };
 
   return (
-    <MDBTable responsive className="SpHistory-table">
-      <MDBTableHead>
+    <MDBTable responsive className="sp-history-table">
+      <MDBTableHead className="sp-history-table-head">
         <tr>
           <th scope="col">#</th>
           <th scope="col">Client</th>
@@ -452,20 +457,25 @@ const OrderTable = ({
           {status === 'accepted' && <th scope="col">Actions</th>}
         </tr>
       </MDBTableHead>
-      <MDBTableBody>
+      <MDBTableBody className="sp-history-table-body">
         {orders.length > 0 ? (
           orders.map((order, index) => (
-            <tr key={index}>
+            <tr key={index} className="sp-history-table-row">
               <td>{index + 1}</td>
               <td>{order.client_name}</td>
               <td>{order.name}</td>
-              <td>{order.price}</td>
+              <td>${order.price.toFixed(2)}</td>
               <td>
                 {showMore[index]
                   ? order.description
-                  : `${order.description.substring(0, 30)}`}
+                  : `${order.description.substring(0, 30)}...`}
                 {order.description.length > 30 && (
-                  <MDBBtn size="sm" onClick={() => toggleShowMore(index)}>
+                  <MDBBtn
+                    size="sm"
+                    color="info"
+                    className="sp-history-show-more-btn"
+                    onClick={() => toggleShowMore(index)}
+                  >
                     {showMore[index] ? 'Show less' : 'Show more'}
                   </MDBBtn>
                 )}
@@ -473,7 +483,11 @@ const OrderTable = ({
               <td>{order.address}</td>
               <td>{new Date(order.request_date).toLocaleDateString()}</td>
               <td>
-                <MDBBadge color={getStatusColor(order.status)} pill>
+                <MDBBadge
+                  color={getStatusColor(order.status)}
+                  pill
+                  className="sp-history-status-badge"
+                >
                   {capitalizeFirstLetter(order.status)}
                 </MDBBadge>
               </td>
@@ -482,6 +496,7 @@ const OrderTable = ({
                   <MDBBtn
                     color="success"
                     size="sm"
+                    className="sp-history-complete-btn"
                     onClick={() => onComplete(order.request_id)}
                   >
                     Mark as Completed
@@ -492,7 +507,7 @@ const OrderTable = ({
           ))
         ) : (
           <tr>
-            <td colSpan="8" className="text-center">
+            <td colSpan="9" className="text-center sp-history-no-orders">
               No orders found.
             </td>
           </tr>
@@ -500,48 +515,55 @@ const OrderTable = ({
       </MDBTableBody>
     </MDBTable>
   );
+  
 };
 
 // ReviewsTable Component
-const ReviewsTable = ({ reviews }) => {
-  return (
-    <MDBTable responsive className="SpHistory-table">
-      <MDBTableHead>
-        <tr>
-          <th scope="col">#</th>
-          <th scope="col">Client</th>
-          <th scope="col">Service</th>
-          <th scope="col">Rating</th>
-       
-          <th scope="col">Comment</th>
-          <th scope="col">Date</th>
-        
-        </tr>
-      </MDBTableHead>
-      <MDBTableBody>
-        {reviews.length > 0 ? (
-          reviews.map((review, index) => (
-            <tr key={index}>
-              <td>{index + 1}</td>
-              <td>{review.client_name}</td>
-             <td>{review.service}</td>
-               <td> {review.rating} <MDBIcon fas icon="star" className="text-warning" />
-              </td>
-          
-              <td>{review.comment}</td>
-              <td>{new Date(review.created_at).toLocaleDateString()}</td>
-            </tr>
-          ))
-        ) : (
+
+  const ReviewsTable = ({ reviews }) => {
+    return (
+      <MDBTable responsive className="SpReviewsTable-table">
+        <MDBTableHead>
           <tr>
-            <td colSpan="5" className="text-center">
-              No reviews found.
-            </td>
+            <th scope="col">#</th>
+            <th scope="col">Client</th>
+            <th scope="col">Service</th>
+            <th scope="col">Rating</th>
+            <th scope="col">Comment</th>
+            <th scope="col">Date</th>
           </tr>
-        )}
-      </MDBTableBody>
-    </MDBTable>
-  );
-};
+        </MDBTableHead>
+        <MDBTableBody>
+          {reviews.length > 0 ? (
+            reviews.map((review, index) => (
+              <tr key={index} className="SpReviewsTable-row">
+                <td>{index + 1}</td>
+                <td>{review.client_name}</td>
+                <td>{review.service}</td>
+                <td>
+                  {review.rating}{' '}
+                  <MDBIcon fas icon="star" className="text-warning" />
+                </td>
+                <td className="SpReviewsTable-comment">
+                  {review.comment.length > 50
+                    ? `${review.comment.substring(0, 50)}...`
+                    : review.comment}
+                </td>
+                <td>{new Date(review.created_at).toLocaleDateString()}</td>
+              </tr>
+            ))
+          ) : (
+            <tr>
+              <td colSpan="6" className="text-center">
+                No reviews found.
+              </td>
+            </tr>
+          )}
+        </MDBTableBody>
+      </MDBTable>
+    );
+  };
+  
+
 
 export default SpHistory;
