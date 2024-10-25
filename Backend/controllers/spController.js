@@ -42,3 +42,33 @@ exports.createSp = async (req, res) => {
     res.status(500).json({ error: err.message });
   }
 };
+
+
+exports.getOrders= async (req,res) => {
+
+  try {
+      const {sp_id}=req.params;
+      const query =`SELECT 
+      (select name from clients c where c.client_id=sr.client_id) as client_name,f.rating as rating,f.review as review,f.created_at as review_date,
+      sr.completed_date as completed_date ,
+      sr.price as price,
+      sr.description as description ,
+      (select name from cities c where sr.city_id =c.city_id) 
+      as city,(select CONCAT(firstName, ' ', lastName)  
+      from serviceproviders where sp_id=sr.sp_id) as 
+      sp_name,s.name as name ,sr.address as address,sr.request_date as
+       request_date,sr.status as status,sr.request_id as request_id from servicerequests sr join services s on  s.service_id = sr.service_id
+       LEFT JOIN Feedback f ON sr.request_id = f.request_id
+    
+      where sp_id=${sp_id} order by sr.request_date desc`;
+      const[result]=await sequelize.query(query);
+      res.json(result);
+  }
+  catch(error)
+  {
+      
+    
+    res.status(500).json({ error: error.message });
+  
+  }
+}

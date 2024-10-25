@@ -82,6 +82,7 @@ router.get('/getChatHeads',ChatHeads.getChatHeadsForUser);
 
 router.delete('/removeReqCategories/:id',adminController.removeReqCategories);
 router.get('/client/orders/:client_id',clientController.getOrders);
+router.get('/sp/orders/:sp_id',spController.getOrders);
 router.put('/client/orders/:orderId',clientController.updateOrder);
 router.post('/client/feedback',clientController.addfeedback);
 router.get('/verify-token', verifyToken, (req, res) => {
