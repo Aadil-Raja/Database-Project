@@ -2,7 +2,7 @@ import React, { useState, useEffect } from "react";
 import { MDBContainer, MDBRow, MDBCol, MDBBtn, MDBCard, MDBCardBody, MDBIcon } from 'mdb-react-ui-kit';
 import './Home.css';
 import { Link } from 'react-router-dom';
-
+import axios from "axios";
 
 export default function Home() {
   const [categories, setCategories] = useState([]);

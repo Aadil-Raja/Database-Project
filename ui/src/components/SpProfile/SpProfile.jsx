@@ -111,6 +111,7 @@ const ProfileTab = () => {
         alert('Preferences updated successfully!');
 
       }
+      window.location.reload();
     } catch (error) {
       console.error('Error updating preferences:', error);
       alert('Failed to update preferences');
@@ -350,8 +351,8 @@ const ProfileTab = () => {
           <div className="services-container">
             <h1 className="services-header">Services Offered</h1>
             <hr className="services-divider" />
-            {services.map((service) => (
-              <div key={service.sp_service_id} className="service-item d-flex align-items-center justify-content-between">
+            {services.map((service,index) => (
+              <div key={index} className="service-item d-flex align-items-center justify-content-between">
                 <div className="service-info">
                   <p><strong>Service:</strong> {service.service_name}</p>
                   <p><strong>Category:</strong> {service.category_name}</p>

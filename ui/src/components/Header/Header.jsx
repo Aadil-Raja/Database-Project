@@ -48,11 +48,7 @@ export default function Header() {
                 About
               </Link>
             </MDBNavbarItem>
-            <MDBNavbarItem>
-              <Link to="/Contact" className='nav-link header-nav-buttons'>
-                Contact Us
-              </Link>
-            </MDBNavbarItem>
+            
             <MDBNavbarItem>
               <MDBDropdown >
                 <MDBDropdownToggle tag='a' className='nav-link header-nav-buttons' role='button'>

@@ -79,7 +79,7 @@ exports.getServices =async(req,res) => {
 
     const query = `
       SELECT 
-        sps.sp_service_id, 
+       
         sps.service_provider_id, 
         sps.service_id, 
         sps.availability_status, 

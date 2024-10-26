@@ -9,7 +9,7 @@ import Forgotpassword from "./components/Forgotpassword/Forgotpassword";
 import Footer from './components/Footer/Footer';
 import Home from './components/Home/Home';
 import About from './components/About/About';
-import Contact from './components/Contact/Contact'
+
 import Layout from './layout';
 
 function App() {
@@ -25,7 +25,7 @@ function App() {
           <Route path="forgotpassword" element={<Forgotpassword />} />
           <Route path="Home" element={<Home />} />
           <Route path="About" element={<About />} />
-          <Route path="Contact" element={<Contact />} />
+        
         </Routes>
         <Footer />
       </BrowserRouter>

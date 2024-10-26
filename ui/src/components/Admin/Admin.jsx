@@ -327,7 +327,7 @@ const AdminDashboard = () => {
                   <MDBCardBody>
                     <h5 className="category-name">
                       <MDBIcon fas icon="folder" className="me-2" />
-                      {category.name}
+                      {category.name} ({category.status})
                     </h5>
                     <MDBTypography className="text-muted">{category.description}</MDBTypography>
                     <MDBListGroup className="mt-3">
@@ -335,7 +335,7 @@ const AdminDashboard = () => {
                         servicesByCategory[category.category_id].map((service) => (
                           <MDBListGroupItem key={service.service_id}>
                             <MDBIcon fas icon="wrench" className="me-2" />
-                            {service.name}
+                            {service.name} ({service.status})
                           </MDBListGroupItem>
                         ))}
                     </MDBListGroup>

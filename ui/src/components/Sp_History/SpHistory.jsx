@@ -284,14 +284,14 @@ const SpHistory = () => {
                   className="me-2 sp-history-period-btn"
                   onClick={() => handlePeriodChange('lastWeek')}
                 >
-                  Last Week
+                  Last 7 days
                 </MDBBtn>
                 <MDBBtn
                   color={selectedPeriod === 'lastMonth' ? 'white' : 'light'}
                   className="me-2 sp-history-period-btn"
                   onClick={() => handlePeriodChange('lastMonth')}
                 >
-                  Last Month
+                  Last 30 days
                 </MDBBtn>
                 <MDBBtn
                   color={selectedPeriod === 'lastSixMonths' ? 'white' : 'light'}
@@ -464,7 +464,7 @@ const OrderTable = ({
               <td>{index + 1}</td>
               <td>{order.client_name}</td>
               <td>{order.name}</td>
-              <td>${order.price.toFixed(2)}</td>
+              <td>${parseFloat(order.price).toFixed(2)}</td>
               <td>
                 {showMore[index]
                   ? order.description
@@ -481,7 +481,13 @@ const OrderTable = ({
                 )}
               </td>
               <td>{order.address}</td>
-              <td>{new Date(order.request_date).toLocaleDateString()}</td>
+
+              <td>
+  {order.status === 'accepted' || order.status === 'cancelled'
+    ? new Date(order.request_date).toLocaleDateString()
+    : new Date(order.completed_date).toLocaleDateString()}
+</td>
+
               <td>
                 <MDBBadge
                   color={getStatusColor(order.status)}

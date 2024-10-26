@@ -21,7 +21,14 @@ exports.addRequest = async(req,res) => {
 exports.getallRequests = async(req,res) => {
      try 
      {
-            const query =`select * from servicerequests;`;
+                const {sp_id}=req.params;
+            const query =`select DISTINCT  sr.client_id as client_id,ci.name as city_name,c.name as client_name,sr.address as address,s.name as service_name,sr.description as description
+             from servicerequests sr join clients c on c.client_id=sr.client_id 
+            join cities ci on ci.city_id=sr.city_id join services s on s.service_id=sr.service_id  
+            join serviceproviders sp on sp.city_id=sr.city_id
+            join serviceproviderservices sps on sps.service_provider_id = sp.sp_id
+            where sp.sp_id=${sp_id} and sr.service_id=sps.service_id and sps.availability_status=1;
+            `;
                const [requests]= await sequelize.query(query);
                 res.json(requests);        
         }

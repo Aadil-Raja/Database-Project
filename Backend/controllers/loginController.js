@@ -16,7 +16,7 @@ exports.login = async (req, res) => {
             if (passwordMatch) {
                 console.log(`Login successful for ServiceProvider: ${email}`);
                 console.log(spUser.sp_id, spUser.email);
-                const token = jwt.sign({ id: spUser.sp_id, email: spUser.email }, process.env.JWT_SECRET, { expiresIn: '1h' });
+                const token = jwt.sign({ id: spUser.sp_id, email: spUser.email,role :'serviceproviders' }, process.env.JWT_SECRET, { expiresIn: '1h' });
 
                 let first_time_login = null;
                 if (spUser.first_time_login === 1) { // 1 for true in SQL
@@ -46,7 +46,7 @@ exports.login = async (req, res) => {
             const passwordMatch = await bcrypt.compare(password, clientUser.password);
             if (passwordMatch) {
                 console.log(`Login successful for Client: ${email}`);
-                const token = jwt.sign({ id: clientUser.client_id, email: clientUser.email }, process.env.JWT_SECRET, { expiresIn: '1h' });
+                const token = jwt.sign({ id: clientUser.client_id, email: clientUser.email ,role :'clients' }, process.env.JWT_SECRET, { expiresIn: '1h' });
                 return res.json({ message: "exist", token, role: "clients",user_ID:clientUser.client_id });
             } else {
                 return res.json({ message: "Invalid password" });

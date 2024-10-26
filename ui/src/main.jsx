@@ -6,7 +6,7 @@ import { createBrowserRouter, RouterProvider } from 'react-router-dom'
 import Layout from './layout.jsx';
 import Home from './components/Home/Home.jsx'
 import About from './components/About/About.jsx'
-import Contact from './components/Contact/Contact.jsx'
+
 import Register from './components/Register/Register.jsx'
 import SP from './components/Register/SP/sp.jsx'
 import Client from './components/Register/Client/client.jsx'
@@ -30,6 +30,8 @@ import AddCategory from './components/About/Add-Category/Add-Category.jsx'
 import ClientDashboard from './components/ClientDashboard/ClientDashboard.jsx'
 import SpHistory from './components/Sp_History/SpHistory.jsx'
 import SpBilling from './components/SpBilling/SpBilling.jsx'
+import SpProtectedRoute from './components/utils/SpProtectedRoute.jsx'
+import ClientProtectedRoute from './components/utils/ClientProtectedRoute.jsx'
 
 const router = createBrowserRouter([
   {
@@ -37,7 +39,10 @@ const router = createBrowserRouter([
     element: <Layout />,
 
     children: [
-
+      {
+        path : 'Admin',
+        element :<AdminDashboard/>
+       },
       // Public Routes
       {
         path: '',
@@ -52,10 +57,7 @@ const router = createBrowserRouter([
         path: 'About',
         element: <About />
       },
-      {
-        path: 'Contact',
-        element: <Contact />
-      },
+  
     
       {
         path: 'forgotpassword',
@@ -82,25 +84,47 @@ const router = createBrowserRouter([
         element:<ResetPassword/>
      },
      {
+      element :<ClientProtectedRoute/>
+      ,children : [
+        {
           path:'Clientchat',
           element:<ClientChat/>
      },
+     {
+      path :'Categories',
+      element :<Categories/>
+  },
+  { 
+    path :'Categories/:categoryId',
+    element:<Services/>
+},
+{
+  path :'ClientDashBoard',
+  element :<ClientDashboard/>
+},
+       
+{
+  path: "categories/:serviceId/servicerequestform",
+  element :<ServiceRequestForm />
+ },
+      ]
+     },
+   
       {
-        path:'Spchat',
-        element:<SpChat/>
-      },
-      {
-          path :'Categories',
-          element :<Categories/>
-      },
-       { 
-           path :'Categories/:categoryId',
-           element:<Services/>
-       },
-       {
-        path: "categories/:serviceId/servicerequestform",
-        element :<ServiceRequestForm />
-       },
+        
+          
+        element: <SpProtectedRoute />, // Apply ProtectedRoute to secure these paths
+        children: [
+          {
+            
+              path:'Spchat',
+              element:<SpChat/>
+            ,
+          },
+           
+     
+     
+     
        {
            path :'Requests',
            element : <Requests/>
@@ -113,19 +137,13 @@ const router = createBrowserRouter([
            path :'SpProfile',
            element : <SpProfile/>
        },
-       {
-        path : 'Admin',
-        element :<AdminDashboard/>
-       }
+       
        ,
       {
       path :'RequestCategory',
       element :<AddCategory/>
       },
-      {
-        path :'ClientDashBoard',
-        element :<ClientDashboard/>
-      },
+      
       {
         path :'SpHistory',
         element : <SpHistory/>
@@ -133,7 +151,14 @@ const router = createBrowserRouter([
       {
         path :'SpBilling',
         element :<SpBilling/>
-      }
+      },
+         
+
+         
+        ]
+      
+  }
+
     
     ]
   }

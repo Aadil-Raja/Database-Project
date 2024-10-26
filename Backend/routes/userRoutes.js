@@ -19,7 +19,7 @@ const chatController=require('../controllers/chatController.js');
 const ChatHeads=require('../controllers/chatHeadController.js');
 const Biling=require('../controllers/BillingController.js');
 
-const verifyToken = require('../middleware/auth');
+const verifyTokenAndRole = require('../middleware/auth');
 const { verify } = require('crypto');
 // Client routes
 
@@ -41,26 +41,26 @@ router.post('/resetpassword',resetPasswordController.resetpassword);
 router.get ('/categories',categoryController.getCategories);
 router.get('/services/:categoryId', serviceController.getServicesByCategory);
 
-router.post('/service-provider/preferences',verifyToken,savePreferences.savePreferences);
+router.post('/service-provider/preferences',verifyTokenAndRole('serviceproviders'),savePreferences.savePreferences);
 
-router.get('/service-provider/profile',verifyToken,serviceProviderProfile.getProfile);
+router.get('/service-provider/profile',verifyTokenAndRole('serviceproviders'),serviceProviderProfile.getProfile);
 
-router.put('/service-provider/updateProfile',verifyToken,serviceProviderProfile.updateProfile);
-router.get('/service-provider/services',verifyToken,serviceProviderProfile.getServices);
-router.put('/service-provider/updateAvailability/:service_id',verifyToken,serviceProviderProfile.updateAvailability);
-router.delete('/service-provider/removeService/:service_id',verifyToken,serviceProviderProfile.removeService);
+router.put('/service-provider/updateProfile',verifyTokenAndRole('serviceproviders'),serviceProviderProfile.updateProfile);
+router.get('/service-provider/services',verifyTokenAndRole('serviceproviders'),serviceProviderProfile.getServices);
+router.put('/service-provider/updateAvailability/:service_id',verifyTokenAndRole('serviceproviders'),serviceProviderProfile.updateAvailability);
+router.delete('/service-provider/removeService/:service_id',verifyTokenAndRole('serviceproviders'),serviceProviderProfile.removeService);
 
 router.get('/categories/:categoryId',categoryController.getACategory);
 
-router.post('/servicerequestform',verifyToken,servicerequestform.addRequest);
+router.post('/servicerequestform',verifyTokenAndRole('clients'),servicerequestform.addRequest);
 
-router.get('/getRequests',servicerequestform.getallRequests);
+router.get('/getRequests/:sp_id',servicerequestform.getallRequests);
 router.get('/getClientName',clientController.getClient);
 router.get('/getCityName',cityController.getACity);
 router.get('/getServiceName',serviceController.getaServiceName);
 
 
-router.post('/Add-Category',verifyToken, adminController.addReqCategory); 
+router.post('/Add-Category',verifyTokenAndRole('serviceproviders'), adminController.addReqCategory); 
 // Route to fetch categories
 router.get('/admin', adminController.getReqCategories);
 router.post('/Addcategories', upload.single('categoryImg'), categoryController.AddaCategory);
@@ -93,8 +93,19 @@ router.get('/sp/invoices/:sp_id',Biling.getInvoices);
 router.get('/sp/invoiceDetails/:payment_id',Biling.getInvoiceDetails);
 router.put('/sp/invoice/payment', upload.single('proofOfPayment'), Biling.uploadProofOfPayment);
 
+
 router.put('/updatePaymentStatus/:id',Biling.updatePaymentStatus);
-router.get('/verify-token', verifyToken, (req, res) => {
+
+router.get('/verify-client', verifyTokenAndRole('clients'), (req, res) => {
+  res.status(200).json({ message: 'Client verified' });
+});
+
+// Endpoint to verify service provider access
+router.get('/verify-serviceprovider', verifyTokenAndRole('serviceproviders'), (req, res) => {
+  res.status(200).json({ message: 'Service Provider verified' });
+});
+
+router.get('/verify-token', verifyTokenAndRole, (req, res) => {
     // If the token is valid, return success
     res.json({ isValid: true });
   });

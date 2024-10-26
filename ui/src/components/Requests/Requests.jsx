@@ -20,37 +20,15 @@ const SearchResults = () => {
   useEffect(() => {
     const fetchRequests = async () => {
       try {
-        const requestsResponse = await axios.get('http://localhost:3000/getRequests');
-        const requests = requestsResponse.data;
+        const sp_id = localStorage.getItem('user_ID');
+        const requestsResponse = await axios.get(`http://localhost:3000/getRequests/${sp_id}`);
+        setData(requestsResponse.data);
 
-        const cityNamesPromises = requests.map((request) =>
-          axios.get(`http://localhost:3000/getCityName?city_id=${request.city_id}`)
-        );
-
-        const clientNamesPromises = requests.map((request) =>
-          axios.get(`http://localhost:3000/getClientName?client_id=${request.client_id}`)
-        );
-
-        const serviceNamesPromises = requests.map((request) =>
-          axios.get(`http://localhost:3000/getServiceName?service_id=${request.service_id}`)
-        );
-
-        const clientNamesResponses = await Promise.all(clientNamesPromises);
-        const cityNamesResponses = await Promise.all(cityNamesPromises);
-        const serviceNamesResponses = await Promise.all(serviceNamesPromises);
-
-        const detailedRequests = requests.map((request, index) => ({
-          ...request,
-          clientName: clientNamesResponses[index].data.name,
-          cityName: cityNamesResponses[index].data.name,
-          serviceName: serviceNamesResponses[index].data.name,
-        }));
-
-        setData(detailedRequests);
-      } catch (error) {
-        console.error('Error fetching request data:', error);
-      } finally {
         setLoading(false);
+      }
+      catch(error)
+      {
+        console.log("error in fetching requests");
       }
     };
 
@@ -85,16 +63,16 @@ const SearchResults = () => {
       <h2 className="requests-header">Client Requests</h2>
       <MDBRow className='row-cols-1 row-cols-md-2 g-4'>
         {data.length > 0 ? (
-          data.map((item) => (
-            <MDBCol key={item.request_id}>
+          data.map((item,index) => (
+            <MDBCol key={index}>
               <MDBCard className="request-card">
                 <MDBCardBody>
-                  <MDBCardTitle>Client: {item.clientName}</MDBCardTitle>
+                  <MDBCardTitle>Client: {item.client_name}</MDBCardTitle>
                   <MDBCardText>
-                    <strong>City:</strong> {item.cityName}
+                    <strong>City:</strong> {item.city_name}
                   </MDBCardText>
                   <MDBCardText>
-                    <strong>Service:</strong> {item.serviceName}
+                    <strong>Service:</strong> {item.service_name}
                   </MDBCardText>
                   <MDBCardText>
                     <strong>Description:</strong> {item.description}
