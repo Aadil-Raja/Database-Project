@@ -36,9 +36,9 @@ const Login = () => {
         if (response.data.first_time_login === "First time login") {
           navigate("/ServiceProviderForm");
         } else if (response.data.role === "serviceproviders") {
-          navigate("/ServiceProviderHome");
+          navigate("/SpProfile");
         } else if (response.data.role === "clients") {
-          navigate("/About");
+          navigate("/ClientDashboard");
         }
       } else if (response.data === "notexist") {
         alert("Signup First");

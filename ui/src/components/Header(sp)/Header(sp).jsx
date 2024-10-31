@@ -1,5 +1,5 @@
 import React, { useState } from 'react';
-import './Header.css';
+import './Header(sp).css';
 import {
   MDBContainer,
   MDBNavbar,
@@ -38,25 +38,35 @@ export default function Header() {
 
         <MDBCollapse navbar open={openBasic}>
           <MDBNavbarNav className='mr-auto mb-2 mb-lg-0 header-nav-buttons'>
-            <MDBNavbarItem>
-              <Link to="/Home" className='nav-link'>
-                Home
-              </Link>
-            </MDBNavbarItem>
-            <MDBNavbarItem>
-              <Link to="/About" className='nav-link header-nav-buttons'>
-                About
-              </Link>
-            </MDBNavbarItem>
             
             <MDBNavbarItem>
-              <Link to="/Register" className='nav-link header-nav-buttons'>
-                Register
+              <Link to="/Requests" className='nav-link header-nav-buttons'>
+                Requests
               </Link>
             </MDBNavbarItem>
+
+            <MDBNavbarItem>
+              <Link to="/ServiceProviderForm" className='nav-link header-nav-buttons'>
+                Form
+              </Link>
+            </MDBNavbarItem>
+
+            <MDBNavbarItem>
+              <Link to="/SpHistory" className='nav-link header-nav-buttons'>
+                History
+              </Link>
+            </MDBNavbarItem>
+
+            
+            <MDBNavbarItem>
+              <Link to="/SpProfile" className='nav-link header-nav-buttons'>
+                Profile
+              </Link>
+            </MDBNavbarItem>
+
             <MDBNavbarItem>
               <Link to="/Login" className='nav-link header-nav-buttons'>
-                Login
+                Logout
               </Link>
             </MDBNavbarItem>
             
