@@ -34,25 +34,31 @@ const Chat = () => {
   const [chatHeads, setChatHeads] = useState([]);
   const [chatOpen, setChatOpen] = useState(true);
   const [isInRoom, setIsInRoom] = useState(false);
+  const [offeredPrice, setOfferedPrice] = useState('');
+
   const location = useLocation();
 
   useEffect(() => {
     const { room, sp_id } = location.state || {};
-    const client_id = localStorage.getItem('user_ID');;
-    const roomName=room;
+    const client_id = localStorage.getItem('user_ID');
+    const roomName = room;
     setRoom(roomName);
     setClientId(client_id);
-    setSpId(sp_id);
-    
     setSenderID(client_id);
-    setReceiverID(sp_id);
+  
+    if (sp_id) {
+      setSpId(sp_id);
+      setReceiverID(sp_id);
+    } else {
+      // Do not set receiverID to undefined
+      console.warn('sp_id is undefined in location.state.');
+      // Optionally, handle this case, e.g., set a default receiverID or prompt the user
+    }
+  
     socket.emit('join_room', roomName);
-
-   
     fetchPendingRequests(client_id);
     fetchChatHeads(client_id);
-  }, [location.search]);
- 
+  }, []);
   
   const fetchChatHeads = async (client_id) => {
     try {
@@ -87,11 +93,17 @@ const Chat = () => {
     setSpId(sp_id);
     setReceiverID(sp_id);
     socket.emit('join_room', roomName);
+    console.log('Updated receiverID:', sp_id);
     fetchPreviousMessages(roomName);
    
   };
 
   const sendMessage = async() => {
+    if (message.trim() === '') return; 
+    if (!receiverID) {
+      alert('Please select a chat to send the request.');
+      return;
+    }
     const messageData = {
       sender_id: senderID,
       receiver_id: receiverID,
@@ -99,12 +111,12 @@ const Chat = () => {
       sender_type: 'clients', 
       receiver_type: 'serviceproviders',
       room: room,
-      timestamp: Date.now(),
+      created_at: Date.now(),
     };
 
     socket.emit('client_send_message', { messageData, room });
     setMessages((prevMessages) => [...prevMessages, messageData]);
-    setMessage('');
+   
     try {
       await axios.post('http://localhost:3000/saveMessage', messageData);
       const chatHeadData = {
@@ -113,8 +125,10 @@ const Chat = () => {
         sp_id: receiverID,
         last_message: message,
       };
-      
+     
       await axios.post('http://localhost:3000/createORupdateChatHead', chatHeadData);
+      fetchChatHeads(clientId);
+      setMessage('');
     } catch(error) {
       console.error('Error saving message:', error);
     }
@@ -139,27 +153,68 @@ const Chat = () => {
 
   const sendSelectedRequest = async () => {
     if (selectedRequest) {
+      if (!receiverID) {
+        alert('Please select a chat to send the request.');
+        return;
+      }
+      const priceValue = parseFloat(offeredPrice);
+  
+      if (isNaN(priceValue)) {
+        alert('Please enter a valid price.');
+        return;
+      }
+  
+      const requestId = parseInt(selectedRequest.request_id);
+      if (isNaN(requestId)) {
+        console.error('Invalid request ID');
+        return;
+      }
+  
       const requestData = {
         sender_id: senderID,
         receiver_id: receiverID,
         message_text: `Request for ${selectedRequest.name}`,
-        sender_type: 'clients', 
-      receiver_type: 'serviceproviders',
-        request_id: selectedRequest.request_id,
+        sender_type: 'clients',
+        receiver_type: 'serviceproviders',
+        request_id: requestId,
         room: room,
-        timestamp: Date.now(),
+        created_at: Date.now(),
         type: 'service_request',
         status: 'pending',
+        price: priceValue,
       };
-      socket.emit('service_request', { messageData: requestData, room });
-      setMessages((prevMessages) => [...prevMessages, requestData]);
-      await axios.post('http://localhost:3000/saveRequestMessage', requestData);
-
   
-      setSelectedRequestId('');
-      setSelectedRequest(null);
+      try {
+        console.log('Sending request data:', requestData);
+  
+        // Emit the service request via socket
+        socket.emit('service_request', { messageData: requestData, room });
+        setMessages((prevMessages) => [...prevMessages, requestData]);
+  
+        // Save the request message to the database
+        await axios.post('http://localhost:3000/saveRequestMessage', requestData);
+  
+        const chatHeadData = {
+          room: room,
+          client_id: senderID,
+          sp_id: receiverID,
+          last_message: `Request for ${selectedRequest.name}`,
+        };
+  
+        await axios.post('http://localhost:3000/createORupdateChatHead', chatHeadData);
+        fetchChatHeads(clientId);
+  
+        // Reset the form
+        setSelectedRequestId('');
+        setSelectedRequest(null);
+        setOfferedPrice('');
+      } catch (error) {
+        console.error('Error sending service request:', error);
+      }
     }
   };
+  
+  
 
   useEffect(() => {
     socket.on('all_receive_message', (data) => {
@@ -168,6 +223,7 @@ const Chat = () => {
       if (data.room === room && data.sender_type != sender) {
         console.log("i am client savingg msg");
         setMessages((prevMessages) => [...prevMessages, data]);
+        fetchChatHeads(clientId);
       }
     });
 
@@ -221,7 +277,7 @@ const Chat = () => {
                         />
                         <div className="pt-1">
                           <p className="fw-bold mb-0" style={{ color: "#008080" }}>{chat.sp_name}</p>
-                          <p className="small text-muted text-truncate">{chat.last_message}</p>
+                          <p className="small text-muted text-truncate">{chat.lastmsg}</p>
                         </div>
                       </div>
                     </li>
@@ -246,37 +302,51 @@ const Chat = () => {
                   />
                 </div>
                 <div className="chat-scrollbar mb-3" style={{ height: "400px" }}>
-                  {messages.map((msg, index) => (
-                    <div
-                      key={index}
-                      className={`message ${msg.sender_type === "clients" ? "sent" : "received"}`}
-                    >
-                      {msg.message_text}
-                      {msg.type === "service_request" && (
-                        <span className="text-muted small">
-                          Status: {msg.status ? msg.status.charAt(0).toUpperCase() + msg.status.slice(1) : "Pending"}
-                          {msg.status === "pending" && (
-                            <button
-                              className="btn btn-sm btn-link text-danger ms-2"
-                              onClick={() => cancelServiceRequest(msg.request_id)}
-                            >
-                              Cancel Request
-                            </button>
-                          )}
-                        </span>
-                      )}
-                    </div>
-                  ))}
-                </div>
-                <div className="request-selection mb-3">
+  {messages.map((msg, index) => (
+    <div
+      key={index}
+      className={`message ${msg.sender_type === "clients" ? "sent" : "received"}`}
+    >
+      <div className="message-content">
+  <p>{msg.message_text}</p>
+  
+  <span className="message-time">
+    {new Date(msg.created_at).toLocaleTimeString([], {
+      hour: '2-digit',
+      minute: '2-digit',
+    })}
+  </span>
+</div>
+
+      {msg.type === "service_request" && (
+        <div className="text-muted small">
+          <p>Status: {msg.status ? msg.status.charAt(0).toUpperCase() + msg.status.slice(1) : "Pending"}</p>
+          <p>Offered Price: ${msg.price}</p>
+          {msg.status === "pending" && (
+            <button
+              className="btn btn-sm btn-link text-danger ms-2"
+              onClick={() => cancelServiceRequest(msg.request_id)}
+            >
+              Cancel Request
+            </button>
+          )}
+        </div>
+      )}
+    </div>
+  ))}
+</div>
+<div className="request-selection mb-3">
                   <select
                     className="form-select"
                     value={selectedRequestId}
                     onChange={(e) => {
                       const requestId = e.target.value;
                       setSelectedRequestId(requestId);
-                      const request = pendingRequests.find((req) => req.request_id === parseInt(requestId));
+                      const request = pendingRequests.find(
+                        (req) => req.request_id === parseInt(requestId)
+                      );
                       setSelectedRequest(request);
+                      setOfferedPrice(''); // Reset the offered price when a new request is selected
                     }}
                   >
                     <option value="">Select Request</option>
@@ -286,14 +356,46 @@ const Chat = () => {
                       </option>
                     ))}
                   </select>
-                  <MDBIcon
-                    fas
-                    icon="paper-plane"
-                    onClick={sendSelectedRequest}
-                    className="text-muted ms-2"
-                    style={{ cursor: "pointer" }}
-                  />
+
+                  {selectedRequest && (
+                    <div className="selected-request-details mt-3">
+                      <p>
+                        <strong>Description:</strong> {selectedRequest.description}
+                      </p>
+                      <p>
+                        <strong>Address:</strong> {selectedRequest.address}
+                      </p>
+                      <p>
+                        <strong>Request Date:</strong>{' '}
+                        {new Date(selectedRequest.request_date).toLocaleDateString()}
+                      </p>
+
+                      <div className="price-input mt-2">
+                        <label>
+                          <strong>Offered Price:</strong>
+                        </label>
+                        <input
+                          type="number"
+                          value={offeredPrice}
+                          onChange={(e) => setOfferedPrice(e.target.value)}
+                          placeholder="Enter your price"
+                          className="form-control mt-1"
+                        />
+                      </div>
+
+                      <button
+                        className="btn btn-primary mt-3"
+                        onClick={sendSelectedRequest}
+                        disabled={!offeredPrice}
+                      >
+                        Send Request <MDBIcon fas icon="paper-plane" className="ms-1" />
+                      </button>
+                    </div>
+                  )}
                 </div>
+
+ 
+
                 <div className="chat-box-footer d-flex align-items-center">
                   <input
                     type="text"
@@ -306,8 +408,8 @@ const Chat = () => {
                     fas
                     icon="paper-plane"
                     onClick={sendMessage}
-                    className="text-muted"
-                    style={{ cursor: "pointer" }}
+                    className={`text-muted ${message.trim() === '' ? 'disabled' : ''}`}
+                    style={{ cursor: message.trim() === '' ? 'not-allowed' : 'pointer' }}
                   />
                 </div>
               </MDBCardBody>

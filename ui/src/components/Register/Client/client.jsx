@@ -54,7 +54,7 @@ const Client = () => {
         alert("The email address is already registered. Please use a different email.");
       } else {
         alert("Account created successfully!");
-        navigate("/login");
+        navigate("/Login");
       }
     } catch (error) {
       console.error("There was an error creating the account:", error);

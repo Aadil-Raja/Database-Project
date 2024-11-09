@@ -11,6 +11,7 @@ exports.createMessageTable = async () => {
   receiver_type ENUM('clients', 'serviceproviders') NOT NULL,
   room varchar(255),
   request_id INT Default NULL,
+   price FLOAT,
   type ENUM('regular', 'service_request') DEFAULT 'regular',
   status ENUM('pending', 'accepted', 'cancelled') DEFAULT 'pending',
   created_at TIMESTAMP DEFAULT CURRENT_TIMESTAMP

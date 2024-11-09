@@ -19,6 +19,14 @@ import { Link } from 'react-router-dom';
 
 export default function Header() {
   const [openBasic, setOpenBasic] = useState(false);
+  const handleLogout = () => {
+
+    localStorage.removeItem('token');
+    localStorage.removeItem('user_ID');
+    localStorage.removeItem('usertype');
+
+    navigate('/Login');
+  };
 
   return (
     <MDBNavbar expand='lg' className='header-main-navbar'>
@@ -50,7 +58,7 @@ export default function Header() {
               </Link>
             </MDBNavbarItem>
             <MDBNavbarItem>
-              <Link to="/Login" className='nav-link header-nav-buttons'>
+              <Link to="/Login"  className='nav-link header-nav-buttons' onClick={handleLogout}>
                 Logout
               </Link>
             </MDBNavbarItem>

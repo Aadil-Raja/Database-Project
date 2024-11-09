@@ -32,7 +32,7 @@ exports.getChatHeadsForUser = async (req, res) => {
       // Modify the query to join with the serviceproviders table when the user is a client
       if (user_type === 'clients') {
         query = `
-       SELECT CONCAT(sp.firstName, ' ', sp.lastName) as sp_name, ch.room,ch.sp_id
+       SELECT CONCAT(sp.firstName, ' ', sp.lastName) as sp_name, ch.room,ch.sp_id,ch.last_message as lastmsg
           FROM ChatHeads ch
           JOIN serviceproviders sp ON ch.sp_id = sp.sp_id
           WHERE ch.client_id = ${user_id};
@@ -40,7 +40,7 @@ exports.getChatHeadsForUser = async (req, res) => {
       } else {
         // If the user is a service provider, join with the clients table to get client names
         query = `
-          SELECT ch.client_id ,ch.room,cl.name AS client_name
+          SELECT ch.client_id ,ch.room,cl.name AS client_name, ch.last_message as lastmsg
           FROM ChatHeads ch
           JOIN clients cl ON ch.client_id = cl.client_id
           WHERE ch.sp_id = ${user_id};

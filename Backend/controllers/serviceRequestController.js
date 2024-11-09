@@ -22,12 +22,13 @@ exports.getallRequests = async(req,res) => {
      try 
      {
                 const {sp_id}=req.params;
-            const query =`select DISTINCT  sr.client_id as client_id,ci.name as city_name,c.name as client_name,sr.address as address,s.name as service_name,sr.description as description
+            const query =`select DISTINCT  sr.client_id as client_id,ci.name as city_name,c.name as 
+            client_name,sr.address as address,s.name as service_name,sr.description as description
              from servicerequests sr join clients c on c.client_id=sr.client_id 
             join cities ci on ci.city_id=sr.city_id join services s on s.service_id=sr.service_id  
             join serviceproviders sp on sp.city_id=sr.city_id
             join serviceproviderservices sps on sps.service_provider_id = sp.sp_id
-            where sp.sp_id=${sp_id} and sr.service_id=sps.service_id and sps.availability_status=1;
+            where sp.sp_id=${sp_id} and sr.service_id=sps.service_id and sps.availability_status=1  and NOT (sr.status = 'cancelled' AND sr.sp_id IS NULL) and sr.status !='accepted' ;
             `;
                const [requests]= await sequelize.query(query);
                 res.json(requests);        
@@ -42,7 +43,8 @@ exports.getallRequests = async(req,res) => {
 exports.getPendingRequestofClient= async(req,res)=> {
    try {
       const {user_ID}=req.body;
-      const query=`select s.name ,sr.request_id from servicerequests sr join services s on sr.service_id=s.service_id where client_id=${user_ID} and sr.status='pending'; `
+      const query=`select s.name ,sr.request_id ,sr.description,sr.address,sr.request_date 
+      from servicerequests sr join services s on sr.service_id=s.service_id where client_id=${user_ID} and sr.status='pending'; `
       const [results]= await sequelize.query(query);
       res.json(results);
    }
@@ -55,8 +57,8 @@ exports.getPendingRequestofClient= async(req,res)=> {
 
 exports.addAcceptedRequest=async(req,res)=>{
    try {
-      const {request_id}=req.body;
-      const query=`update servicerequests set status='accepted' where request_id=${request_id}`;
+      const {request_id,sp_id,price}=req.body;
+      const query=`update servicerequests set status='accepted',price=${price} , sp_id=${sp_id} where request_id=${request_id}`;
       await sequelize.query(query);
       
    }

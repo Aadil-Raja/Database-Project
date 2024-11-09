@@ -90,9 +90,8 @@ exports.updateOrder=async(req,res)=>{
     const {status}=req.body;
     let query;
     if (status==='cancelled'){
-      query =`UPDATE servicerequests 
-      SET status = '${status}' 
-      WHERE request_id = ${orderId};`;
+      query =`delete from servicerequests 
+      WHERE request_id = ${orderId} and sp_id is NULL`;
     }
   else
   {

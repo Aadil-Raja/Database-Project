@@ -71,7 +71,7 @@ const ServiceProviderForm = () => {
 
       if (response.data.message === 'Preferences updated successfully') {
         alert('Preferences updated successfully!');
-        navigate("/ServiceProviderHome");
+        navigate("/SpProfile");
       }
     } catch (error) {
       console.error('Error updating preferences:', error);

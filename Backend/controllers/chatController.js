@@ -21,13 +21,13 @@ exports.saveMessage = async (req, res) => {
   }
 };
 exports.saveRequestMessage = async (req, res) => {
-  const { sender_id, receiver_id, message_text, sender_type, receiver_type,room,type,status,request_id } = req.body;
+  const { sender_id, receiver_id, message_text, sender_type, receiver_type,room,type,status,request_id ,price} = req.body;
 
   try {
     // Raw SQL query for inserting a new message
     const query = `
-      INSERT INTO Messages (sender_id, receiver_id, message_text, sender_type, receiver_type,room,type,status,request_id)
-      VALUES (${sender_id}, ${receiver_id}, '${message_text}', '${sender_type}', '${receiver_type}','${room}','${type}','${status}',${request_id});
+      INSERT INTO Messages (sender_id, receiver_id, message_text, sender_type, receiver_type,room,type,status,request_id,price)
+      VALUES (${sender_id}, ${receiver_id}, '${message_text}', '${sender_type}', '${receiver_type}','${room}','${type}','${status}',${request_id},${price});
     `;
 
     // Execute the raw SQL query

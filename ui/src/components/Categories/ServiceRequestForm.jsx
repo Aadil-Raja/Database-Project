@@ -135,12 +135,10 @@ const ServiceRequestForm = () => {
                 </MDBCol>
               </MDBRow>
 
-              <div className="text-center mt-4">
-                <MDBBtn color="primary" className="me-2" onClick={handleSelectSP}>
-                  Select Service Provider Yourself
-                </MDBBtn>
-                <MDBBtn color="secondary" onClick={handleSendToAll}>
-                  Send Request to All Providers
+              <div className="text-center mt-3">
+             
+                <MDBBtn color="primary" onClick={handleSendToAll}>
+                Apply
                 </MDBBtn>
               </div>
             </MDBCardBody>

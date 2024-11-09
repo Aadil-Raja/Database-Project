@@ -61,9 +61,10 @@ function Layout() {
 
   const hideFooter = ["/register", "/Admin"].includes(location.pathname);
   const hideNotification = [
+    "/register","/Home", "/About","/Login",
     "/Clientchat", "/Spchat", "/", "/Register", "/Categories",
-    "/Requests", "/sp", "/login", "/SpProfile", "/Admin",
-    "/SpHistory", "/SpBilling"
+    "/Requests", "/SP", "/SpProfile", "/Admin",
+    "/SpHistory", "/SpBilling","/Client"
   ].includes(location.pathname);
 
   return (

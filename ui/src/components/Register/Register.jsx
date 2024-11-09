@@ -13,7 +13,7 @@ export default function Register() {
     };
 
     const handleCreateAccount = () => {
-        navigate(selectedRole === "serviceProvider" ? "/sp" : "/client", {
+        navigate(selectedRole === "serviceProvider" ? "/SP" : "/Client", {
             state: { role: selectedRole },
         });
     };
