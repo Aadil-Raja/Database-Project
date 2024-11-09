@@ -24,7 +24,7 @@ export default function Header() {
     <MDBNavbar expand='lg' className='header-main-navbar'>
       <MDBContainer fluid>
         <MDBNavbarBrand tag="div" className='header-web-name'>
-          <Link to="/" className='header-navbar-brand'>Service Provider</Link>
+          <Link to="/" className='header-navbar-brand'>Masla Fix</Link>
         </MDBNavbarBrand>
 
         <MDBNavbarToggler

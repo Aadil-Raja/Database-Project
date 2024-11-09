@@ -1,5 +1,5 @@
 import React, { useState, useEffect } from "react";
-import { Outlet, useLocation } from "react-router-dom";
+import { Outlet, useLocation,createBrowserRouter, RouterProvider } from "react-router-dom";
 import axios from 'axios';
 import Header from "./components/Header/Header";
 import ClientHeader from "./components/Header(client)/Header(client)";
@@ -11,6 +11,13 @@ function Layout() {
   const location = useLocation();
   const [isClientAuthorized, setIsClientAuthorized] = useState(null);
   const [isSpAuthorized, setIsSpAuthorized] = useState(null);
+
+  const isCategoryPage = () => {
+    return /^\/categories\/\d+$/.test(location.pathname); // Matches "/Categories/:categoryId"
+  };
+
+  const isServiceRequestFormPage = () => /^\/categories\/\d+\/servicerequestform$/.test(location.pathname);
+
 
   // Authorization check
   useEffect(() => {
@@ -55,8 +62,8 @@ function Layout() {
 
   // Conditional component rendering based on authorization state
   const clientPages = ["/Categories", "/ClientDashboard", "/Clientchat","/Home"];
-  const spPages = ["/Requests", "/ServiceProviderForm", "/SpHistory", "/SpProfile","/Home"];
-  const showClientHeader = isClientAuthorized && clientPages.includes(location.pathname);
+  const spPages = ["/Requests", "/ServiceProviderForm", "/SpHistory", "/SpProfile","/Home","/RequestCategory"];
+  const showClientHeader = isClientAuthorized && (clientPages.includes(location.pathname)|| isCategoryPage() || isServiceRequestFormPage());
   const showSpHeader = isSpAuthorized && spPages.includes(location.pathname);
 
   const hideFooter = ["/register", "/Admin"].includes(location.pathname);
