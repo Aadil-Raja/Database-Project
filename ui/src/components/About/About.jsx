@@ -9,7 +9,7 @@ export default function About() {
         <MDBCol md="6">
           <MDBRipple rippleTag="div" className="bg-image hover-overlay hover-zoom hover-shadow">
             <img
-              src="https://tailus.io/sources/blocks/left-image/preview/images/startup.png"
+              src="http://localhost:3000/images/about-1.jpg"
               alt="About Us"
               className="about-image img-fluid"
             />
@@ -26,10 +26,6 @@ export default function About() {
             clients and providers seamlessly. Whether you're hiring or offering services, we’re here to streamline your
             experience.
           </p>
-          <MDBBtn color="info" size="lg" className="about-btn">
-            Learn More
-            <MDBIcon fas icon="arrow-right ms-2" />
-          </MDBBtn>
         </MDBCol>
       </MDBRow>
 
@@ -51,7 +47,7 @@ export default function About() {
         <MDBCol md="6">
           <MDBRipple rippleTag="div" className="bg-image hover-overlay hover-zoom hover-shadow">
             <img
-              src="http://localhost:3000/images/CustomerService-1.jpg"
+             src="http://localhost:3000/images/about-2.jpg"
               alt="Serving Clients"
               className="about-image img-fluid"
             />
@@ -65,7 +61,7 @@ export default function About() {
         <MDBCol md="6  order-2 order-md-1">
           <MDBRipple rippleTag="div" className="bg-image hover-overlay hover-zoom hover-shadow">
             <img
-              src="http://localhost:3000/images/ServiceProvider-1.jpg"
+              src="http://localhost:3000/images/about-3.jpg"
               alt="Serving Providers"
               className="about-image img-fluid"
             />
