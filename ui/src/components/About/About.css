@@ -1,79 +1,124 @@
+/* General Styling */
 .about-section {
-  background-color: #f8f9fa;
+  background: white;
   padding: 50px 0;
   min-height: 100vh;
 }
 
+/* Image Styling with Animations */
 .about-image {
   border-radius: 10px;
+  animation: zoomIn 1.5s ease;
+  transition: transform 0.3s ease;
 }
 
-.about-text {
-  padding-left: 40px;
+.about-image:hover {
+  transform: scale(1.05);
 }
 
+
+/* Animation Keyframes */
+@keyframes zoomIn {
+  from {
+    transform: scale(0.9);
+    opacity: 0;
+  }
+  to {
+    transform: scale(1);
+    opacity: 1;
+  }
+}
+
+/* Text and Title Styling */
 .about-title {
   font-size: 2.5rem;
-  color: #008080;
+  color: rgba(34, 193, 195, 0.9);
   font-weight: bold;
+  animation: fadeInDown 1.5s ease;
 }
 
 .about-description {
-  font-size: 1.1rem;
-  color: #555;
+  font-size: 1.2rem;
+  color:rgba(19, 106, 107, 0.8);;
   margin-bottom: 1.5rem;
+  animation: fadeInUp 1.5s ease;
 }
 
 .about-btn {
   background-color: rgba(255, 111, 97, 0.9);
   color: white;
   font-size: 1.2rem;
+  transition: background-color 0.3s, transform 0.3s;
 }
 
+.about-btn:hover {
+  background-color: rgba(255, 111, 97, 1);
+  transform: scale(1.05);
+}
+
+/* Subtitle Styling */
 .about-subtitle {
   font-size: 2rem;
-  color: #008080;
+  color: rgba(34, 193, 195, 0.8);
   font-weight: 600;
+  margin-bottom: 1.5rem;
+  animation: fadeInDown 1.5s ease;
 }
 
-.about-clients-section,
-.about-providers-section {
-  margin-top: 50px;
-}
-
+/* Feature Card Styling */
 .feature-card {
-  text-align: center;
-  padding: 30px;
-  background-color: #ffffff;
+  background-color: rgba(255, 255, 255, 0.9);
+  color: #333;
   border-radius: 10px;
-  box-shadow: 0 5px 15px rgba(0, 0, 0, 0.1);
-  transition: all 0.3s ease;
+  box-shadow: 0 5px 15px rgba(0, 0, 0, 0.15);
+  padding: 25px;
+  text-align: center;
+  transition: transform 0.3s ease;
 }
 
 .feature-card:hover {
-  transform: translateY(-5px);
+  transform: translateY(-10px);
 }
 
+/* Feature Icon Styling */
 .feature-icon {
-  color: #008080;
+  color: rgba(34, 193, 195, 0.8);
 }
 
-.feature-title {
-  margin-top: 10px;
-  font-size: 1.5rem;
-  color: #333;
+/* Section Titles */
+.about-section h3 {
+  font-weight: bold;
+  color: rgba(34, 193, 195, 0.85);
+  font-size: 2.5rem;
+  margin-bottom: 1.5rem;
+  text-align: center;
 }
 
-.feature-description {
-  font-size: 1rem;
-  color: #777;
-}
-
-@media (max-width: 768px) {
-  .about-text {
-    padding-left: 20px;
+/* Animations */
+@keyframes fadeInDown {
+  from {
+    opacity: 0;
+    transform: translateY(-20px);
   }
+  to {
+    opacity: 1;
+    transform: translateY(0);
+  }
+}
 
+@keyframes fadeInUp {
+  from {
+    opacity: 0;
+    transform: translateY(20px);
+  }
+  to {
+    opacity: 1;
+    transform: translateY(0);
+  }
+}
+
+/* Responsive Styling */
+@media (max-width: 768px) {
   .about-title {
     font-size: 2rem;
   }
@@ -88,51 +133,5 @@
 
   .feature-title {
     font-size: 1.3rem;
-  }
-}
-
-/* Default font sizes for larger screens */
-.about-title {
-  font-size: 2.5rem;
-}
-
-.about-description,
-.about-mission {
-  font-size: 1.25rem;
-}
-
-/* Medium screens (e.g., tablets) */
-@media (max-width: 992px) {
-  .about-title {
-    font-size: 2rem;
-  }
-
-  .about-description,
-  .about-mission {
-    font-size: 1.1rem;
-  }
-}
-
-/* Small screens (e.g., mobile) */
-@media (max-width: 768px) {
-  .about-title {
-    font-size: 1.75rem;
-  }
-
-  .about-description,
-  .about-mission {
-    font-size: 1rem;
-  }
-}
-
-/* Extra small screens */
-@media (max-width: 576px) {
-  .about-title {
-    font-size: 1.5rem;
-  }
-
-  .about-description,
-  .about-mission {
-    font-size: 0.9rem;
   }
 }
