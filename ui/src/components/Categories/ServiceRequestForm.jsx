@@ -12,6 +12,7 @@ import {
   MDBBtn,
 
 } from 'mdb-react-ui-kit';
+import './categoryDetails.css'
 
 const ServiceRequestForm = () => {
   const [description, setDescription] = useState('');
@@ -79,7 +80,7 @@ const ServiceRequestForm = () => {
 
   return (
     <MDBContainer fluid className="my-5">
-      <MDBRow className="d-flex justify-content-center align-items-center">
+      <MDBRow className="d-flex justify-content-center align-items-center service-request-form-section" >
         <MDBCol lg="8" className="my-5">
           <MDBCard>
             <MDBCardBody className="px-4">

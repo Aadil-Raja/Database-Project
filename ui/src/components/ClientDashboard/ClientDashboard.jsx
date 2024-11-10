@@ -22,6 +22,7 @@ import {
     MDBTextArea,
   } from 'mdb-react-ui-kit';
 import axios from 'axios';
+import './ClientDashboard.css'
 const StarRating = ({ rating, onRatingChange, readOnly = false }) => {
     return (
       <div>
@@ -180,7 +181,7 @@ const ClientDashboard = () => {
   };
 
   return (
-    <MDBContainer className="mt-5">
+    <MDBContainer className="mt-5 client-dashboard-section">
       <h2 className="mb-4 text-center">My Requests</h2>
       <MDBTabs className="mb-3 justify-content-center">
         <MDBTabsItem>

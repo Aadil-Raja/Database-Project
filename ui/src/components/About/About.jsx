@@ -19,11 +19,10 @@ export default function About() {
         <MDBCol md="6" className="about-text align-items-center justify-content-center">
           <h2 className="about-title">Empowering Service Providers for a Better Tomorrow</h2>
           <p className="about-description">
-            Our platform connects you with skilled professionals ready to offer their expertise. From home services to
-            business solutions, we aim to simplify finding the right service provider for your needs.
+            Our platform connects you with skilled professionals ready to offer their expertise.We aim to simplify finding the right service provider for your needs.
           </p>
           <p className="about-description">
-            With features like real-time chat, request management, and secure payment gateways, we bridge the gap between
+            With features like real-time chat and request management we bridge the gap between
             clients and providers seamlessly. Whether you're hiring or offering services, we’re here to streamline your
             experience.
           </p>
@@ -41,11 +40,11 @@ export default function About() {
           <p className="about-description">
             For clients, our platform provides a seamless experience to find and hire the best professionals for the job.
             Our user-friendly interface allows you to browse through a diverse range of service providers, request quotes,
-            and chat in real-time. Whether you need a web developer, graphic designer, or home improvement expert, we've
+            and chat in real-time. Whether you need a electrician, plumber, or home improvement expert, we've
             got you covered.
           </p>
           <p className="about-description">
-            Clients also benefit from secure transactions, review systems to evaluate providers, and the ability to track
+            Clients also benefit from secure chat system, review systems to evaluate providers, and the ability to track
             their service requests in real-time.
           </p>
         </MDBCol>
@@ -77,13 +76,12 @@ export default function About() {
           <h3 className="about-subtitle">How We Serve Service Providers</h3>
           <p className="about-description">
             For service providers, our platform offers a robust system to showcase your skills and expertise. Create a
-            professional profile, display your portfolio, and let clients reach out to you. Our integrated request
-            management system ensures that you can manage orders, communicate with clients, and track your earnings
+            professional profile, display your services, and let clients reach out to you. Our integrated request
+            management system ensures that you can manage orders, communicate with clients, and earn loads
             effortlessly.
           </p>
           <p className="about-description">
-            Providers can also rely on the platform's review system to build credibility and gain more clients, while our
-            secure payment gateway ensures timely payments for your services.
+            Providers can also rely on the platform's review system to build credibility and gain more clients.
           </p>
         </MDBCol>
       </MDBRow>

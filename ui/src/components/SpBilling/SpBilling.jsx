@@ -24,6 +24,7 @@ import {
 
 } from 'mdb-react-ui-kit';
 import axios from 'axios';
+import './Spbilling.css'
 
 const SpBilling = () => {
   const [invoices, setInvoices] = useState([]);
@@ -174,7 +175,7 @@ const fetchInvoices = async () => {
   
   
   return (
-    <MDBContainer className="py-5">
+    <MDBContainer className="py-5 spbilling-section">
       <h2 className="mb-4 text-center">Billing</h2>
 
 {invoices.length > 0 ? (

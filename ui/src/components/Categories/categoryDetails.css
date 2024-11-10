@@ -17,6 +17,10 @@
     transform: scale(1.05); /* Slightly enlarge the card on hover */
   }
   
+  .service-request-form-section{
+    min-height: 60vh;
+  }
+
   .service-icon-wrapper {
     display: flex;
     justify-content: center;
