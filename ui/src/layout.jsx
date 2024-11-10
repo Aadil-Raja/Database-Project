@@ -1,5 +1,5 @@
 import React, { useState, useEffect } from "react";
-import { Outlet, useLocation,createBrowserRouter, RouterProvider } from "react-router-dom";
+import { Outlet, useLocation } from "react-router-dom";
 import axios from 'axios';
 import Header from "./components/Header/Header";
 import ClientHeader from "./components/Header(client)/Header(client)";
@@ -12,14 +12,30 @@ function Layout() {
   const [isClientAuthorized, setIsClientAuthorized] = useState(null);
   const [isSpAuthorized, setIsSpAuthorized] = useState(null);
 
-  const isCategoryPage = () => {
-    return /^\/categories\/\d+$/.test(location.pathname); // Matches "/Categories/:categoryId"
+  // Regular expressions to match routes for client and service provider
+  const clientRoutePatterns = [
+    /^\/Categories(\/\d+)?$/, // Matches /Categories and /Categories/:categoryId
+    /^\/ClientDashBoard$/, // Matches /ClientDashBoard
+    /^\/Clientchat$/, // Matches /Clientchat
+    /^\/Home$/, // Matches /Home
+    /^\/Categories\/\d+\/\d+\/servicerequestform$/, // Matches /Categories/:categoryId/:serviceId/servicerequestform
+  ];
+
+  const spRoutePatterns = [
+    /^\/Requests$/, // Matches /Requests
+    /^\/ServiceProviderForm$/, // Matches /ServiceProviderForm
+    /^\/SpHistory$/, // Matches /SpHistory
+    /^\/SpProfile$/, // Matches /SpProfile
+    /^\/Home$/, // Matches /Home (if also used by SP)
+    /^\/RequestCategory$/, // Matches /RequestCategory
+  ];
+
+  // Check if the current path matches any of the patterns
+  const matchesPattern = (patterns) => {
+    return patterns.some((pattern) => pattern.test(location.pathname));
   };
 
-  const isServiceRequestFormPage = () => /^\/categories\/\d+\/servicerequestform$/.test(location.pathname);
-
-
-  // Authorization check
+  // Authorization check for Client
   useEffect(() => {
     const verifyClientAccess = async () => {
       try {
@@ -39,7 +55,7 @@ function Layout() {
     verifyClientAccess();
   }, []);
 
-  // Service Provider Authorization Check
+  // Authorization check for Service Provider
   useEffect(() => {
     const verifyServiceProviderAccess = async () => {
       try {
@@ -59,19 +75,17 @@ function Layout() {
     verifyServiceProviderAccess();
   }, []);
 
+  // Determine which header to show
+  const showClientHeader = isClientAuthorized && matchesPattern(clientRoutePatterns);
+  const showSpHeader = isSpAuthorized && matchesPattern(spRoutePatterns);
 
-  // Conditional component rendering based on authorization state
-  const clientPages = ["/Categories", "/ClientDashboard", "/Clientchat","/Home"];
-  const spPages = ["/Requests", "/ServiceProviderForm", "/SpHistory", "/SpProfile","/Home","/RequestCategory"];
-  const showClientHeader = isClientAuthorized && (clientPages.includes(location.pathname)|| isCategoryPage() || isServiceRequestFormPage());
-  const showSpHeader = isSpAuthorized && spPages.includes(location.pathname);
-
-  const hideFooter = ["/register", "/Admin"].includes(location.pathname);
+  // Conditions to hide footer and notification
+  const hideFooter = ["/register", "/Admin", "/ClientDashBoard"].includes(location.pathname);
   const hideNotification = [
-    "/register","/Home", "/About","/Login",
+    "/register", "/Home", "/About", "/Login",
     "/Clientchat", "/Spchat", "/", "/Register", "/Categories",
     "/Requests", "/SP", "/SpProfile", "/Admin",
-    "/SpHistory", "/SpBilling","/Client"
+    "/SpHistory", "/SpBilling", "/Client", "/Categories"
   ].includes(location.pathname);
 
   return (

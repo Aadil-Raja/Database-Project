@@ -1,6 +1,10 @@
+// ServiceRequestForm.jsx
+
 import React, { useState, useEffect } from 'react';
 import axios from 'axios';
+import { Link } from 'react-router-dom';
 import { useNavigate, useParams } from 'react-router-dom';
+import { useLocation } from 'react-router-dom';
 import {
   MDBContainer,
   MDBRow,
@@ -10,9 +14,12 @@ import {
   MDBInput,
   MDBTextArea,
   MDBBtn,
-
+  MDBProgress,          // Added for progress bar
+  MDBProgressBar,
+  MDBBreadcrumb,        // Added for breadcrumb navigation
+  MDBBreadcrumbItem,
 } from 'mdb-react-ui-kit';
-import './categoryDetails.css'
+import './serviceRequestForm.css'; // Updated CSS file
 
 const ServiceRequestForm = () => {
   const [description, setDescription] = useState('');
@@ -20,7 +27,15 @@ const ServiceRequestForm = () => {
   const [cities, setCities] = useState([]);
   const [address, setAddress] = useState('');
   const { serviceId } = useParams();
+  const [category,setCategory]=useState(null);
+  const [service,setService]=useState(null);
   const navigate = useNavigate();
+
+  const { categoryId } = useParams();
+
+
+  // Added state for progress bar
+  const [progress, setProgress] = useState(33); // Start at 33%
 
   useEffect(() => {
     const fetchCities = async () => {
@@ -34,12 +49,37 @@ const ServiceRequestForm = () => {
     fetchCities();
   }, []);
 
+  useEffect(() => {
+    const fetchData = async () => {
+      try {
+        const categoryResponse = await axios.get(`http://localhost:3000/categories/${categoryId}`);
+        setCategory(categoryResponse.data);
+  
+        const serviceResponse = await axios.get(`http://localhost:3000/getServiceName?service_id=${serviceId}`)
+      
+        setService(serviceResponse.data);
+      } catch (error) {
+        console.error('Error fetching category or service:', error);
+      }
+   
+    };
+    fetchData();
+  }, [categoryId, serviceId]);
+  
+
   const validateForm = () => {
     if (!description || !city || !address) {
       alert('All fields are required.');
       return false;
     }
     return true;
+  };
+
+  const handleInputChange = (setter) => (e) => {
+    setter(e.target.value);
+    // Update progress bar based on filled fields
+    const filledFields = [description, city, address].filter(Boolean).length;
+    setProgress(((filledFields + 1) / 3) * 100); // '+1' accounts for the current field
   };
 
   const handleSendToAll = async () => {
@@ -69,38 +109,49 @@ const ServiceRequestForm = () => {
     }
   };
 
-  const handleSelectSP = () => {
-    const requestData = {
-      description,
-      city,
-      address,
-    };
-    console.log('Select your own service provider:', requestData);
-  };
-
   return (
-    <MDBContainer fluid className="my-5">
-      <MDBRow className="d-flex justify-content-center align-items-center service-request-form-section" >
-        <MDBCol lg="8" className="my-5">
+    <MDBContainer fluid className="my-5 service-request-form-body">
+      {/* Breadcrumb Navigation */}
+      <MDBBreadcrumb className="mx-3">
+      <MDBBreadcrumbItem>
+          <Link to="/Categories">Categories</Link>
+        </MDBBreadcrumbItem>
+        <MDBBreadcrumbItem>
+        <Link to={`/Categories/${categoryId}`}>{category ? category.name : 'Loading...'}</Link>
+        </MDBBreadcrumbItem>
+        <MDBBreadcrumbItem active>{service ? service.name : 'Loading...'}</MDBBreadcrumbItem>
+        
+        <MDBBreadcrumbItem active>Request Form</MDBBreadcrumbItem>
+      </MDBBreadcrumb>
+
+      <MDBRow className="d-flex justify-content-center align-items-center">
+        <MDBCol lg="8">
           <MDBCard>
             <MDBCardBody className="px-4">
-              <h4 className="text-center mb-4">Describe Your Problem</h4>
-              <MDBRow className="align-items-center mb-4">
+              <h3 className="text-center mb-4">Request Service</h3>
+              {/* Progress Bar */}
+              <MDBProgress className="mb-4">
+                <MDBProgressBar width={progress} valuemin={0} valuemax={100}>
+                  {Math.round(progress)}%
+                </MDBProgressBar>
+              </MDBProgress>
+
+              <MDBRow className="mb-4">
                 <MDBCol md="3">
                   <h6 className="mb-0">Problem Description</h6>
                 </MDBCol>
                 <MDBCol md="9">
                   <MDBTextArea
-                    label="Problem Description"
+                    label="Describe your problem"
                     rows="4"
                     value={description}
-                    onChange={(e) => setDescription(e.target.value)}
+                    onChange={handleInputChange(setDescription)}
                     required
                   />
                 </MDBCol>
               </MDBRow>
 
-              <MDBRow className="align-items-center mb-4">
+              <MDBRow className="mb-4">
                 <MDBCol md="3">
                   <h6 className="mb-0">City</h6>
                 </MDBCol>
@@ -108,7 +159,7 @@ const ServiceRequestForm = () => {
                   <select
                     className="form-control"
                     value={city}
-                    onChange={(e) => setCity(e.target.value)}
+                    onChange={handleInputChange(setCity)}
                     required
                   >
                     <option value="">Select a city</option>
@@ -121,25 +172,24 @@ const ServiceRequestForm = () => {
                 </MDBCol>
               </MDBRow>
 
-              <MDBRow className="align-items-center mb-4">
+              <MDBRow className="mb-4">
                 <MDBCol md="3">
                   <h6 className="mb-0">Address</h6>
                 </MDBCol>
                 <MDBCol md="9">
                   <MDBInput
-                    label="Address"
+                    label="Your address"
                     type="text"
                     value={address}
-                    onChange={(e) => setAddress(e.target.value)}
+                    onChange={handleInputChange(setAddress)}
                     required
                   />
                 </MDBCol>
               </MDBRow>
 
-              <div className="text-center mt-3">
-             
+              <div className="text-center mt-4">
                 <MDBBtn color="primary" onClick={handleSendToAll}>
-                Apply
+                  Submit Request
                 </MDBBtn>
               </div>
             </MDBCardBody>

@@ -1,7 +1,67 @@
 /* NotificationComponent.css */
 
+.notification-section {
+  position: relative;
+}
 
-  .notification-section {
-    background: linear-gradient(135deg, rgba(0,128,128,0.9), rgba(0,128,128,0.9));
- 
-  }
+.notification-section .nav-link {
+  color: #000;
+}
+
+.notification-section .dropdown-header {
+  font-weight: bold;
+}
+
+.notification-section .dropdown-item {
+  transition: background-color 0.2s;
+}
+
+.notification-section .dropdown-item:hover {
+  background-color: #f1f1f1;
+}
+
+/* Animation for the bell icon */
+.notification-bell.bell-shake {
+  animation: shake 1s;
+}
+
+@keyframes shake {
+  0% { transform: rotate(0deg); }
+  20% { transform: rotate(-15deg); }
+  40% { transform: rotate(15deg); }
+  60% { transform: rotate(-10deg); }
+  80% { transform: rotate(10deg); }
+  100% { transform: rotate(0deg); }
+}
+
+/* Change bell icon color when there are unread notifications */
+.notification-bell.has-unread {
+  color: #dc3545; /* Bootstrap danger color */
+}
+
+/* Notification Banner */
+.notification-banner {
+  position: fixed;
+  bottom: 20px;
+  right: 20px;
+  background-color: #007bff;
+  color: #fff;
+  padding: 15px 20px;
+  border-radius: 5px;
+  box-shadow: 0 2px 6px rgba(0,0,0,0.2);
+  cursor: pointer;
+  animation: slide-in 0.5s forwards;
+  display: flex;
+  align-items: center;
+  min-width: 250px;
+}
+
+.notification-banner .close-icon {
+  margin-left: auto;
+  cursor: pointer;
+}
+
+@keyframes slide-in {
+  from { opacity: 0; transform: translateX(100%); }
+  to { opacity: 1; transform: translateX(0); }
+}

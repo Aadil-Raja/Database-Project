@@ -99,13 +99,17 @@ const router = createBrowserRouter([
     element:<Services/>
 },
 {
+  path: 'Categories/:categoryId/:serviceId/servicerequestform',
+  element: <ServiceRequestForm />
+},
+{
   path :'ClientDashBoard',
   element :<ClientDashboard/>
 },
 
   
 {
-  path: "categories/:serviceId/servicerequestform",
+  path: "Categories/:serviceId/servicerequestform",
   element :<ServiceRequestForm />
  },
       ]

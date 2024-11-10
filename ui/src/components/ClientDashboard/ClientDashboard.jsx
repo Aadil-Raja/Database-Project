@@ -19,10 +19,19 @@ import {
     MDBModalTitle,
     MDBModalBody,
     MDBModalFooter,
+    MDBSpinner,
     MDBTextArea,
-  } from 'mdb-react-ui-kit';
+    MDBProgress,
+    MDBProgressBar,
+    MDBTooltip,
+    MDBCard,           // Added for summary cards
+    MDBCardBody,       // Added for summary cards
+    MDBRow,            // Added for layout
+    MDBCol,            // Added for layout
+} from 'mdb-react-ui-kit';
 import axios from 'axios';
-import './ClientDashboard.css'
+import './ClientDashboard.css'; // Make sure to update your CSS file accordingly
+
 const StarRating = ({ rating, onRatingChange, readOnly = false }) => {
     return (
       <div>
@@ -42,6 +51,7 @@ const StarRating = ({ rating, onRatingChange, readOnly = false }) => {
       </div>
     );
   };
+
 const ClientDashboard = () => {
   const [activeTab, setActiveTab] = useState('pending');
   const [orders, setOrders] = useState({
@@ -53,7 +63,14 @@ const ClientDashboard = () => {
   const [feedbackOrderId, setFeedbackOrderId] = useState(null);
   const [feedbackRating, setFeedbackRating] = useState(0);
   const [feedbackComment, setFeedbackComment] = useState('');
-  const [feedback,setfeedback]=useState([]);
+  const [feedback, setFeedback] = useState([]);
+
+  // New state variables for summary counts
+  const [totalRequests, setTotalRequests] = useState(0);
+  const [pendingCount, setPendingCount] = useState(0);
+  const [acceptedCount, setAcceptedCount] = useState(0);
+  const [completedCount, setCompletedCount] = useState(0);
+
   useEffect(() => {
     // Fetch orders from your API and categorize them
     fetchOrders();
@@ -67,7 +84,6 @@ const ClientDashboard = () => {
       const data = await response.json();
 
       // Assuming data is an array of orders with a 'status' field
-      // Assuming data is an array of orders with a 'status' field
       const pendingOrders = data.filter((order) => order.status === 'pending');
       const acceptedOrders = data.filter((order) => order.status === 'accepted');
       const completedOrders = data.filter((order) => order.status === 'completed');
@@ -77,11 +93,18 @@ const ClientDashboard = () => {
         accepted: acceptedOrders,
         completed: completedOrders,
       });
+
+      // Update summary counts
+      setTotalRequests(data.length);
+      setPendingCount(pendingOrders.length);
+      setAcceptedCount(acceptedOrders.length);
+      setCompletedCount(completedOrders.length);
+
     } catch (error) {
       console.error('Error fetching orders:', error);
     }
   };
-   
+
   const handleTabClick = (value) => {
     if (value === activeTab) {
       return;
@@ -90,38 +113,35 @@ const ClientDashboard = () => {
   };
 
   const handleCancelOrder = async (orderId,index) => {
- 
     alert(`Canceling order ID: ${index}`);
     setOrders((prevOrders) => ({
         ...prevOrders,
         pending: prevOrders.pending.filter((order) => order.request_id !== orderId),
       }));
- 
+    // Update counts
+    setPendingCount((prev) => prev - 1);
+    setTotalRequests((prev) => prev - 1);
     await updateOrderStatus(orderId, 'cancelled');
-      
- 
- 
   };
 
   const handleCompleteOrder = async (orderId,index) => {
-  
     alert(`Completing order ID: ${index}`);
     setOrders((prevOrders) => {
         // Find the completed order
         const completedOrder = prevOrders.accepted.find((order) => order.request_id === orderId);
         // Update the status locally
         const updatedOrder = { ...completedOrder, status: 'completed' };
-  
+
         return {
           ...prevOrders,
           accepted: prevOrders.accepted.filter((order) => order.request_id !== orderId),
           completed: [...prevOrders.completed, updatedOrder],
         };
       });
-
+    // Update counts
+    setAcceptedCount((prev) => prev - 1);
+    setCompletedCount((prev) => prev + 1);
     await updateOrderStatus(orderId, 'completed');
-   
-  
   };
 
   const handleProvideFeedback = (orderId) => {
@@ -132,17 +152,15 @@ const ClientDashboard = () => {
   const handleFeedbackSubmit = async () => {
     try {
       // Send feedback to backend
-      if ( feedbackRating === 0 || !feedbackComment) {
+      if (feedbackRating === 0 || !feedbackComment) {
         alert('Please provide all feedback details.');
         return;
       }
       setOrders((prevOrders) => ({
-        
         ...prevOrders,
         completed: prevOrders.completed.map((order) =>
-            
           order.request_id === feedbackOrderId
-            ? { ...order, rating:feedbackRating,review: feedbackComment } // Update rating and review for the matched order
+            ? { ...order, rating: feedbackRating, review: feedbackComment } // Update rating and review for the matched order
             : order // Return other orders unchanged
         ),
       }));
@@ -160,21 +178,15 @@ const ClientDashboard = () => {
         comment: feedbackComment,
       });
        
-      
     } catch (error) {
       console.error('Error submitting feedback:', error);
       alert('Error submitting feedback. Please try again.');
     }
   };
- 
+
   const updateOrderStatus = async (orderId, status) => {
     try {
-       
-       
-      await axios.put(`http://localhost:3000/client/orders/${orderId}`,{status}
-     
-      );
-      
+      await axios.put(`http://localhost:3000/client/orders/${orderId}`, { status });
     } catch (error) {
       console.error(`Error updating order status to ${status}:`, error);
     }
@@ -182,7 +194,53 @@ const ClientDashboard = () => {
 
   return (
     <MDBContainer className="mt-5 client-dashboard-section">
-      <h2 className="mb-4 text-center">My Requests</h2>
+      {/* Dashboard Header */}
+      <div className="dashboard-header text-center mb-4">
+        <h2 className="mb-3">Welcome to Your Dashboard</h2>
+        <p className="lead">Here you can manage all your service requests and track their status.</p>
+      </div>
+
+      {/* Summary Cards */}
+      <MDBRow className="mb-4">
+        <MDBCol md="3">
+          <MDBCard background="primary" className="text-white text-center mb-4">
+            <MDBCardBody>
+              <MDBIcon fas icon="clipboard-list" size="3x" className="mb-2" />
+              <h5 className="card-title">Total Requests</h5>
+              <h3>{totalRequests}</h3>
+            </MDBCardBody>
+          </MDBCard>
+        </MDBCol>
+        <MDBCol md="3">
+          <MDBCard background="warning" className="text-white text-center mb-4">
+            <MDBCardBody>
+              <MDBIcon fas icon="hourglass-start" size="3x" className="mb-2" />
+              <h5 className="card-title">Pending</h5>
+              <h3>{pendingCount}</h3>
+            </MDBCardBody>
+          </MDBCard>
+        </MDBCol>
+        <MDBCol md="3">
+          <MDBCard background="info" className="text-white text-center mb-4">
+            <MDBCardBody>
+              <MDBIcon fas icon="user-clock" size="3x" className="mb-2" />
+              <h5 className="card-title">Accepted</h5>
+              <h3>{acceptedCount}</h3>
+            </MDBCardBody>
+          </MDBCard>
+        </MDBCol>
+        <MDBCol md="3">
+          <MDBCard background="success" className="text-white text-center mb-4">
+            <MDBCardBody>
+              <MDBIcon fas icon="check-circle" size="3x" className="mb-2" />
+              <h5 className="card-title">Completed</h5>
+              <h3>{completedCount}</h3>
+            </MDBCardBody>
+          </MDBCard>
+        </MDBCol>
+      </MDBRow>
+
+      {/* Tabs */}
       <MDBTabs className="mb-3 justify-content-center">
         <MDBTabsItem>
           <MDBTabsLink onClick={() => handleTabClick('pending')} active={activeTab === 'pending'}>
@@ -205,12 +263,18 @@ const ClientDashboard = () => {
         {/* Pending Orders */}
         <MDBTabsPane open={activeTab === 'pending'}>
           {orders.pending.length > 0 ? (
-            <OrderTable
-              orders={orders.pending}
-              status="pending"
-              onCancel={handleCancelOrder}
-              activeTab={activeTab}
-            />
+            <>
+              <div className="text-center mb-4">
+                <MDBSpinner role="status" className="me-2" />
+                <span>Your request is being processed. You will soon be contacted by a Service Provider.</span>
+              </div>
+              <OrderTable
+                orders={orders.pending}
+                status="pending"
+                onCancel={handleCancelOrder}
+                activeTab={activeTab}
+              />
+            </>
           ) : (
             <p className="text-center">No pending orders.</p>
           )}
@@ -219,12 +283,19 @@ const ClientDashboard = () => {
         {/* Accepted Orders */}
         <MDBTabsPane open={activeTab === 'accepted'}>
           {orders.accepted.length > 0 ? (
-            <OrderTable
-              orders={orders.accepted}
-              status="accepted"
-              onComplete={handleCompleteOrder}
-              activeTab={activeTab}
-            />
+            <>
+              {/* Added an animation and message */}
+              <div className="text-center mb-4">
+                <MDBIcon fas icon="truck" size="3x" className="text-primary mb-2" />
+                <h5>Your service provider is on the way!</h5>
+              </div>
+              <OrderTable
+                orders={orders.accepted}
+                status="accepted"
+                onComplete={handleCompleteOrder}
+                activeTab={activeTab}
+              />
+            </>
           ) : (
             <p className="text-center">No accepted orders.</p>
           )}
@@ -233,30 +304,39 @@ const ClientDashboard = () => {
         {/* Completed Orders */}
         <MDBTabsPane open={activeTab === 'completed'}>
           {orders.completed.length > 0 ? (
-            <OrderTable
-              orders={orders.completed}
-              status="completed"
-              onFeedback={handleProvideFeedback}
-              activeTab={activeTab}
-            />
+            <>
+              {/* Added a confirmation message */}
+              <div className="text-center mb-4">
+                <MDBIcon fas icon="check-circle" size="3x" className="text-success mb-2" />
+                <h5>Your service has been completed!</h5>
+                <p>Thank you for using our service.</p>
+              </div>
+              <OrderTable
+                orders={orders.completed}
+                status="completed"
+                onFeedback={handleProvideFeedback}
+                activeTab={activeTab}
+              />
+            </>
           ) : (
             <p className="text-center">No completed orders.</p>
           )}
         </MDBTabsPane>
       </MDBTabsContent>
-      <MDBModal open={feedbackModalOpen} setShow={setFeedbackModalOpen} tabIndex='-1'>
+
+      <MDBModal open={feedbackModalOpen} setShow={setFeedbackModalOpen} tabIndex="-1">
         <MDBModalDialog centered>
           <MDBModalContent>
             <MDBModalHeader>
               <MDBModalTitle>Provide Feedback</MDBModalTitle>
-              <MDBBtn className='btn-close' color='none' onClick={() => setFeedbackModalOpen(false)}></MDBBtn>
+              <MDBBtn className="btn-close" color="none" onClick={() => setFeedbackModalOpen(false)}></MDBBtn>
             </MDBModalHeader>
             <MDBModalBody>
-              <div className='mb-3'>
+              <div className="mb-3">
                 <label>Rating:</label>
                 <StarRating rating={feedbackRating} onRatingChange={setFeedbackRating} />
               </div>
-              <div className='mb-3'>
+              <div className="mb-3">
                 <label>Comment:</label>
                 <MDBTextArea
                   rows={4}
@@ -266,8 +346,12 @@ const ClientDashboard = () => {
               </div>
             </MDBModalBody>
             <MDBModalFooter>
-              <MDBBtn color='secondary' onClick={() => setFeedbackModalOpen(false)}>Close</MDBBtn>
-              <MDBBtn color='primary' onClick={handleFeedbackSubmit}>Submit Feedback</MDBBtn>
+              <MDBBtn color="secondary" onClick={() => setFeedbackModalOpen(false)}>
+                Close
+              </MDBBtn>
+              <MDBBtn color="primary" onClick={handleFeedbackSubmit}>
+                Submit Feedback
+              </MDBBtn>
             </MDBModalFooter>
           </MDBModalContent>
         </MDBModalDialog>
@@ -278,12 +362,17 @@ const ClientDashboard = () => {
 
 // OrderTable Component
 const OrderTable = ({ orders, status, onCancel, onComplete, onFeedback, activeTab }) => {
-    const [showMore, setShowMore] = useState(false);
-  // Function to toggle description
- 
+  const [expandedRows, setExpandedRows] = useState({});
+
+  const toggleRow = (index) => {
+    setExpandedRows((prev) => ({
+      ...prev,
+      [index]: !prev[index],
+    }));
+  };
 
   return (
-    <MDBTable align="middle">
+    <MDBTable align="middle" hover responsive striped>
       <MDBTableHead>
         <tr>
           <th scope="col">Order ID</th>
@@ -291,62 +380,72 @@ const OrderTable = ({ orders, status, onCancel, onComplete, onFeedback, activeTa
           <th scope="col">Description</th>
           <th scope="col">Address</th>
           <th scope="col">City</th>
-          {activeTab!='pending' && (  <th scope="col">Service Provider</th>)}
-        
+          {activeTab !== 'pending' && <th scope="col">Service Provider</th>}
           <th scope="col">Request Date</th>
           <th scope="col">Status</th>
-          {activeTab==='completed' && (  <th scope="col">Completed Date</th>)}
-          <th scope="col">Actions</th>
+          {activeTab === 'completed' && <th scope="col">Completed Date</th>}
+          {activeTab !== 'accepted' && <th scope="col">Actions</th>}
         </tr>
       </MDBTableHead>
       <MDBTableBody>
-        {orders.map((order,index) => (
+        {orders.map((order, index) => (
           <tr key={index}>
-            <td>{index+1}</td>
+            <td>{index + 1}</td>
             <td>{order.name}</td>
             <td>
-            {showMore ? order.description : `${order.description.substring(0, 30)}`}
-            <MDBBtn size="sm" onClick={() => setShowMore(!showMore)}>{showMore ? "Show less": "Show More"}</MDBBtn>
+              {expandedRows[index] ? order.description : `${order.description.substring(0, 30)}...`}
+              <MDBIcon
+                icon={expandedRows[index] ? 'chevron-up' : 'chevron-down'}
+                onClick={() => toggleRow(index)}
+                style={{ cursor: 'pointer', color: '#007bff', marginLeft: '8px' }}
+              />
             </td>
             <td>{order.address}</td>
             <td>{order.city}</td>
-            
-            {activeTab!='pending' &&( <td>{order.sp_name}</td>)}
+            {activeTab !== 'pending' && <td>{order.sp_name}</td>}
             <td>{new Date(order.request_date).toLocaleDateString()}</td>
             <td>
               <MDBBadge color={getStatusColor(order.status)} pill>
                 {capitalizeFirstLetter(order.status)}
               </MDBBadge>
+              {order.status === 'pending' && (
+                <MDBSpinner size="sm" role="status" tag="span" className="ms-2" />
+              )}
+              {order.status === 'accepted' && (
+                <MDBProgress className="mt-2" style={{ height: '6px' }}>
+                  <MDBProgressBar width={50} valuemin={0} valuemax={100} />
+                </MDBProgress>
+              )}
             </td>
             {activeTab === 'completed' && (
-  <td>
-    {order.completed_date ? new Date(order.completed_date).toLocaleDateString() : ''}
-  </td>
-)}
-
-            <td>
-              {status === 'pending' && (
-                <MDBBtn color="danger" size="sm" onClick={() => onCancel(order.request_id,index+1)}>
-                  Cancel
-                </MDBBtn>
-              )}
-              {status === 'accepted' && (
-                <MDBBtn color="success" size="sm" onClick={() => onComplete(order.request_id,index+1)}>
-                  Mark as Completed
-                </MDBBtn>
-              )}
-              {status==='completed' && order.review && order.rating && (  <div>
+              <td>
+                {order.completed_date ? new Date(order.completed_date).toLocaleDateString() : ''}
+              </td>
+            )}
+            {activeTab !== 'accepted' && (
+              <td>
+                {status === 'pending' && (
+                  <MDBTooltip tag="span" title="Cancel this order">
+                    <MDBBtn color="danger" size="sm" onClick={() => onCancel(order.request_id, index + 1)}>
+                      Cancel
+                    </MDBBtn>
+                  </MDBTooltip>
+                )}
+                {status === 'completed' && order.review && order.rating && (
+                  <div>
                     <StarRating rating={order.rating} readOnly={true} />
                     <p>{order.review}</p>
-                  </div>)}
-              {status === 'completed' && !order.rating && (
-                 <MDBBtn color="info" size="sm" onClick={() => onFeedback(order.request_id)}>
-                 Provide Feedback
-               </MDBBtn>
-              )}
-              
-            </td>
-           
+                  </div>
+                )}
+                {status === 'completed' && !order.rating && (
+                  <MDBTooltip tag="span" title="Provide feedback for this service">
+                    <MDBBtn color="info" size="sm" onClick={() => onFeedback(order.request_id)}>
+                      Provide Feedback
+                    </MDBBtn>
+                  </MDBTooltip>
+                )}
+              </td>
+            )}
           </tr>
         ))}
       </MDBTableBody>
@@ -362,7 +461,7 @@ const getStatusColor = (status) => {
       return 'primary';
     case 'completed':
       return 'success';
-    case 'canceled':
+    case 'cancelled':
       return 'danger';
     default:
       return 'dark';

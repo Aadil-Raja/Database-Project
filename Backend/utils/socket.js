@@ -57,7 +57,7 @@ const initSocket = (server) => {
 
         const clientNotificationRoom = `client_${messageData.receiver_id}`;
         io.to(clientNotificationRoom).emit('notification', {
-          message: `New message from SP: ${messageData.message_text}`,
+          message: `New message from Service Provider: ${messageData.message_text}`,
           room: room,
           sp_id: messageData.sender_id,  // Send SP ID so the client can use it
           client_id: messageData.receiver_id // Pass client ID for consistency

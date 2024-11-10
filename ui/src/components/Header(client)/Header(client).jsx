@@ -48,7 +48,7 @@ export default function Header() {
           <MDBNavbarNav className='mr-auto mb-2 mb-lg-0 header-nav-buttons'>
 
             <MDBNavbarItem>
-              <Link to="/ClientDashboard" className='nav-link header-nav-buttons'>
+              <Link to="/ClientDashBoard" className='nav-link header-nav-buttons'>
                 ClientDashboard
               </Link>
             </MDBNavbarItem>
@@ -58,10 +58,18 @@ export default function Header() {
               </Link>
             </MDBNavbarItem>
             <MDBNavbarItem>
+              <Link to="/Clientchat"  className='nav-link header-nav-buttons' >
+                Messages
+              </Link>
+              
+            </MDBNavbarItem>
+            <MDBNavbarItem>
               <Link to="/Login"  className='nav-link header-nav-buttons' onClick={handleLogout}>
                 Logout
               </Link>
+
             </MDBNavbarItem>
+            
           </MDBNavbarNav>
         </MDBCollapse>
       </MDBContainer>

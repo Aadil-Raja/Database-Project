@@ -9,7 +9,7 @@ import {
   MDBDropdownItem,
   MDBBadge,
 } from 'mdb-react-ui-kit';
-import './NotificationComponent.css'; // Optional for additional styling
+import './NotificationComponent.css'; // Updated CSS file with animations
 
 const socket = io('http://localhost:3002'); // Backend socket URL
 
@@ -19,6 +19,10 @@ const NotificationComponent = () => {
   const [userType, setUserType] = useState(null); // State to store user type
   const [unreadCount, setUnreadCount] = useState(0); // Unread notifications count
   const [dropdownOpen, setDropdownOpen] = useState(false); // Dropdown state
+  const [newNotification, setNewNotification] = useState(null); // Latest notification
+  const [iconAnimated, setIconAnimated] = useState(false); // State for icon animation
+  const [showNotificationBanner, setShowNotificationBanner] = useState(false); // State to show/hide notification banner
+
   const navigate = useNavigate();
 
   // Fetch user_id and user_type when the component mounts
@@ -43,18 +47,32 @@ const NotificationComponent = () => {
 
       // Listen for notifications from server
       socket.on('notification', (data) => {
+        const notification = {
+          message: data.message,
+          room: data.room,
+          sp_id: data.sp_id,
+          client_id: data.client_id,
+          timestamp: new Date(), // Add a timestamp
+        };
+
         // Add the notification data to the state
-        setNotifications((prev) => [
-          ...prev,
-          {
-            message: data.message,
-            room: data.room,
-            sp_id: data.sp_id,
-            client_id: data.client_id,
-          },
-        ]);
+        setNotifications((prev) => [...prev, notification]);
+
         // Increment unread notifications count
         setUnreadCount((prev) => prev + 1);
+
+        // Set the latest notification for banner display
+        setNewNotification(notification);
+        setShowNotificationBanner(true);
+
+        // Hide the banner after a few seconds
+        setTimeout(() => {
+          setShowNotificationBanner(false);
+        }, 5000); // Hide after 5 seconds
+
+        // Trigger icon animation
+        setIconAnimated(true);
+        setTimeout(() => setIconAnimated(false), 1000); // Animation duration
       });
     }
 
@@ -79,6 +97,7 @@ const NotificationComponent = () => {
       navigate('/Spchat', { state: chatHeadData });
     }
     // Optionally, mark the notification as read or remove it
+    setDropdownOpen(false);
   };
 
   // Toggle dropdown visibility
@@ -90,22 +109,56 @@ const NotificationComponent = () => {
     }
   };
 
+  // Function to format time
+  const formatTime = (timestamp) => {
+    const date = new Date(timestamp);
+    return date.toLocaleTimeString([], { hour: '2-digit', minute: '2-digit' });
+  };
+
   return (
     <div className='notification-section'>
+      {/* Notification Banner */}
+      {showNotificationBanner && newNotification && (
+        <div
+          className="notification-banner"
+          onClick={() => handleNotificationClick(newNotification)}
+        >
+          <MDBIcon fas icon="bell" className="me-2" />
+          {newNotification.message}
+          <MDBIcon
+            fas
+            icon="times"
+            className="close-icon"
+            onClick={(e) => {
+              e.stopPropagation();
+              setShowNotificationBanner(false);
+            }}
+          />
+        </div>
+      )}
+
+      {/* Notification Icon with Animation */}
       <MDBDropdown>
         <MDBDropdownToggle
           tag="a"
           className="nav-link"
           onClick={toggleDropdown}
-          style={{ cursor: 'pointer', color: 'black' }}
+          style={{ cursor: 'pointer', color: 'black', position: 'relative' }}
         >
-          <MDBIcon fas icon="bell" size="lg" />
+          <MDBIcon
+            fas
+            icon="bell"
+            size="lg"
+            className={`notification-bell ${iconAnimated ? 'bell-shake' : ''} ${
+              unreadCount > 0 ? 'has-unread' : ''
+            }`}
+          />
           {unreadCount > 0 && (
             <MDBBadge
               color="danger"
               notification
               pill
-              style={{ position: 'relative', top: '-10px', left: '-10px' }}
+              style={{ position: 'absolute', top: '-5px', right: '-10px' }}
             >
               {unreadCount}
             </MDBBadge>
@@ -113,7 +166,7 @@ const NotificationComponent = () => {
         </MDBDropdownToggle>
         <MDBDropdownMenu
           show={dropdownOpen}
-          style={{ maxHeight: '400px', overflowY: 'auto' }}
+          style={{ maxHeight: '400px', overflowY: 'auto', width: '300px' }}
         >
           <h6 className="dropdown-header">Notifications</h6>
           {notifications.length > 0 ? (
@@ -125,8 +178,14 @@ const NotificationComponent = () => {
                   key={index}
                   onClick={() => handleNotificationClick(notification)}
                   link
+                  style={{ whiteSpace: 'normal' }}
                 >
-                  {notification.message}
+                  <div className="d-flex justify-content-between">
+                    <span>{notification.message}</span>
+                    <small className="text-muted ms-2">
+                      {formatTime(notification.timestamp)}
+                    </small>
+                  </div>
                 </MDBDropdownItem>
               ))
           ) : (
