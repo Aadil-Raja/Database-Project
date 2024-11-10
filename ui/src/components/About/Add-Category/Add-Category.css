@@ -5,6 +5,10 @@
   max-width: 600px;
   margin: 0 auto;
   padding: 20px;
+  min-height: 60vh;
+  align-items: center;
+  align-content: center;
+  justify-content: center;
 }
 
 /* Card styling */
@@ -21,8 +25,13 @@
 /* Button styling */
 .add-category-button {
   font-size: 16px;
+  background-color: rgb(41, 155, 143);
 }
 
+.add-category-button:hover{
+  background-color: rgb(25, 94, 87);
+  transition: background-color 0.3s ease-in;
+}
 /* Alert messages */
 .add-category-alert {
   font-size: 16px;

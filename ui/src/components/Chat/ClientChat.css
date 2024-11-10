@@ -1,5 +1,6 @@
 .chat-head-body{
-  background: linear-gradient(135deg, rgba(0,128,128,0.9), rgba(255,111,97,0.9));
+  background: linear-gradient(135deg, rgba(15, 189, 189, 0.9), rgba(46, 179, 179, 0.9));
+  min-height: 60vh;
 }
 
 /* Scrollbar Styling */

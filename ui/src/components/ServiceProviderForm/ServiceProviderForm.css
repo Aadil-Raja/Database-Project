@@ -1,9 +1,10 @@
 /* Service Provider Form Body */
 .sp-form-body {
-    min-height: 80vh;
+    min-height: 70vh;
     background-color: #f8f9fa; /* Light background to contrast the cards */
     padding: 2rem;
     border-radius: 8px;
+    
   }
   
   /* Form Title */

@@ -110,9 +110,9 @@ const ServiceProviderForm = () => {
           ))}
         </MDBRow>
         <div className="text-center mt-4">
-          <MDBBtn type="submit" color="primary" className="sp-submit-btn">Save Preferences</MDBBtn>
-          <MDBBtn type="button" color="primary" className="sp-submit-btn">Skip now</MDBBtn>
-          <MDBBtn type="button" color="primary" className="sp-submit-btn" onClick={handleReqService}>Cant find the service?Request here</MDBBtn>
+          <MDBBtn type="submit"  className="sp-submit-btn">Save Preferences</MDBBtn>
+          <MDBBtn type="button"  className="sp-submit-btn">Skip now</MDBBtn>
+          <MDBBtn type="button"  className="sp-submit-btn" onClick={handleReqService}>Cant find the service?Request here</MDBBtn>
         </div>
       </form>
     </MDBContainer>
