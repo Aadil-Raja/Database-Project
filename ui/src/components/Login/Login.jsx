@@ -62,11 +62,11 @@ const Login = () => {
           <MDBCardBody className="px-5">
             <div className="text-center">
               <MDBCardImage
-                src="https://mdbcdn.b-cdn.net/img/Photos/new-templates/bootstrap-login-form/lotus.webp"
+                src="dad"
                 style={{ width: '185px' }}
                 alt="logo"
               />
-              <h4 className="mt-1 mb-5 pb-1">Kaam karo</h4>
+              <h2 className="mt-1 mb-5 pb-1">Masla Fix</h2>
             </div>
             <p className="login-text">Please login to your account</p>
             <form onSubmit={handleLogin}>

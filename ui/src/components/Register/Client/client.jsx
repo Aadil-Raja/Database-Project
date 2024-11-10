@@ -67,7 +67,7 @@ const Client = () => {
      <MDBCol xl="10" lg="9" md="9" sm="9" xs="5" className='d-flex justify-content-center'>
       <MDBCard className='m-5' style={{ width: '600px', padding: '50px', zIndex: 1 }}>
         <MDBCardBody className='px-5'>
-          <h2 className="text-uppercase text-center mb-5">Sign Up</h2>
+          <h2 className="text-center mb-5">Sign Up</h2>
           <form onSubmit={handleCreateAccount}>
             <div className="d-flex flex-row align-items-center mb-4">
               <MDBIcon fas icon="user me-3" size='lg' />
