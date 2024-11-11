@@ -3,9 +3,9 @@ const sequelize = require("../config/db");
 
 exports.createSp = async (req, res) => {
   try {
-    const { firstName, lastName, email, password, phone, address, city_id, gender, dob, tips, terms } = req.body;
+    const { firstName, lastName, email, password, phone, address, city_id, gender, dob } = req.body;
 
-    if (!firstName || !lastName || !email || !password || !phone || !address || !city_id || !gender || !dob || terms === undefined) {
+    if (!firstName || !lastName || !email || !password || !phone || !address || !city_id || !gender || !dob ) {
       return res.status(400).json({ message: 'All fields are required.' });
     }
 
@@ -28,9 +28,9 @@ exports.createSp = async (req, res) => {
     // SQL query to insert a new service provider
     const insertQuery = `
       INSERT INTO ServiceProviders 
-      (firstName, lastName, email, password, phone, address, city_id, gender, dob, tips, terms, createdAt, updatedAt)
+      (firstName, lastName, email, password, phone, address, city_id, gender, dob, createdAt, updatedAt)
       VALUES 
-      ('${firstName}', '${lastName}', '${email}', '${hashedPassword}', '${phone}', '${address}', ${city_id}, '${gender}', '${dob}', ${tips ? 1 : 0}, ${terms ? 1 : 0}, NOW(), NOW());
+      ('${firstName}', '${lastName}', '${email}', '${hashedPassword}', '${phone}', '${address}', ${city_id}, '${gender}', '${dob}',  NOW(), NOW());
     `;
 
     // Execute the query

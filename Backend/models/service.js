@@ -10,8 +10,8 @@ exports.createServicesTable = async () => {
       image VARCHAR(255) NOT NULL,
       status ENUM('active', 'inactive') DEFAULT 'active',
       FOREIGN KEY (category_id) REFERENCES Categories(category_id) 
-        ON DELETE SET NULL 
-        ON UPDATE CASCADE
+        ON DELETE cascade
+     
     );
   `;
   await sequelize.query(query);

@@ -8,7 +8,7 @@ exports.createfeedbackTable = async () => {
   rating INT,
   review TEXT,
   created_at TIMESTAMP DEFAULT CURRENT_TIMESTAMP,
-  FOREIGN KEY (request_id) REFERENCES servicerequests(request_id)
+  FOREIGN KEY (request_id) REFERENCES servicerequests(request_id) on delete cascade
 );
 
   `;

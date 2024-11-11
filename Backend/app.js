@@ -13,11 +13,12 @@ const ServiceProvider = require('./models/Sp');
 const Category= require('./models/category');
 const Services =require('./models/service');
 const ServiceProviderServices=require('./models/spservices');
-
+const resetpasswordlog=require('./models/resetpasswordlog');
 const ServiceRequest=require('./models/serviceRequest');
 
 const RequestCategoryService=require('./models/RequestsCategory');
 const messsages =require('./models/message');
+const RequestMessages=require('./models/requestmessage');
 const ChatHeads=require('./models/ChatHead');
 const feedback =require('./models/feedback');
 const payment =require('./models/payment');
@@ -48,13 +49,16 @@ const initializeApp = async () => {
       Client.createClientsTable(); 
       Category.createCategoriesTable();
       Services.createServicesTable();
-      ServiceRequest.createServiceRequestsTable();
+     ServiceRequest.createServiceRequestsTable();
       ServiceProviderServices.createServiceProviderServicesTable();
-      RequestCategoryService.createRequestCategoryTable();
-      messsages.createMessageTable();
+     RequestCategoryService.createRequestCategoryTable();
       ChatHeads.createChatHeadTable();
+      messsages.createMessageTable();
+      RequestMessages.createRequestMessageTable();
+    
       feedback.createfeedbackTable();
       payment.createPaymentsTable();
+      resetpasswordlog.createResetPasswordLog();
       generateMonthlyInvoices();
       // Ensures the database syncs
      await initializeCities();              // Populate city table

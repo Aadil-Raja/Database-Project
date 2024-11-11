@@ -13,7 +13,7 @@ exports.forgotPassword = async(req,res) =>{
     const checkEmailInSp = `SELECT * FROM ServiceProviders WHERE email = '${email}'`;
     const [spUser] = await sequelize.query(checkEmailInSp);
 
-    
+    let id;
     const checkEmailInClient = `SELECT * FROM Clients WHERE email = '${email}'`;
     const [clientUser] = await sequelize.query(checkEmailInClient);
     if (spUser.length  == 0 && clientUser.length == 0) {
@@ -25,24 +25,25 @@ exports.forgotPassword = async(req,res) =>{
       let table_name="";
       if(spUser.length>0)
       {
-             table_name="ServiceProviders";
+             table_name="serviceproviders";
+             id=spUser[0].sp_id;
       }
       else
       {
-        table_name="Clients";
+        table_name="clients";
+        id=clientUser[0].client_id;
       }
       const query = `
-  UPDATE ${table_name}
-  SET resetPasswordToken = '${resetToken}', 
-      resetPasswordExpires = NOW() + INTERVAL 15 MINUTE 
-  WHERE email = '${email}';
+  insert into resetpasswordlogs (user_id,user_type,resetPasswordToken,resetPasswordExpires)
+  values(${id},'${table_name}','${resetToken}',NOW()+INTERVAL 15 MINUTE)
+  
 `;
 
 await sequelize.query(query);
 
 
 
-const resetLink = `http://localhost:5173/resetPassword?token=${resetToken}&type=${table_name}`;
+const resetLink = `http://localhost:5173/resetPassword?token=${resetToken}&type=${table_name}&user_id=${id}`;
 
 
 

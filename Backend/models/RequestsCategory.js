@@ -8,8 +8,7 @@ exports.createRequestCategoryTable = async () => {
       title VARCHAR(255) NOT NULL,
       description TEXT,
       FOREIGN KEY (sp_id) REFERENCES ServiceProviders(sp_id)
-        ON DELETE SET NULL
-        ON UPDATE CASCADE
+        ON DELETE cascade
     );
   `;
   await sequelize.query(query);

@@ -6,13 +6,13 @@ exports.saveMessage = async (req, res) => {
   const { sender_id, receiver_id, message_text, sender_type, receiver_type,room } = req.body;
 
   try {
-    // Raw SQL query for inserting a new message
+   
     const query = `
       INSERT INTO Messages (sender_id, receiver_id, message_text, sender_type, receiver_type,room)
       VALUES (${sender_id}, ${receiver_id}, '${message_text}', '${sender_type}', '${receiver_type}','${room}')
     `;
 
-    // Execute the raw SQL query
+    
     await sequelize.query(query);
     
     res.json({ message: 'Message saved successfully' });
@@ -24,18 +24,28 @@ exports.saveRequestMessage = async (req, res) => {
   const { sender_id, receiver_id, message_text, sender_type, receiver_type,room,type,status,request_id ,price} = req.body;
 
   try {
-    // Raw SQL query for inserting a new message
+   
     const query = `
-      INSERT INTO Messages (sender_id, receiver_id, message_text, sender_type, receiver_type,room,type,status,request_id,price)
-      VALUES (${sender_id}, ${receiver_id}, '${message_text}', '${sender_type}', '${receiver_type}','${room}','${type}','${status}',${request_id},${price});
+      INSERT INTO Messages (sender_id, receiver_id, message_text, sender_type, receiver_type,room,type)
+      VALUES (${sender_id}, ${receiver_id}, '${message_text}', '${sender_type}', '${receiver_type}','${room}','${type}');
     `;
 
-    // Execute the raw SQL query
-    await sequelize.query(query);
+    const [result] = await sequelize.query(query);
+
+    const messageId = result;
+
+      const requestMessageQuery = `
+        INSERT INTO RequestMessages (message_id, request_id, price, status)
+        VALUES (${messageId}, ${request_id}, ${price}, '${status}');
+      `;
+      await sequelize.query(requestMessageQuery);
     
-    res.json({ message: 'Message saved successfully' });
+    res.json({ message: 'Message saved successfully' });w
   } catch (error) {
-    res.status(500).json({ message: 'Error saving message' });
+    if (!res.headersSent) {
+      res.status(500).json({ message: 'Error saving message' });
+    }
+
   }
 };
 
@@ -45,7 +55,7 @@ exports.updateRequestMessage = async (req, res) => {
     const { request_id, status } = req.body;
 
     const query = `
-      UPDATE Messages
+      UPDATE requestmessages
       SET status = '${status}'
       WHERE request_id = ${request_id}
     `;
@@ -66,10 +76,11 @@ exports.getMessages = async (req, res) => {
     const { room } = req.query;
   
     try {
-      // Raw SQL query for selecting messages between two users
+    
       const query = `
-        SELECT * FROM Messages 
-        where room = '${room}'
+        SELECT * FROM messages m
+        left join requestmessages rm on rm.message_id=m.message_id
+        where m.room = '${room}'
         ORDER BY created_at ASC
       `;
   
