@@ -75,7 +75,7 @@ const SP = () => {
 
   return (
     <MDBContainer fluid className="d-flex justify-content-center align-items-center register-sp-body" >
-      <MDBCard className="m-5" style={{ maxWidth: "800px" }}>
+      <MDBCard className="m-5" style={{ maxwidth: "800px" }}>
         <MDBCardBody className="px-5">
           <h3 className="text-center fw-bold mb-4">Service Provider Registration</h3>
           <form onSubmit={handleCreateAccount}>

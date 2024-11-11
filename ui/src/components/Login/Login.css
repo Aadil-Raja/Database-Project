@@ -25,16 +25,21 @@
 
 .login-gradient-custom {
   /* Matching your theme's gradient */
-  background: linear-gradient(to right, #008080, #ff6f61);
+  background: linear-gradient(to right, #139e8c, #129281);
 }
 
 .login-gradient-custom:hover {
-  background: linear-gradient(to right, #004d4d, #cc523d); /* Darkened colors on hover */
+  background: linear-gradient(to right, #0c6156, #0b5a4f); /* Darkened colors on hover */
   transition: background 0.3s ease;
 }
 
+.login-create-new button{
+  color:#008080 ;
+  border-color: #008080;
+}
+
 .login-create-new button:hover {
-  background: #ff6f61; /* Coral color for create new button */
+  background: #0c6156; /* Coral color for create new button */
   color: white;
   transition: color background 0.3s ease;
 }

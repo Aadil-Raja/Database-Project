@@ -1,8 +1,8 @@
 import React, { useState } from "react";
-import { Outlet, useNavigate } from "react-router-dom";  
+import { Outlet, useNavigate } from "react-router-dom";
 import "./register.css";
-import serviceProviderImage from "./service provider.png"; 
-import clientImage from "./client.jpg";
+import serviceProviderImage from "./sp-1.png";
+import clientImage from "./client-1.png";
 
 export default function Register() {
     const [selectedRole, setSelectedRole] = useState("");
@@ -21,7 +21,10 @@ export default function Register() {
     return (
         <div className="register-body">
             <div className="register-container">
-                <h1 className="register-h1">Join as a Client or a Service Provider</h1>
+                <h1 className="register-h1">Join as a Client or Service Provider</h1>
+                <p className="register-subtitle">
+                    Choose your role and start your journey with us today!
+                </p>
                 <div className="register-options">
                     <div
                         className={`register-option ${selectedRole === "client" ? "selected" : ""}`}
@@ -42,7 +45,7 @@ export default function Register() {
                                     className="register-client-img"
                                 />
                             </div>
-                            <p>I'm a client, hiring for a project</p>
+                            <p className="register-role-text">I'm a client, hiring for a project</p>
                         </label>
                     </div>
                     <div
@@ -64,7 +67,7 @@ export default function Register() {
                                     className="register-service-provider-img"
                                 />
                             </div>
-                            <p>I'm a Service Provider, looking for work</p>
+                            <p className="register-role-text">I'm a Service Provider, looking for work</p>
                         </label>
                     </div>
                 </div>
@@ -73,8 +76,10 @@ export default function Register() {
                         Create Account
                     </button>
                 )}
-                <Outlet /> 
-                <p className="register-login">Already have an account? <a href="/login">Log In</a></p>
+                <Outlet />
+                <p className="register-login">
+                    Already have an account? <a href="/login">Log In</a>
+                </p>
             </div>
         </div>
     );

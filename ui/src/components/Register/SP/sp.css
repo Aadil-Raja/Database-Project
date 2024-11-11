@@ -1,10 +1,9 @@
 .sp-gradient-custom-4{
-  background: #a86932;
-  background: linear-gradient(to right, #008080, #ff6f61);
+  background: linear-gradient(to right, #139e8c, #129281);
 }
 
 .sp-gradient-custom-4:hover {
-  background: linear-gradient(to right, #004d4d, #cc523d); /* Darkened colors on hover */
+  background: linear-gradient(to right, #0c6156, #0b5a4f); /* Darkened colors on hover */
   transition: background 0.3s ease;
 }
 

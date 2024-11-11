@@ -3,13 +3,15 @@
 }
 
 .category-card {
-    background: linear-gradient(135deg, rgba(46, 190, 190, 0.9), rgba(255, 129, 118, 0.9));
+    background: white;
     transition: transform 0.3s, box-shadow 0.3s;
+    box-shadow: 0px 5px 5px rgba(0, 0, 0, 0.15);
   }
   
   .category-card:hover {
     transform: translateY(-5px);
-    box-shadow: 0 4px 15px rgba(0, 0, 0, 0.2);
+    box-shadow: 0 20px 20px rgba(0, 0, 0, 0.2);
+    
   }
   
   .category-icon-wrapper {
