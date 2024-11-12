@@ -28,7 +28,7 @@ exports.getallRequests = async(req,res) => {
             join cities ci on ci.city_id=sr.city_id join services s on s.service_id=sr.service_id  
             join serviceproviders sp on sp.city_id=sr.city_id
             join serviceproviderservices sps on sps.service_provider_id = sp.sp_id
-            where sp.sp_id=${sp_id} and sr.service_id=sps.service_id and sps.availability_status=1  and NOT (sr.status = 'cancelled' AND sr.sp_id IS NULL) and sr.status !='accepted' ;
+            where sp.sp_id=${sp_id} and sr.service_id=sps.service_id and sps.availability_status=1  and sr.status='pending' ;
             `;
                const [requests]= await sequelize.query(query);
                 res.json(requests);        

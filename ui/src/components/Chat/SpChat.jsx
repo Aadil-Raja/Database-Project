@@ -124,7 +124,7 @@ const Chat = () => {
     socket.on('service_request_canceled', (data) => {
       setMessages((prevMessages) =>
         prevMessages.map((msg) =>
-          msg.request_id === data.request_id ? { ...msg, status: 'canceled' } : msg
+          msg.request_id === data.request_id && msg.status==='pending' ? { ...msg, status: 'canceled' } : msg
         )
       );
     });
@@ -157,6 +157,7 @@ const Chat = () => {
     const requestData = {
       request_id: requestId,
       status: 'accepted',
+      room: room,
 
     };
 
@@ -164,7 +165,7 @@ const Chat = () => {
 
     setMessages((prevMessages) =>
       prevMessages.map((msg) =>
-        msg.request_id === requestId ? { ...msg, status: 'accepted' } : msg
+        msg.request_id === requestId && msg.status==='pending' ? { ...msg, status: 'accepted' } : msg
       )
     );
 

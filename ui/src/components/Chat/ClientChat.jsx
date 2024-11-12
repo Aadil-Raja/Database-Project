@@ -138,12 +138,13 @@ const Chat = () => {
     const requestData = {
       request_id:requestId,
       status: 'cancelled',
+      room :room
     };
           
     await axios.put('http://localhost:3000/updateRequestMessage', requestData);
     setMessages((prevMessages) =>
       prevMessages.map((msg) =>
-        msg.request_id === requestId ? { ...msg, status: 'cancelled' } : msg
+        msg.request_id === requestId && msg.status==='pending' ?  { ...msg, status: 'cancelled' } : msg
       )
     );
     setSelectedRequestId('');
@@ -230,7 +231,7 @@ const Chat = () => {
     socket.on('service_request_accepted', (data) => {
       setMessages((prevMessages) =>
         prevMessages.map((msg) =>
-          msg.request_id === data.request_id ? { ...msg, status: 'accepted' } : msg
+          msg.request_id === data.request_id && msg.status==='pending' ? { ...msg, status: 'accepted' } : msg
         )
       );
       setPendingRequests((prevRequests) =>

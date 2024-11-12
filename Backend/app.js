@@ -22,6 +22,7 @@ const RequestMessages=require('./models/requestmessage');
 const ChatHeads=require('./models/ChatHead');
 const feedback =require('./models/feedback');
 const payment =require('./models/payment');
+const deleteExpiredResetToken=require('./controllers/resetPasswordController')
 const {generateMonthlyInvoices} = require('./controllers/BillingController');
 const app = express();
 const PORT = process.env.PORT || 3000;
@@ -60,6 +61,7 @@ const initializeApp = async () => {
       payment.createPaymentsTable();
       resetpasswordlog.createResetPasswordLog();
       generateMonthlyInvoices();
+      deleteExpiredResetToken.deleteExpiredTokens();
       // Ensures the database syncs
      await initializeCities();              // Populate city table
      await initializeCategoriesAndServices();

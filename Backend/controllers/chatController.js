@@ -52,14 +52,18 @@ exports.saveRequestMessage = async (req, res) => {
 
 exports.updateRequestMessage = async (req, res) => {
   try {
-    const { request_id, status } = req.body;
+    const { request_id, status,room } = req.body;
+     let query;
 
-    const query = `
-      UPDATE requestmessages
-      SET status = '${status}'
-      WHERE request_id = ${request_id}
+
+      query = `
+      UPDATE requestmessages rm
+      join messages m on rm.message_id=m.message_id
+      SET rm.status = '${status}'
+      WHERE rm.request_id = ${request_id} and m.room='${room}' and rm.status='pending'
     `;
 
+   
     await sequelize.query(query);
      
     res.status(200).json({ message: 'Request message status updated successfully' });

@@ -2,7 +2,7 @@ const bcrypt = require("bcryptjs");
 const sequelize = require("../config/db");
 
 exports.resetpassword = async (req, res) => {
-  const { token, password ,user_id} = req.body;
+  const { token, password ,user_id,type} = req.body;
 
   if (!token  || !password) {
     return res.status(400).json({ message: "Missing required fields" });
@@ -10,13 +10,12 @@ exports.resetpassword = async (req, res) => {
 
   try {
     // Find the user by reset token using a raw SQL query
-    const findUserQuery = `SELECT * FROM resetpasswordlogs WHERE resetPasswordToken = '${token}' and  user_id=${user_id};`;
+    const findUserQuery = `SELECT * FROM resetpasswordlogs WHERE resetPasswordToken = '${token}' and  user_id=${user_id} and user_type='${type}';`;
     const [user] = await sequelize.query(findUserQuery);
-    const type=user[0].user_type;
     
 
     // Check if the user exists and if the reset token has expired
-    if (!user.length || user[0].resetPasswordExpires < Date.now()) {
+    if (!user.length || new Date(user[0].resetPasswordExpires) < Date.now()) {
       return res.json({ message: "Token is invalid or has expired" });
     }
 
@@ -50,5 +49,19 @@ exports.resetpassword = async (req, res) => {
   } catch (error) {
     console.error("Error resetting password:", error);
     res.status(500).json({ message: "Internal server error" });
+  }
+};
+
+
+exports.deleteExpiredTokens = async () => {
+  try {
+    const query = `
+      DELETE FROM resetpasswordlogs
+      WHERE resetPasswordExpires < NOW();
+    `;
+    await sequelize.query(query);
+    console.log("Expired reset password records deleted successfully.");
+  } catch (error) {
+    console.error("Error deleting expired reset password records:", error);
   }
 };
