@@ -10,17 +10,73 @@
 }
 
 /* Banner Styling */
+/* Carousel Images */
+.carousel-image {
+  width: 100%;
+  height: 100vh;
+  object-fit: cover;
+}
+
+/* Main container */
 .home-banner {
+  position: relative;
+  overflow: hidden;
+  color: white;
+  min-height: 85vh;
   display: flex;
   align-items: center;
   justify-content: center;
-  padding: 80px 50px;
-  background: linear-gradient(135deg, rgba(45, 45, 45, 0.8), rgba(0, 172, 193, 0.9));
-  color: white;
-  min-height: 85vh;
-  border-radius: 10px;
-  box-shadow: 0 15px 30px rgba(0, 0, 0, 0.2);
+  text-align: center;
+  animation: fadeInUp 1.5s ease;
 }
+
+/* Overlay for background readability */
+.home-overlay {
+  position: absolute;
+  top: 0;
+  left: 0;
+  right: 0;
+  bottom: 0;
+  background: rgba(0, 0, 0, 0.5);
+  z-index: 1;
+}
+
+/* Text container positioned above the carousel */
+.text-overlay {
+  position: absolute;
+  top: 50%;
+  left: 50%;
+  transform: translate(-50%, -50%);
+  z-index: 2;
+}
+
+/* Heading and animations */
+.home-heading {
+  font-size: 3rem;
+  font-weight: 700;
+  color: #ffffff;
+  animation: fadeInDown 1.5s ease;
+  margin-bottom: 20px;
+}
+
+.lead {
+  font-size: 1.2rem;
+  margin-top: 1rem;
+  color: rgba(255, 255, 255, 0.8);
+  animation: fadeInUp 1.5s ease;
+}
+
+/* Button hover effect */
+.home-buttons a {
+  color: #fff;
+  transition: background-color 0.3s, transform 0.3s;
+}
+
+.home-buttons :hover {
+  transform: translateY(-3px) scale(1.05);
+}
+
+
 
 /* Section Titles */
 .services-section h2,
@@ -129,54 +185,7 @@
 
 
 
-.home-banner {
- 
-  background-size: cover;
-  background-position: center;
-  padding: 80px 0;
-  color: #fff;
-  position: relative;
-  overflow: hidden;
-}
 
-.home-banner::before {
-  content: "";
-  position: absolute;
-  top: 0;
-  left: 0;
-  right: 0;
-  bottom: 0;
-  background: rgba(0, 0, 0, 0.4); /* Dark overlay for text readability */
-  z-index: 1;
-}
-
-.home-text {
-  position: relative;
-  z-index: 2;
-}
-
-.home-heading {
-  font-size: 3rem;
-  font-weight: 700;
-  color: #ffffff;
-  animation: fadeInDown 1.5s ease;
-}
-
-.lead {
-  font-size: 1.2rem;
-  margin-top: 1rem;
-  color: rgba(255, 255, 255, 0.8);
-  animation: fadeInUp 1.5s ease;
-}
-
-.home-buttons a{
-  color: #fff;
-  transition: background-color 0.3s, transform 0.3s;
-}
-
-.home-buttons :hover {
-  transform: translateY(-3px) scale(1.05);
-}
 
 
 /* Smooth Animations */

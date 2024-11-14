@@ -1,5 +1,5 @@
 import React, { useState, useEffect } from "react";
-import { MDBContainer, MDBRow, MDBCol, MDBBtn, MDBCard, MDBCardBody, MDBIcon } from 'mdb-react-ui-kit';
+import { MDBContainer, MDBRow, MDBCol, MDBBtn, MDBCard, MDBCardBody, MDBIcon,MDBCarousel, MDBCarouselItem } from 'mdb-react-ui-kit';
 import './Home.css';
 import { Link } from 'react-router-dom';
 import axios from "axios";
@@ -24,43 +24,53 @@ export default function Home() {
     <div className="home-section">
       
       <MDBContainer
-        fluid
-        className="text-center text-lg-start d-flex align-items-center home-banner banner-image"
-        style={{
-          backgroundImage: `url('http://localhost:3000/images/home-main-1.jpg')`, // Background image
-          backgroundSize: 'cover',
-          backgroundPosition: 'center',
-          position: 'relative',
-          color: '#fff',
-        }}
-      >
-        {/* Overlay for readability */}
-        <div
-          style={{
-            position: 'absolute',
-            top: 0,
-            left: 0,
-            right: 0,
-            bottom: 0,
-            backgroundColor: 'rgba(0, 0, 0, 0.4)', // Dark overlay
-            zIndex: 1,
-          }}
-        ></div>
+  fluid
+  className="text-center text-lg-start d-flex align-items-center home-banner"
+>
+  {/* Image Slider Background */}
+  <MDBCarousel showIndicators className="w-100 h-100">
+    <MDBCarouselItem itemId={1}>
+      <img
+        src="http://localhost:3000/images/home-main-1.jpg"
+        className="carousel-image"
+        alt="Slide 1"
+      />
+    </MDBCarouselItem>
+    <MDBCarouselItem itemId={2}>
+      <img
+        src="http://localhost:3000/images/home-main-2.jpg"
+        className="carousel-image"
+        alt="Slide 2"
+      />
+    </MDBCarouselItem>
+    <MDBCarouselItem itemId={3}>
+      <img
+        src="http://localhost:3000/images/home-main-3.jpg"
+        className="carousel-image"
+        alt="Slide 3"
+      />
+    </MDBCarouselItem>
+  </MDBCarousel>
 
-        <MDBRow style={{ position: 'relative', zIndex: 2 }}>
-          <MDBCol lg="6" className="home-text">
-            <h1 className="mb-4 home-heading">Find Top Services for Every Task</h1>
-            <p className="lead mb-4">
-              Connecting you with top professionals across various fields for efficient, reliable work.
-            </p>
-            <div className="home-buttons">
-              <MDBBtn outline color="light" size="lg" className="ms-3">
-                <Link to="/Register">Register Now</Link>
-              </MDBBtn>
-            </div>
-          </MDBCol>
-        </MDBRow>
-      </MDBContainer>
+  {/* Dark overlay for text readability */}
+  <div className="home-overlay"></div>
+
+  {/* Text and Buttons */}
+  <MDBRow className="text-overlay">
+    <MDBCol lg="12">
+      <h1 className="home-heading">Find Top Services for Every Task</h1>
+      <p className="lead">
+        Connecting you with top professionals across various fields for efficient, reliable work.
+      </p>
+      <div className="home-buttons">
+        <MDBBtn outline color="light" size="lg" className="ms-3">
+          <Link to="/Register">Register Now</Link>
+        </MDBBtn>
+      </div>
+    </MDBCol>
+  </MDBRow>
+</MDBContainer>
+
 
       {/* Services Section */}
       <MDBContainer className="services-section py-5">
