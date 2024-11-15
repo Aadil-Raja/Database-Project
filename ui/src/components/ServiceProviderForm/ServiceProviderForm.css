@@ -44,17 +44,35 @@
     color: #555;
   }
   
-  /* Submit Button Styling */
-  .sp-submit-btn {
-    font-size: 1.1rem;
-    padding: 0.8rem 2rem;
-    background-color: #008080; /* Primary theme color */
-    border: none;
-    border-radius: 5px;
-    transition: background-color 0.3s ease;
-  }
-  
-  .sp-submit-btn:hover {
-    background-color: #006666; /* Darker shade on hover */
-  }
+/* Button Base Style */
+.sp-submit-btn {
+  font-size: 1.1rem;
+  padding: 0.8rem 2rem;
+  border-radius: 6px;
+  border: none;
+  transition: all 0.3s ease;
+  box-shadow: 0 8px 15px rgba(0, 0, 0, 0.15);
+  color: #ffffff;
+  text-transform: capitalize;
+  font-weight: 600;
+  display: inline-block;
+  margin: 0.5rem;
+}
+
+/* Primary Action Button */
+.primary-btn {
+  background-color: rgba(0, 128, 128, 0.9); /* Main theme color */
+}
+
+.primary-btn:hover {
+  background-color: rgba(0, 96, 96, 0.9); /* Darker shade */
+  transform: translateY(-3px);
+  box-shadow: 0 12px 20px rgba(0, 0, 0, 0.25);
+}
+
+/* General Hover Animation */
+.sp-submit-btn:hover {
+  cursor: pointer;
+}
+
   

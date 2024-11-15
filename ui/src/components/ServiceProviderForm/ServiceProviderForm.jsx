@@ -39,8 +39,8 @@ const ServiceProviderForm = () => {
 
     fetchCategoriesAndServices();
   }, []);
- 
-  const handleReqService =()=>{
+
+  const handleReqService = () => {
     navigate('/RequestCategory');
   }
   const handleServiceChange = (serviceId) => {
@@ -110,10 +110,17 @@ const ServiceProviderForm = () => {
           ))}
         </MDBRow>
         <div className="text-center mt-4">
-          <MDBBtn type="submit"  className="sp-submit-btn">Save Preferences</MDBBtn>
-          <MDBBtn type="button"  className="sp-submit-btn">Skip now</MDBBtn>
-          <MDBBtn type="button"  className="sp-submit-btn" onClick={handleReqService}>Cant find the service?Request here</MDBBtn>
+          <MDBBtn type="submit" className="sp-submit-btn primary-btn">
+            Save Preferences
+          </MDBBtn>
+          <MDBBtn type="button" className="sp-submit-btn primary-btn">
+            Skip now
+          </MDBBtn>
+          <MDBBtn type="button" className="sp-submit-btn primary-btn" onClick={handleReqService}>
+            Can't find the service? Request here
+          </MDBBtn>
         </div>
+
       </form>
     </MDBContainer>
   );
