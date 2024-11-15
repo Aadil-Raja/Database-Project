@@ -100,7 +100,7 @@ const AddCategory = () => {
             />
 
             <MDBBtn type="submit" block className="add-category-button">
-              Add Category
+              Request Category
             </MDBBtn>
           </form>
         </MDBCardBody>

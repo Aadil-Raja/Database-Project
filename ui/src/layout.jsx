@@ -18,7 +18,8 @@ function Layout() {
     /^\/ClientDashBoard$/, // Matches /ClientDashBoard
     /^\/Clientchat$/, // Matches /Clientchat
     /^\/Home$/, // Matches /Home
-    /^\/Categories\/\d+\/\d+\/servicerequestform$/, // Matches /Categories/:categoryId/:serviceId/servicerequestform
+    /^\/Categories\/\d+\/\d+\/servicerequestform$/, 
+    /^\/About$/, // Matches /Categories/:categoryId/:serviceId/servicerequestform
   ];
 
   const spRoutePatterns = [
@@ -27,7 +28,9 @@ function Layout() {
     /^\/SpHistory$/, // Matches /SpHistory
     /^\/SpProfile$/, // Matches /SpProfile
     /^\/Home$/, // Matches /Home (if also used by SP)
-    /^\/RequestCategory$/, // Matches /RequestCategory
+    /^\/RequestCategory$/,
+    /^\/About$/, 
+    /^\/Spchat$/ // Matches /RequestCategory
   ];
 
   // Check if the current path matches any of the patterns
@@ -80,12 +83,13 @@ function Layout() {
   const showSpHeader = isSpAuthorized && matchesPattern(spRoutePatterns);
 
   // Conditions to hide footer and notification
-  const hideFooter = ["/register", "/Admin", "/ClientDashBoard"].includes(location.pathname);
+  const hideFooter = ["/register", "/Admin", "/ClientDashBoard","/SpHistory","/Spchat","/Clientchat"].includes(location.pathname);
   const hideNotification = [
     "/register", "/Home", "/About", "/Login",
     "/Clientchat", "/Spchat", "/", "/Register", "/Categories",
     "/Requests", "/SP", "/SpProfile", "/Admin",
     "/SpHistory", "/SpBilling", "/Client", "/Categories"
+    ,"/forgotpassword","/resetpassword","/RequestCategory","/ServiceProviderForm"
   ].includes(location.pathname);
 
   return (

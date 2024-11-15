@@ -46,6 +46,13 @@ export default function Header() {
 
         <MDBCollapse navbar open={openBasic}>
           <MDBNavbarNav className='mr-auto mb-2 mb-lg-0 header-nav-buttons'>
+        
+            <MDBNavbarItem>
+              <Link to="/About" className='nav-link header-nav-buttons'>
+                About
+              </Link>
+            </MDBNavbarItem>
+            
             
             <MDBNavbarItem>
               <Link to="/Requests" className='nav-link header-nav-buttons'>
@@ -53,11 +60,7 @@ export default function Header() {
               </Link>
             </MDBNavbarItem>
 
-            <MDBNavbarItem>
-              <Link to="/ServiceProviderForm" className='nav-link header-nav-buttons'>
-                Form
-              </Link>
-            </MDBNavbarItem>
+       
 
             <MDBNavbarItem>
               <Link to="/SpHistory" className='nav-link header-nav-buttons'>
@@ -69,6 +72,11 @@ export default function Header() {
             <MDBNavbarItem>
               <Link to="/SpProfile" className='nav-link header-nav-buttons'>
                 Profile
+              </Link>
+            </MDBNavbarItem>
+            <MDBNavbarItem>
+              <Link to="/Spchat" className='nav-link header-nav-buttons'>
+                Messages
               </Link>
             </MDBNavbarItem>
 

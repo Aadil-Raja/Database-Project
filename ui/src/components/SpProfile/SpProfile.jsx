@@ -1,5 +1,6 @@
 import React, { useState, useEffect } from 'react';
 import axios from 'axios';
+import { Navigate, useNavigate } from 'react-router-dom';
 import {
   MDBContainer,
   MDBRow,
@@ -34,7 +35,8 @@ const ProfileTab = () => {
   const [categories, setCategories] = useState([]);
   const [servicesByCategory, setServicesByCategory] = useState({});
   const handleTabChange = (tab) => setActiveTab(tab);
-
+  const navigate=useNavigate();
+  const [selectedImage, setSelectedImage] = useState(null);
   useEffect(() => {
     const fetchProfile = async () => {
       try {
@@ -78,6 +80,9 @@ const ProfileTab = () => {
       }
     });
   };
+  const handleReqService =()=>{
+    navigate('/RequestCategory');
+  }
   const handleNewServiceChange = (serviceId) => {
     setnewSelectedServices((prevNewSelectedServices) => {
       if (prevNewSelectedServices.includes(serviceId)) {
@@ -118,6 +123,7 @@ const ProfileTab = () => {
     }
   };
 
+
   // Mark a service as unavailable
   const handleToggleAvailability = async (serviceId, currentAvailability) => {
     try {
@@ -154,18 +160,37 @@ const ProfileTab = () => {
     }
   };
 
-  const handleSaveProfile = async () => {
-    try {
-      await axios.put('http://localhost:3000/service-provider/updateProfile', profile, {
-        headers: { Authorization: `Bearer ${localStorage.getItem('token')}` },
-      });
-      alert('Profile updated successfully!');
-      setIsEditing(false);
-    } catch (error) {
-      console.error('Error updating profile:', error);
-      alert('Failed to update profile');
+const handleSaveProfile = async () => {
+  try {
+    const formData = new FormData();
+    formData.append('firstName', profile.firstName);
+    formData.append('lastName', profile.lastName);
+    formData.append('phone', profile.phone);
+    formData.append('address', profile.address);
+    formData.append('city', profile.city);
+    formData.append('gender', profile.gender);
+    formData.append('dob', profile.dob);
+    formData.append('email', profile.email);
+    
+    formData.append('folder', "profile");
+    if (selectedImage) {
+      formData.append('profileImage', selectedImage);
     }
-  };
+
+    await axios.put('http://localhost:3000/service-provider/updateProfile', formData, {
+      headers: {
+        Authorization: `Bearer ${localStorage.getItem('token')}`,
+        'Content-Type': 'multipart/form-data',
+      },
+    });
+    alert('Profile updated successfully!');
+    setIsEditing(false);
+  } catch (error) {
+    console.error('Error updating profile:', error);
+    alert('Failed to update profile');
+  }
+};
+
   useEffect(() => {
     if (activeTab === 'services' || activeTab === 'add-services') {
       const fetchServices = async () => {
@@ -215,12 +240,23 @@ const ProfileTab = () => {
               <MDBCard className="mb-4 profile-container">
                 <MDBCardBody className="text-center">
                   <MDBCardImage
-                    src="https://st3.depositphotos.com/15648834/17930/v/600/depositphotos_179308454-stock-illustration-unknown-person-silhouette-glasses-profile.jpg"
-                    alt="Profile"
+                    src={selectedImage
+                      ? URL.createObjectURL(selectedImage) : `http://localhost:3000/profile/${profile.email}.jpg`
+                    }
+                    alt="Upload Profile Image"
                     className="rounded-circle"
                     style={{ width: '150px' }}
                     fluid
                   />
+                  {isEditing && (
+  <div className="mt-3">
+    <input
+      type="file"
+      accept="image/*"
+      onChange={(e) => setSelectedImage(e.target.files[0])}
+    />
+  </div>
+)}
                   <h4 className="mt-3">{profile.firstName} {profile.lastName}</h4>
                   <MDBBtn outline className="mt-3 profile-btn" onClick={() => setIsEditing(!isEditing)}>
                     {isEditing ? 'Cancel' : 'Edit Profile'}
@@ -411,10 +447,11 @@ const ProfileTab = () => {
                     </div>
                   ))}
                 </div>
-                <div className="savepref text-center">
+                <div className="savepref text-center ">
                   <button type="submit" className="btn save-btn">
                     Save Preferences
                   </button>
+                   <button  type="button" className="btn save-btn" onClick={handleReqService}>Request a new Service</button>
                 </div>
               </form>
             </div>

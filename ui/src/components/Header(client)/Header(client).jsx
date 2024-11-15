@@ -46,7 +46,12 @@ export default function Header() {
 
         <MDBCollapse navbar open={openBasic}>
           <MDBNavbarNav className='mr-auto mb-2 mb-lg-0 header-nav-buttons'>
-
+        
+            <MDBNavbarItem>
+              <Link to="/About" className='nav-link header-nav-buttons'>
+                About
+              </Link>
+            </MDBNavbarItem>
             <MDBNavbarItem>
               <Link to="/ClientDashBoard" className='nav-link header-nav-buttons'>
                 ClientDashboard

@@ -40,7 +40,7 @@ app.use(express.json());
 app.use('/', require('./routes/userRoutes'));
 app.use('/images', express.static('public/images'));
 app.use('/payments', express.static('public/payments'));
-
+app.use('/profile', express.static('public/profile'));
 
 const initializeApp = async () => {
     try {

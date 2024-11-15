@@ -190,6 +190,7 @@
 
   .savepref .btn {
     background-color: #008080;
+    margin-right: 10px;
     color: white;
     font-weight: bold;
   }

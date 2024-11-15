@@ -45,7 +45,8 @@ router.post('/service-provider/preferences',verifyTokenAndRole('serviceproviders
 
 router.get('/service-provider/profile',verifyTokenAndRole('serviceproviders'),serviceProviderProfile.getProfile);
 
-router.put('/service-provider/updateProfile',verifyTokenAndRole('serviceproviders'),serviceProviderProfile.updateProfile);
+router.put('/service-provider/updateProfile',verifyTokenAndRole('serviceproviders'),upload.single('profileImage'),serviceProviderProfile.updateProfile);
+router.get('/getEmail',serviceProviderProfile.getEmail);
 router.get('/service-provider/services',verifyTokenAndRole('serviceproviders'),serviceProviderProfile.getServices);
 router.put('/service-provider/updateAvailability/:service_id',verifyTokenAndRole('serviceproviders'),serviceProviderProfile.updateAvailability);
 router.delete('/service-provider/removeService/:service_id',verifyTokenAndRole('serviceproviders'),serviceProviderProfile.removeService);

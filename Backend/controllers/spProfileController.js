@@ -143,3 +143,16 @@ exports.updateAvailability = async (req, res) => {
     res.status(500).json({ message: "Failed to update availability" });
   }
 };
+
+exports.getEmail =async(req,res)=>{
+  try {
+    const {sp_id}=req.query;
+    const query=`select email from serviceproviders where sp_id=${sp_id}`;
+   const [result]= await sequelize.query(query);
+    res.json(result[0])
+  }
+  catch(error)
+  {
+    console.error( error);
+  }
+}

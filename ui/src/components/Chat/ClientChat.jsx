@@ -49,6 +49,7 @@ const Chat = () => {
     if (sp_id) {
       setSpId(sp_id);
       setReceiverID(sp_id);
+
     } else {
       // Do not set receiverID to undefined
       console.warn('sp_id is undefined in location.state.');
@@ -59,7 +60,17 @@ const Chat = () => {
     fetchPendingRequests(client_id);
     fetchChatHeads(client_id);
   }, []);
-  
+  const fetchemail=async(sp_id)=>{
+    try {
+      const response=await axios.get (`http://localhost:3000/getEmail?sp_id=${sp_id}`);
+      setSpEmail(response.email);
+
+    }
+    catch(error)
+    {
+      console.error('Error fetching chat heads:', error);
+    }
+  }
   const fetchChatHeads = async (client_id) => {
     try {
       const response = await axios.get(`http://localhost:3000/getChatHeads?user_id=${client_id}&user_type=clients`);
@@ -271,7 +282,7 @@ const Chat = () => {
                     >
                       <div className="d-flex align-items-center">
                         <img
-                          src="https://mdbcdn.b-cdn.net/img/Photos/new-templates/bootstrap-chat/ava1-bg.webp"
+                          src={`http://localhost:3000/profile/${chat.email}.jpg`}
                           alt="avatar"
                           className="rounded-circle me-3"
                           width="50"
