@@ -216,7 +216,7 @@ const Chat = () => {
                     >
                       <div className="d-flex align-items-center">
                         <img
-                          src="https://mdbcdn.b-cdn.net/img/Photos/new-templates/bootstrap-chat/ava1-bg.webp"
+                           src={`http://localhost:3000/images/chat-head-icon.png`}
                           alt="avatar"
                           className="rounded-circle me-3"
                           width="50"

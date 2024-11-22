@@ -1,5 +1,6 @@
 import React, { useState, useEffect } from 'react';
 import axios from 'axios';
+import 'mdb-react-ui-kit/dist/css/mdb.min.css';
 import { Navigate, useNavigate } from 'react-router-dom';
 import {
   MDBContainer,
@@ -20,7 +21,14 @@ import {
   MDBTabsItem,
   MDBTabsLink,
   MDBTabsContent,
-  MDBTabsPane
+  MDBTabsPane,
+  MDBModal,
+  MDBModalDialog,
+  MDBModalContent,
+  MDBModalHeader,
+  MDBModalTitle,
+  MDBModalBody
+
 } from 'mdb-react-ui-kit';
 import './SpProfile.css'
 
@@ -31,11 +39,12 @@ const ProfileTab = () => {
   const [services, setServices] = useState([]); // Services offered by the service provider
   const [selectedServices, setSelectedServices] = useState([]); // For managing selected services
   const [newSelectedServices, setnewSelectedServices] = useState([]);
+  const [modalOpen, setModalOpen] = useState(false);
 
   const [categories, setCategories] = useState([]);
   const [servicesByCategory, setServicesByCategory] = useState({});
   const handleTabChange = (tab) => setActiveTab(tab);
-  const navigate=useNavigate();
+  const navigate = useNavigate();
   const [selectedImage, setSelectedImage] = useState(null);
   useEffect(() => {
     const fetchProfile = async () => {
@@ -80,7 +89,7 @@ const ProfileTab = () => {
       }
     });
   };
-  const handleReqService =()=>{
+  const handleReqService = () => {
     navigate('/RequestCategory');
   }
   const handleNewServiceChange = (serviceId) => {
@@ -160,36 +169,36 @@ const ProfileTab = () => {
     }
   };
 
-const handleSaveProfile = async () => {
-  try {
-    const formData = new FormData();
-    formData.append('firstName', profile.firstName);
-    formData.append('lastName', profile.lastName);
-    formData.append('phone', profile.phone);
-    formData.append('address', profile.address);
-    formData.append('city', profile.city);
-    formData.append('gender', profile.gender);
-    formData.append('dob', profile.dob);
-    formData.append('email', profile.email);
-    
-    formData.append('folder', "profile");
-    if (selectedImage) {
-      formData.append('profileImage', selectedImage);
-    }
+  const handleSaveProfile = async () => {
+    try {
+      const formData = new FormData();
+      formData.append('firstName', profile.firstName);
+      formData.append('lastName', profile.lastName);
+      formData.append('phone', profile.phone);
+      formData.append('address', profile.address);
+      formData.append('city', profile.city);
+      formData.append('gender', profile.gender);
+      formData.append('dob', profile.dob);
+      formData.append('email', profile.email);
 
-    await axios.put('http://localhost:3000/service-provider/updateProfile', formData, {
-      headers: {
-        Authorization: `Bearer ${localStorage.getItem('token')}`,
-        'Content-Type': 'multipart/form-data',
-      },
-    });
-    alert('Profile updated successfully!');
-    setIsEditing(false);
-  } catch (error) {
-    console.error('Error updating profile:', error);
-    alert('Failed to update profile');
-  }
-};
+      formData.append('folder', "profile");
+      if (selectedImage) {
+        formData.append('profileImage', selectedImage);
+      }
+
+      await axios.put('http://localhost:3000/service-provider/updateProfile', formData, {
+        headers: {
+          Authorization: `Bearer ${localStorage.getItem('token')}`,
+          'Content-Type': 'multipart/form-data',
+        },
+      });
+      alert('Profile updated successfully!');
+      setIsEditing(false);
+    } catch (error) {
+      console.error('Error updating profile:', error);
+      alert('Failed to update profile');
+    }
+  };
 
   useEffect(() => {
     if (activeTab === 'services' || activeTab === 'add-services') {
@@ -234,29 +243,35 @@ const handleSaveProfile = async () => {
       </MDBTabs>
 
       <MDBTabsContent>
-        <MDBTabsPane open={activeTab === 'profile'}>
+        <MDBTabsPane open={activeTab === 'profile'}> {/* Replace `activeTab === 'profile'` with true for testing */}
           <MDBRow>
             <MDBCol lg="4">
               <MDBCard className="mb-4 profile-container">
                 <MDBCardBody className="text-center">
                   <MDBCardImage
-                    src={selectedImage
-                      ? URL.createObjectURL(selectedImage) : `http://localhost:3000/profile/${profile.email}.jpg`
+                    src={
+                      selectedImage
+                        ? URL.createObjectURL(selectedImage)
+                        : `http://localhost:3000/profile/${profile.email}.jpg`
                     }
                     alt="Upload Profile Image"
-                    className="rounded-circle"
-                    style={{ width: '150px' }}
+                    className="rounded-circle profile-picture"
+                    style={{ width: '150px', cursor: 'pointer' }}
                     fluid
+                    onClick={() => {
+                      console.log('Image clicked');
+                      setModalOpen(true);
+                    }} // Open modal when image is clicked
                   />
                   {isEditing && (
-  <div className="mt-3">
-    <input
-      type="file"
-      accept="image/*"
-      onChange={(e) => setSelectedImage(e.target.files[0])}
-    />
-  </div>
-)}
+                    <div className="mt-3">
+                      <input
+                        type="file"
+                        accept="image/*"
+                        onChange={(e) => setSelectedImage(e.target.files[0])}
+                      />
+                    </div>
+                  )}
                   <h4 className="mt-3">{profile.firstName} {profile.lastName}</h4>
                   <MDBBtn outline className="mt-3 profile-btn" onClick={() => setIsEditing(!isEditing)}>
                     {isEditing ? 'Cancel' : 'Edit Profile'}
@@ -381,13 +396,31 @@ const handleSaveProfile = async () => {
               </MDBCard>
             </MDBCol>
           </MDBRow>
+
+          {modalOpen && (
+            <div className="custom-modal">
+              <div className="modal-content">
+                <button className="close-button" onClick={() => setModalOpen(false)}>X</button>
+                <img
+                  src={
+                    selectedImage
+                      ? URL.createObjectURL(selectedImage)
+                      : `http://localhost:3000/profile/${profile.email}.jpg`
+                  }
+                  alt="Expanded Profile"
+                  style={{ width: '100%', borderRadius: '10px' }}
+                />
+              </div>
+            </div>
+          )}
+
         </MDBTabsPane>
 
         <MDBTabsPane open={activeTab === 'services'}>
           <div className="services-container">
             <h1 className="services-header">Services Offered</h1>
             <hr className="services-divider" />
-            {services.map((service,index) => (
+            {services.map((service, index) => (
               <div key={index} className="service-item d-flex align-items-center justify-content-between">
                 <div className="service-info">
                   <p><strong>Service:</strong> {service.service_name}</p>
@@ -451,7 +484,7 @@ const handleSaveProfile = async () => {
                   <button type="submit" className="btn save-btn">
                     Save Preferences
                   </button>
-                   <button  type="button" className="btn save-btn" onClick={handleReqService}>Request a new Service</button>
+                  <button type="button" className="btn save-btn" onClick={handleReqService}>Request a new Service</button>
                 </div>
               </form>
             </div>
