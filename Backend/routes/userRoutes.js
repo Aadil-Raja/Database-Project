@@ -47,6 +47,7 @@ router.get('/service-provider/profile',verifyTokenAndRole('serviceproviders'),se
 
 router.put('/service-provider/updateProfile',verifyTokenAndRole('serviceproviders'),upload.single('profileImage'),serviceProviderProfile.updateProfile);
 router.get('/getEmail',serviceProviderProfile.getEmail);
+
 router.get('/service-provider/services',verifyTokenAndRole('serviceproviders'),serviceProviderProfile.getServices);
 router.put('/service-provider/updateAvailability/:service_id',verifyTokenAndRole('serviceproviders'),serviceProviderProfile.updateAvailability);
 router.delete('/service-provider/removeService/:service_id',verifyTokenAndRole('serviceproviders'),serviceProviderProfile.removeService);
@@ -106,6 +107,7 @@ router.get('/verify-serviceprovider', verifyTokenAndRole('serviceproviders'), (r
   res.status(200).json({ message: 'Service Provider verified' });
 });
 
+router.post('/LoginAdmin',adminController.login);
 router.get('/verify-token', verifyTokenAndRole, (req, res) => {
     // If the token is valid, return success
     res.json({ isValid: true });

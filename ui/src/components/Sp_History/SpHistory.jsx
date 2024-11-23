@@ -302,11 +302,11 @@ const SpHistory = () => {
                 </MDBBtn>
               </div>
               <MDBCardText>
-                <strong>Total Earnings ({capitalizeFirstLetter(selectedPeriod)}):</strong> $
-                {totalEarnings}
+                <strong>Total Earnings ({capitalizeFirstLetter(selectedPeriod)}):</strong> 
+                 Rs {totalEarnings}
               </MDBCardText>
               <MDBCardText>
-                <strong>Overall Earnings:</strong> ${overallTotalEarnings}
+                <strong>Overall Earnings:</strong> Rs {overallTotalEarnings}
               </MDBCardText>
             </MDBCardBody>
           </MDBCard>
@@ -321,9 +321,9 @@ const SpHistory = () => {
               <MDBCardText>
                 <strong>Completed Orders:</strong> {stats.completed}
               </MDBCardText>
-              <MDBCardText>
+              {/* <MDBCardText>
                 <strong>Cancelled Orders:</strong> {stats.cancelled}
-              </MDBCardText>
+              </MDBCardText> */}
             </MDBCardBody>
           </MDBCard>
         </MDBCol>
@@ -349,7 +349,7 @@ const SpHistory = () => {
                 Completed
               </MDBTabsLink>
             </MDBTabsItem>
-            <MDBTabsItem>
+            {/* <MDBTabsItem>
               <MDBTabsLink
                 onClick={() => handleTabClick('cancelled')}
                 active={activeTab === 'cancelled'}
@@ -357,7 +357,7 @@ const SpHistory = () => {
               >
                 Cancelled
               </MDBTabsLink>
-            </MDBTabsItem>
+            </MDBTabsItem> */}
             <MDBTabsItem>
               <MDBTabsLink
                 onClick={() => handleTabClick('reviews')}
@@ -464,7 +464,7 @@ const OrderTable = ({
               <td>{index + 1}</td>
               <td>{order.client_name}</td>
               <td>{order.name}</td>
-              <td>${parseFloat(order.price).toFixed(2)}</td>
+              <td>Rs {parseFloat(order.price).toFixed(2)}</td>
               <td>
                 {showMore[index]
                   ? order.description

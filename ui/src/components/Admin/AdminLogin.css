@@ -1,0 +1,43 @@
+/* AdminLogin.css */
+.admin-login-bg {
+    background-color: rgb(207, 241, 234);
+    min-height: 100vh;
+  }
+  
+  .admin-login-card {
+    width: 500px;
+    padding: 20px;
+    z-index: 1;
+    background-color: #ffffff;
+    border-radius: 10px;
+    box-shadow: 0 4px 12px rgba(0, 0, 0, 0.1);
+  }
+  
+  .admin-login-text {
+    color: #333333;
+    font-size: 18px;
+  }
+  
+  .admin-login-input {
+    border: 1px solid #008080; /* Teal border */
+    border-radius: 6px;
+  }
+  
+  .admin-login-gradient-custom {
+    /* Matching your theme's gradient */
+    background: linear-gradient(to right, #139e8c, #129281);
+    color: white;
+  }
+  
+  .admin-login-gradient-custom:hover {
+    background: linear-gradient(to right, #0c6156, #0b5a4f); /* Darkened colors on hover */
+    transition: background 0.3s ease;
+    color: white;
+  }
+  
+  @media (min-width: 768px) {
+    .admin-login-bg {
+      height: 100vh !important;
+    }
+  }
+  

@@ -80,6 +80,14 @@ export default function Header() {
               </Link>
             </MDBNavbarItem>
 
+         
+            <MDBNavbarItem>
+              <Link to="/SpBilling" className='nav-link header-nav-buttons'>
+                Billing
+              </Link>
+            </MDBNavbarItem>
+
+
             <MDBNavbarItem>
               <Link to="/Login" className='nav-link header-nav-buttons'  onClick={handleLogout} >
                 Logout

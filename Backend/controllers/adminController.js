@@ -1,6 +1,23 @@
 const sequelize = require('../config/db');
-
+const jwt = require('jsonwebtoken');
 // Controller to add a new category and return all categories
+
+exports.login= async(req,res)=>
+{
+         const {username,password}=req.body;
+         if(username===process.env.ADMIN_USERNAME && password ===process.env.ADMIN_PASSWORD)
+         {
+          const token = jwt.sign({ username }, process.env.JWT_SECRET, { expiresIn: '1h' });
+          res.json({ message: "Successful",token});
+          
+
+         }
+         else
+         {
+          res.json({message:"UnSuccessful"});
+         }
+
+}
 exports.addReqCategory = async (req, res) => {
   const { title, description } = req.body;
   const sp_id=req.user.id;

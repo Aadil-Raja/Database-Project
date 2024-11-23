@@ -46,12 +46,12 @@ const initializeApp = async () => {
     try {
       await sequelize.sync({force:true });
       cities.createCitiesTable();
-      ServiceProvider.createServiceProviderTable();
+     ServiceProvider.createServiceProviderTable();
       Client.createClientsTable(); 
       Category.createCategoriesTable();
       Services.createServicesTable();
-     ServiceRequest.createServiceRequestsTable();
-      ServiceProviderServices.createServiceProviderServicesTable();
+    ServiceRequest.createServiceRequestsTable();
+     ServiceProviderServices.createServiceProviderServicesTable();
      RequestCategoryService.createRequestCategoryTable();
       ChatHeads.createChatHeadTable();
       messsages.createMessageTable();

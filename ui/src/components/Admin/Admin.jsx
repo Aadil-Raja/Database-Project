@@ -1,5 +1,6 @@
 import React, { useState, useEffect } from 'react';
 import './Admin.css';
+import { useNavigate } from 'react-router-dom';
 import axios from 'axios';
 import {
   MDBContainer,
@@ -9,7 +10,6 @@ import {
   MDBCardBody,
   MDBIcon,
   MDBTypography,
-  MDBInputGroup,
   MDBTabs,
   MDBTabsItem,
   MDBTabsLink,
@@ -28,7 +28,12 @@ import {
   MDBModalContent,
   MDBModalHeader,
   MDBModalBody,
-MDBModalTitle,
+  MDBModalTitle,
+  MDBNavbar,
+  MDBNavbarNav,
+  MDBNavbarItem,
+  MDBNavbarLink,
+  MDBNavbarBrand,
 } from 'mdb-react-ui-kit';
 
 
@@ -59,7 +64,18 @@ const AdminDashboard = () => {
     }
     return null;
   }
-  
+  const navigate = useNavigate();
+  useEffect(() => {
+    const adminToken = localStorage.getItem('adminToken');
+    if (!adminToken) {
+      navigate('/admin/login');
+    }
+  }, [navigate]);
+
+  const handleLogout = () => {
+    localStorage.removeItem('adminToken');
+    navigate('/admin/login');
+  };
   // DynamicImageLoader Component
   const DynamicImageLoader = ({ proof_of_payment }) => {
     const [fileSrc, setFileSrc] = useState(null);
@@ -249,6 +265,26 @@ const AdminDashboard = () => {
 
   return (
     <MDBContainer fluid className="admin-dashboard-container">
+      <MDBNavbar expand="lg" light bgColor="light" className="mb-4">
+        <MDBContainer fluid>
+          <MDBNavbarBrand href="#">
+            <MDBIcon fas icon="user-shield" className="me-2" />
+            Admin Dashboard
+          </MDBNavbarBrand>
+          <MDBNavbarNav right className="d-flex align-items-center">
+            <MDBNavbarItem>
+              <MDBNavbarLink disabled style={{ pointerEvents: 'none' }}>
+                Welcome, Admin
+              </MDBNavbarLink>
+            </MDBNavbarItem>
+            <MDBNavbarItem>
+              <MDBBtn color="danger" size="sm" onClick={handleLogout}>
+                Logout
+              </MDBBtn>
+            </MDBNavbarItem>
+          </MDBNavbarNav>
+        </MDBContainer>
+      </MDBNavbar>
       <MDBTabs className="mb-3 admin-tabs">
         <MDBTabsItem>
           <MDBTabsLink onClick={() => handleTabChange('Requests')} active={activeTab === 'Requests'}>

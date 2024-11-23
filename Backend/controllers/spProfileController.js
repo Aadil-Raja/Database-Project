@@ -9,7 +9,7 @@ exports.getProfile = async (req, res) => {
     // Query to fetch the service provider's profile with city name
     const query = `
       SELECT sp.sp_id, sp.firstName, sp.lastName, sp.email, sp.phone, sp.address, 
-             sp.gender, sp.dob, sp.role, sp.status, c.name AS city
+             sp.gender, sp.dob, sp.role, sp.status, c.name AS city_name,sp.city_id as city_id
       FROM ServiceProviders sp
       JOIN Cities c ON sp.city_id = c.city_id
       WHERE sp.sp_id = ${sp_id};
@@ -30,7 +30,8 @@ exports.getProfile = async (req, res) => {
       email: spUser.email,
       phone: spUser.phone,
       address: spUser.address,
-      city: spUser.city,  // Now this contains the city name
+      city_name: spUser.city_name,
+      city_id :spUser.city_id,  // Now this contains the city name
       gender: spUser.gender,
       dob: spUser.dob,
       role: spUser.role,
@@ -45,7 +46,7 @@ exports.getProfile = async (req, res) => {
 
 exports.updateProfile = async (req, res) => {
   try {
-    const { firstName, lastName, email, phone, address, city, gender, dob } = req.body;
+    const { firstName, lastName, email, phone, address, city_id, gender, dob } = req.body;
     const service_provider_id = req.user.id; // Extract service provider ID from token
 
     // Update query
@@ -57,7 +58,7 @@ exports.updateProfile = async (req, res) => {
         email = '${email}',
         phone = '${phone}', 
         address = '${address}', 
-        city_id = (SELECT city_id FROM Cities WHERE name = '${city}'),
+        city_id = ${city_id},
         gender = '${gender}', 
         dob = '${dob}'
       WHERE sp_id = ${service_provider_id};

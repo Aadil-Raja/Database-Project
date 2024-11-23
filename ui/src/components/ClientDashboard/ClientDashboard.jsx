@@ -382,7 +382,9 @@ const OrderTable = ({ orders, status, onCancel, onComplete, onFeedback, activeTa
           <th scope="col">City</th>
           {activeTab !== 'pending' && <th scope="col">Service Provider</th>}
           <th scope="col">Request Date</th>
+          {activeTab !== 'pending' && <th scope="col">Price</th>}
           <th scope="col">Status</th>
+          
           {activeTab === 'completed' && <th scope="col">Completed Date</th>}
           {activeTab !== 'accepted' && <th scope="col">Actions</th>}
         </tr>
@@ -403,7 +405,9 @@ const OrderTable = ({ orders, status, onCancel, onComplete, onFeedback, activeTa
             <td>{order.address}</td>
             <td>{order.city}</td>
             {activeTab !== 'pending' && <td>{order.sp_name}</td>}
+            
             <td>{new Date(order.request_date).toLocaleDateString()}</td>
+            {activeTab !== 'pending' && <td>{order.price}</td> }
             <td>
               <MDBBadge color={getStatusColor(order.status)} pill>
                 {capitalizeFirstLetter(order.status)}
@@ -417,6 +421,7 @@ const OrderTable = ({ orders, status, onCancel, onComplete, onFeedback, activeTa
                 </MDBProgress>
               )}
             </td>
+           
             {activeTab === 'completed' && (
               <td>
                 {order.completed_date ? new Date(order.completed_date).toLocaleDateString() : ''}

@@ -333,7 +333,7 @@ const Chat = () => {
       {msg.type === "service_request" && (
         <div className="text-muted small">
           <p>Status: {msg.status ? msg.status.charAt(0).toUpperCase() + msg.status.slice(1) : "Pending"}</p>
-          <p>Offered Price: ${msg.price}</p>
+          <p>Offered Price: {msg.price}</p>
           {msg.status === "pending" && (
             <button
               className="btn btn-sm btn-link text-danger ms-2"

@@ -270,7 +270,7 @@ const Chat = () => {
                       {msg.type === 'service_request' && (
                         <div className="service-request-details mt-2">
                           <p>
-                            <strong>Offered Price:</strong> ${msg.price}
+                            <strong>Offered Price:</strong> {msg.price}
                           </p>
                           {/* Additional details can be fetched if needed */}
                           {msg.status === 'pending' && (

@@ -25,14 +25,15 @@ import ServiceRequestForm from './components/Categories/ServiceRequestForm.jsx';
 import Requests from './components/Requests/Requests.jsx';
 import ServiceProviderForm from './components/ServiceProviderForm/ServiceProviderForm.jsx'
 import SpProfile from './components/SpProfile/SpProfile.jsx';
-import AdminDashboard from './components/Admin/Admin.jsx'
+
 import AddCategory from './components/About/Add-Category/Add-Category.jsx'
 import ClientDashboard from './components/ClientDashboard/ClientDashboard.jsx'
 import SpHistory from './components/Sp_History/SpHistory.jsx'
 import SpBilling from './components/SpBilling/SpBilling.jsx'
 import SpProtectedRoute from './components/utils/SpProtectedRoute.jsx'
 import ClientProtectedRoute from './components/utils/ClientProtectedRoute.jsx'
-
+import AdminLogin from './components/Admin/AdminLogin.jsx'
+import AdminDashboard from './components/Admin/Admin.jsx'
 const router = createBrowserRouter([
   {
     path: '/',
@@ -40,16 +41,17 @@ const router = createBrowserRouter([
 
     children: [
       {
-        path : 'Admin',
+        path : 'admin/dashboard',
         element :<AdminDashboard/>
        },
+      
       // Public Routes
       {
-        path: '',
-        element: <Home />
+        path: 'admin/login',
+        element: <AdminLogin/>
       },
       {
-              path : '/Home',
+              path : 'Home',
               element : <Home/>
       },
 

@@ -56,6 +56,22 @@ const SP = () => {
 
   const handleCreateAccount = async (e) => {
     e.preventDefault();
+    const emailRegex = /^[^\s@]+@[^\s@]+\.[^\s@]+$/;
+    if (!emailRegex.test(formData.email)) {
+      alert("Please enter a valid email address (e.g., user@example.com).");
+      return;
+    }
+    const phoneRegex = /^\d+$/;
+  if (!phoneRegex.test(formData.phone)) {
+    alert("Phone number must contain only digits.");
+    return;
+  }
+  const today = new Date();
+  const enteredDate = new Date(formData.dob);
+  if (enteredDate > today) {
+    alert("Date of Birth cannot be in the future.");
+    return;
+  }
     if (!formData.terms) {
       alert("You must agree to the terms and conditions.");
       return;
@@ -66,9 +82,10 @@ const SP = () => {
         alert("The email address is already registered. Please use a different email.");
       } else if (response.data.message === "User Created Successfully") {
         alert("Account created successfully!");
-        navigate("/login");
+        navigate("/Login");
       }
     } catch (error) {
+       alert("Make sure to fill all details.")
       console.error("There was an error creating the account:", error);
     }
   };

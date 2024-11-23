@@ -34,6 +34,7 @@ import './SpProfile.css'
 
 const ProfileTab = () => {
   const [profile, setProfile] = useState(null);
+  const [cities, setCities] = useState([]);
   const [isEditing, setIsEditing] = useState(false);
   const [activeTab, setActiveTab] = useState('profile');
   const [services, setServices] = useState([]); // Services offered by the service provider
@@ -46,6 +47,17 @@ const ProfileTab = () => {
   const handleTabChange = (tab) => setActiveTab(tab);
   const navigate = useNavigate();
   const [selectedImage, setSelectedImage] = useState(null);
+  useEffect(() => {
+    const fetchCities = async () => {
+      try {
+        const response = await axios.get("http://localhost:3000/cities");
+        setCities(response.data);
+      } catch (error) {
+        console.error("Error fetching cities:", error);
+      }
+    };
+    fetchCities();
+  }, []);
   useEffect(() => {
     const fetchProfile = async () => {
       try {
@@ -176,7 +188,7 @@ const ProfileTab = () => {
       formData.append('lastName', profile.lastName);
       formData.append('phone', profile.phone);
       formData.append('address', profile.address);
-      formData.append('city', profile.city);
+      formData.append('city_id', profile.city_id);
       formData.append('gender', profile.gender);
       formData.append('dob', profile.dob);
       formData.append('email', profile.email);
@@ -343,21 +355,28 @@ const ProfileTab = () => {
                       </div>
                     </MDBListGroupItem>
                     <MDBListGroupItem className="d-flex align-items-center profile-item">
-                      <div className="profile-label"><strong>City:</strong></div>
-                      <div className="profile-value">
-                        {isEditing ? (
-                          <MDBInput
-                            type="text"
-                            value={profile.city}
-                            onChange={(e) => setProfile({ ...profile, city: e.target.value })}
-                            size="sm"
-                            className="profile-input"
-                          />
-                        ) : (
-                          <MDBCardText className="text-muted profile-text">{profile.city}</MDBCardText>
-                        )}
-                      </div>
-                    </MDBListGroupItem>
+  <div className="profile-label"><strong>City:</strong></div>
+  <div className="profile-value">
+    {isEditing ? (
+      <select
+        name="city_id"
+        value={profile.city_id || ''}
+        onChange={(e) => setProfile({ ...profile, city_id: e.target.value })}
+        className="form-select"
+      >
+        <option value="">Select City</option>
+        {cities.map((city) => (
+          <option key={city.city_id} value={city.city_id}>
+            {city.name}
+          </option>
+        ))}
+      </select>
+    ) : (
+      <MDBCardText className="text-muted profile-text">{profile.city_name}</MDBCardText>
+    )}
+  </div>
+</MDBListGroupItem>
+
                     <MDBListGroupItem className="d-flex align-items-center profile-item">
                       <div className="profile-label"><strong>Gender:</strong></div>
                       <div className="profile-value">

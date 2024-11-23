@@ -30,7 +30,8 @@ function Layout() {
     /^\/Home$/, // Matches /Home (if also used by SP)
     /^\/RequestCategory$/,
     /^\/About$/, 
-    /^\/Spchat$/ // Matches /RequestCategory
+    /^\/Spchat$/,
+    /^\/SpBilling$/  // Matches /RequestCategory
   ];
 
   // Check if the current path matches any of the patterns
@@ -83,13 +84,18 @@ function Layout() {
   const showSpHeader = isSpAuthorized && matchesPattern(spRoutePatterns);
 
   // Conditions to hide footer and notification
-  const hideFooter = ["/register", "/Admin", "/ClientDashBoard","/SpHistory","/Spchat","/Clientchat"].includes(location.pathname);
+  const hideFooter = ["/register",'/login', "/Admin",'/resetPassword', "/ClientDashBoard","/SpHistory","/Spchat","/Clientchat",'/admin/dashboard','/admin/login'
+].includes(location.pathname);
+  const hideHeader = ['/admin/dashboard','/admin/login','/resetPassword'
+].includes(location.pathname);
   const hideNotification = [
     "/register", "/Home", "/About", "/Login",
     "/Clientchat", "/Spchat", "/", "/Register", "/Categories",
     "/Requests", "/SP", "/SpProfile", "/Admin",
     "/SpHistory", "/SpBilling", "/Client", "/Categories"
-    ,"/forgotpassword","/resetpassword","/RequestCategory","/ServiceProviderForm"
+    ,"/forgotpassword","/resetpassword","/RequestCategory","/ServiceProviderForm",'/admin/dashboard','/admin/login','/login'
+      ,'/resetPassword'
+
   ].includes(location.pathname);
 
   return (
@@ -101,7 +107,7 @@ function Layout() {
       ) : showSpHeader ? (
         <SpHeader />
       ) : (
-        <Header />
+        !hideHeader && <Header />
       )}
       {!hideNotification && <Notification />}
       <Outlet />
