@@ -124,7 +124,7 @@ const ServiceRequestForm = () => {
         <MDBBreadcrumbItem active>Request Form</MDBBreadcrumbItem>
       </MDBBreadcrumb>
 
-      <MDBRow className="d-flex justify-content-center align-items-center">
+      <MDBRow className="d-flex justify-content-center align-items-center service-request-form-2">
         <MDBCol lg="8">
           <MDBCard>
             <MDBCardBody className="px-4">

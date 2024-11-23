@@ -1,7 +1,11 @@
 /* serviceRequestForm.css */
 
 .service-request-form-body {
+
     max-width: 800px;
     margin: 0 auto;
   }
   
+.service-request-form-2{
+  min-height: 60vh;
+}
