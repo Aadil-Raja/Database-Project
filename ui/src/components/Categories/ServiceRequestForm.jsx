@@ -1,10 +1,7 @@
-// ServiceRequestForm.jsx
-
 import React, { useState, useEffect } from 'react';
 import axios from 'axios';
 import { Link } from 'react-router-dom';
 import { useNavigate, useParams } from 'react-router-dom';
-import { useLocation } from 'react-router-dom';
 import {
   MDBContainer,
   MDBRow,
@@ -14,28 +11,24 @@ import {
   MDBInput,
   MDBTextArea,
   MDBBtn,
-  MDBProgress,          // Added for progress bar
+  MDBProgress,
   MDBProgressBar,
-  MDBBreadcrumb,        // Added for breadcrumb navigation
+  MDBBreadcrumb,
   MDBBreadcrumbItem,
 } from 'mdb-react-ui-kit';
-import './serviceRequestForm.css'; // Updated CSS file
+import './serviceRequestForm.css';
 
 const ServiceRequestForm = () => {
   const [description, setDescription] = useState('');
   const [city, setCity] = useState('');
   const [cities, setCities] = useState([]);
   const [address, setAddress] = useState('');
-  const { serviceId } = useParams();
-  const [category,setCategory]=useState(null);
-  const [service,setService]=useState(null);
+  const [file, setFile] = useState(null); // Added for file upload
+  const { serviceId, categoryId } = useParams();
+  const [category, setCategory] = useState(null);
+  const [service, setService] = useState(null);
   const navigate = useNavigate();
-
-  const { categoryId } = useParams();
-
-
-  // Added state for progress bar
-  const [progress, setProgress] = useState(33); // Start at 33%
+  const [progress, setProgress] = useState(33);
 
   useEffect(() => {
     const fetchCities = async () => {
@@ -54,18 +47,15 @@ const ServiceRequestForm = () => {
       try {
         const categoryResponse = await axios.get(`http://localhost:3000/categories/${categoryId}`);
         setCategory(categoryResponse.data);
-  
-        const serviceResponse = await axios.get(`http://localhost:3000/getServiceName?service_id=${serviceId}`)
-      
+
+        const serviceResponse = await axios.get(`http://localhost:3000/getServiceName?service_id=${serviceId}`);
         setService(serviceResponse.data);
       } catch (error) {
         console.error('Error fetching category or service:', error);
       }
-   
     };
     fetchData();
   }, [categoryId, serviceId]);
-  
 
   const validateForm = () => {
     if (!description || !city || !address) {
@@ -77,30 +67,54 @@ const ServiceRequestForm = () => {
 
   const handleInputChange = (setter) => (e) => {
     setter(e.target.value);
-    // Update progress bar based on filled fields
     const filledFields = [description, city, address].filter(Boolean).length;
-    setProgress(((filledFields + 1) / 3) * 100); // '+1' accounts for the current field
+    setProgress(((filledFields + 1) / 3) * 100);
+  };
+
+  const handleFileChange = (e) => {
+    setFile(e.target.files[0]);
   };
 
   const handleSendToAll = async () => {
     if (!validateForm()) return;
-    const requestData = {
-      description,
-      city_id: city,
-      address,
-      service_id: serviceId,
-    };
+  
+
+    
     try {
+      // First, send the service request data to create the request
       const response = await axios.post(
-        `http://localhost:3000/servicerequestform`,
-        requestData,
+        'http://localhost:3000/servicerequestform',
+        {
+          description,
+          city_id: city,
+          address,
+          service_id: serviceId,
+        },
         {
           headers: {
             Authorization: `Bearer ${localStorage.getItem('token')}`,
           },
         }
       );
-      if (response.data === 'Requests Sent!') {
+
+      const { result } = response.data;
+      const insertID=result;
+ 
+      if (file) {
+        const formData = new FormData();
+        formData.append('insertID', insertID);
+        formData.append('folder','RequestImages');
+        formData.append('requestImg', file);
+        
+
+        await axios.post('http://localhost:3000/servicerequestform/uploadImage', formData, {
+          headers: {
+            Authorization: `Bearer ${localStorage.getItem('token')}`,
+            'Content-Type': 'multipart/form-data',
+          },
+        });
+      }
+      if (response.data.message === 'Requests Sent!') {
         alert('Service request sent successfully');
         navigate('/ClientDashBoard');
       }
@@ -111,16 +125,14 @@ const ServiceRequestForm = () => {
 
   return (
     <MDBContainer fluid className="my-5 service-request-form-body">
-      {/* Breadcrumb Navigation */}
       <MDBBreadcrumb className="mx-3">
-      <MDBBreadcrumbItem>
+        <MDBBreadcrumbItem>
           <Link to="/Categories">Categories</Link>
         </MDBBreadcrumbItem>
         <MDBBreadcrumbItem>
-        <Link to={`/Categories/${categoryId}`}>{category ? category.name : 'Loading...'}</Link>
+          <Link to={`/Categories/${categoryId}`}>{category ? category.name : 'Loading...'}</Link>
         </MDBBreadcrumbItem>
         <MDBBreadcrumbItem active>{service ? service.name : 'Loading...'}</MDBBreadcrumbItem>
-        
         <MDBBreadcrumbItem active>Request Form</MDBBreadcrumbItem>
       </MDBBreadcrumb>
 
@@ -129,7 +141,6 @@ const ServiceRequestForm = () => {
           <MDBCard>
             <MDBCardBody className="px-4">
               <h3 className="text-center mb-4">Request Service</h3>
-              {/* Progress Bar */}
               <MDBProgress className="mb-4">
                 <MDBProgressBar width={progress} valuemin={0} valuemax={100}>
                   {Math.round(progress)}%
@@ -183,6 +194,18 @@ const ServiceRequestForm = () => {
                     value={address}
                     onChange={handleInputChange(setAddress)}
                     required
+                  />
+                </MDBCol>
+              </MDBRow>
+
+              <MDBRow className="mb-4">
+                <MDBCol md="3">
+                  <h6 className="mb-0">Upload File</h6>
+                </MDBCol>
+                <MDBCol md="9">
+                  <MDBInput
+                    type="file"
+                    onChange={handleFileChange}
                   />
                 </MDBCol>
               </MDBRow>

@@ -90,11 +90,11 @@ function Layout() {
 ].includes(location.pathname);
   const hideNotification = [
     "/register", "/Home", "/About", "/Login",
-    "/Clientchat", "/Spchat", "/", "/Register", "/Categories",
+    "/Clientchat", "/Spchat", "/", "/Register", 
     "/Requests", "/SP", "/SpProfile", "/Admin",
-    "/SpHistory", "/SpBilling", "/Client", "/Categories"
+    "/SpHistory", "/SpBilling", "/Client", 
     ,"/forgotpassword","/resetpassword","/RequestCategory","/ServiceProviderForm",'/admin/dashboard','/admin/login','/login'
-      ,'/resetPassword'
+      ,'/resetPassword',
 
   ].includes(location.pathname);
 

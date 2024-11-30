@@ -1,5 +1,17 @@
 const sequelize = require("../config/db");
 
+
+exports.addimg = async(req,res) => {
+   try{
+     res.json("Request Sent!")
+   }
+   catch(error)
+   {
+      console.error("Error in adding image:", error.message);
+      res.status(500).json({ error: error.message });
+   }           
+                  
+  };
 exports.addRequest = async(req,res) => {
  try{
     const {description,city_id,address,service_id}= req.body;
@@ -7,8 +19,10 @@ exports.addRequest = async(req,res) => {
 
  const query =`INSERT INTO servicerequests (description,city_id,address,service_id,client_id)
                 values('${description}',${city_id},'${address}',${service_id},${client_id})`;
-                await sequelize.query(query);
-                res.json("Requests Sent!");
+               const [result]= await sequelize.query(query);
+               req.insertID=result;
+                console.log(result);
+                res.json({message:"Requests Sent!",result:result});
  }
  catch(error)
  {

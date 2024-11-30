@@ -55,7 +55,7 @@ router.delete('/service-provider/removeService/:service_id',verifyTokenAndRole('
 router.get('/categories/:categoryId',categoryController.getACategory);
 
 router.post('/servicerequestform',verifyTokenAndRole('clients'),servicerequestform.addRequest);
-
+router.post('/servicerequestform/uploadImage',verifyTokenAndRole('clients'),upload.single('requestImg'),servicerequestform.addimg);
 router.get('/getRequests/:sp_id',servicerequestform.getallRequests);
 router.get('/getClientName',clientController.getClient);
 router.get('/getCityName',cityController.getACity);
