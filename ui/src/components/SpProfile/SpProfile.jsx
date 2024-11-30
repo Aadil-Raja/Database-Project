@@ -437,7 +437,7 @@ const ProfileTab = () => {
 
         <MDBTabsPane open={activeTab === 'services'}>
           <div className="services-container">
-            <h1 className="services-header">Services Offered</h1>
+            <h1 className="services-header"> Your Services</h1>
             <hr className="services-divider" />
             {services.map((service, index) => (
               <div key={index} className="service-item d-flex align-items-center justify-content-between">
@@ -470,7 +470,7 @@ const ProfileTab = () => {
         <MDBTabsPane open={activeTab === 'add-services'}>
           <div className="preferences-body">
             <div className="preferences-container">
-              <h1 className="profile-header">Service Provider Preferences</h1>
+              <h1 className="profile-header"> Select Preferences</h1>
               <hr />
               <form onSubmit={handleSubmit}>
                 <div className="row">

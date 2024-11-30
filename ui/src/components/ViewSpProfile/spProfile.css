@@ -1,0 +1,240 @@
+
+
+.profile-container {
+    background-color: #f5f5f5;
+    padding: 20px;
+    border-radius: 8px;
+    min-height: 60vh;
+  }
+  
+  .profile-header {
+    font-size: 24px;
+    font-weight: bold;
+    color: #333;
+    margin-bottom: 15px;
+  }
+  
+  .profile .text-muted {
+    color: #666 !important;
+  }
+  
+  .profile .form-control {
+    border-radius: 5px;
+    border: 1px solid #ccc;
+  }
+  
+  .profile-picture:hover {
+    transform: scale(1.05);
+  }
+
+  .profile-btn:hover {
+    background-color: rgb(82, 96, 177);
+    color: #fff;
+  }
+
+  /* Profile Details Card */
+.profile-details-card {
+    border-radius: 10px;
+    background-color: #f8f9fa;
+    box-shadow: 0 4px 8px rgba(0, 0, 0, 0.1);
+  }
+  
+  /* Profile Details List */
+  .profile-details-list {
+    padding: 0;
+  }
+  
+  /* Profile Item */
+  .profile-item {
+    padding: 15px;
+    border-bottom: 1px solid #ddd;
+    display: flex;
+    align-items: center;
+    justify-content: space-between;
+  }
+  
+  /* Last Item */
+  .profile-item:last-child {
+    border-bottom: none;
+  }
+  
+  /* Profile Label */
+  .profile-label {
+    font-weight: bold;
+    color: #333;
+    flex: 0 0 150px;
+  }
+  
+  /* Profile Value */
+  .profile-value {
+    flex: 1;
+  }
+  
+  /* Profile Input */
+  .profile-input {
+    width: 100%;
+    border-radius: 5px;
+    border: 1px solid #ccc;
+    padding: 8px;
+  }
+  
+  /* Profile Text */
+  .profile-text {
+    font-size: 14px;
+    color: #666;
+  }
+  
+  /* Profile Select */
+  .profile-select {
+    width: auto;
+    border-radius: 5px;
+    border: 1px solid #ccc;
+    padding: 5px;
+  }
+  
+
+/* Services Container */
+.services-container {
+    background-color: #f5f5f5;
+    border-radius: 8px;
+    padding: 20px;
+    box-shadow: 0 4px 8px rgba(0, 0, 0, 0.1);
+    min-height: 60vh;
+  }
+  
+  /* Header */
+  .services-header {
+    font-size: 24px;
+    font-weight: bold;
+    color: #333;
+    margin-bottom: 15px;
+    text-align: center;
+  }
+  
+  /* Divider */
+  .services-divider {
+    border: 0;
+    height: 1px;
+    background: #ddd;
+    margin-bottom: 20px;
+  }
+  
+  /* Service Item */
+  .service-item {
+    background-color: #e6f9ff;
+    padding: 15px;
+    border: 1px solid #ddd;
+    border-radius: 5px;
+    margin-bottom: 10px;
+    display: flex;
+    justify-content: space-between;
+    align-items: center;
+    transition: background-color 0.3s ease;
+  }
+  
+  /* Hover Effect */
+  .custom-modal {
+    position: fixed;
+    top: 0;
+    left: 0;
+    width: 100%;
+    height: 100%;
+    background-color: rgba(0, 0, 0, 0.5);
+    display: flex;
+    justify-content: center;
+    align-items: center;
+    z-index: 1000;
+  }
+  .modal-content {
+    background-color: #fff;
+    padding: 20px;
+    border-radius: 10px;
+    max-width: 90%;
+    max-height: 90%;
+    overflow: auto;
+  }
+  .close-button {
+    position: absolute;
+    top: 10px;
+    right: 10px;
+    background: transparent;
+    border: none;
+    font-size: 1.5rem;
+    cursor: pointer;
+  }
+  
+  
+  /* Service Info */
+  .service-info p {
+    margin: 0;
+    font-size: 16px;
+    color: #555;
+  }
+  
+  /* Availability Label */
+  .availability-label {
+    font-size: 14px;
+    display: block;
+    margin-top: 10px;
+  }
+  
+  /* Checkbox */
+  .availability-checkbox {
+    margin-left: 5px;
+  }
+  
+  /* Remove Button */
+  .remove-service-btn {
+    background-color: #ff5c5c;
+    border: none;
+    color: #fff;
+    padding: 8px 12px;
+    font-size: 14px;
+    border-radius: 5px;
+    transition: background-color 0.3s ease;
+  }
+  
+  /* Remove Button Hover */
+  .remove-service-btn:hover {
+    background-color: #e60000;
+  }
+  
+  /* Styling for the Add New Services Tab */
+.preferences-body {
+    background-color: #f5f5f5;
+    border-radius: 8px;
+    padding: 20px;
+    min-height: 60vh;
+  }
+  
+  .list-group-item.active {
+    background-color: #008080 !important;
+    color: white !important;
+  }
+  
+  .preferences-container {
+    padding: 30px;
+    border: 1px solid #ddd;
+    border-radius: 5px;
+  }
+
+
+  .savepref .btn {
+    background-color: #008080;
+    margin-right: 10px;
+    color: white;
+    font-weight: bold;
+  }
+  
+  .savepref .btn:hover {
+    background-color: #006666;
+  }
+  
+  .preferences-form-check-input {
+    border-color: #ccc;
+  }
+  
+  .preferences-form-check-input:checked {
+    background-color: #008080;
+  }
+  

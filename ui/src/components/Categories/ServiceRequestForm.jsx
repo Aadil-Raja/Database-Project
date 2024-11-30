@@ -114,6 +114,7 @@ const ServiceRequestForm = () => {
           },
         });
       }
+      
       if (response.data.message === 'Requests Sent!') {
         alert('Service request sent successfully');
         navigate('/ClientDashBoard');

@@ -2,6 +2,8 @@ import { useEffect, useState } from 'react';
 import io from 'socket.io-client';
 import { useLocation } from 'react-router-dom';
 import axios from 'axios';
+
+import { useNavigate } from 'react-router-dom'; 
 import {
   MDBContainer,
   MDBRow,
@@ -37,6 +39,7 @@ const Chat = () => {
   const [offeredPrice, setOfferedPrice] = useState('');
 
   const location = useLocation();
+  const navigate = useNavigate();
 
   useEffect(() => {
     const { room, sp_id } = location.state || {};
@@ -108,7 +111,13 @@ const Chat = () => {
     fetchPreviousMessages(roomName);
    
   };
-
+const ViewProfile= async(sp_id)=>
+{ const Data = {
+  sp_id: sp_id,
+  
+};
+  navigate('/ViewProfile', { state:Data });
+}
   const sendMessage = async() => {
     if (message.trim() === '') return; 
     if (!receiverID) {
@@ -290,6 +299,7 @@ const Chat = () => {
                         <div className="pt-1">
                           <p className="fw-bold mb-0" style={{ color: "#008080" }}>{chat.sp_name}</p>
                           <p className="small text-muted text-truncate">{chat.lastmsg}</p>
+                          <button onClick={()=>ViewProfile(chat.sp_id)}>view profile</button>
                         </div>
                       </div>
                     </li>

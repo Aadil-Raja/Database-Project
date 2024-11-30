@@ -18,6 +18,7 @@ const upload = require('../middleware/multer.js');
 const chatController=require('../controllers/chatController.js');
 const ChatHeads=require('../controllers/chatHeadController.js');
 const Biling=require('../controllers/BillingController.js');
+const viewSPprofile=require('../controllers/clientSpProfileController.js')
 
 const verifyTokenAndRole = require('../middleware/auth');
 const { verify } = require('crypto');
@@ -98,6 +99,11 @@ router.put('/sp/invoice/payment', upload.single('proofOfPayment'), Biling.upload
 
 router.put('/updatePaymentStatus/:id',Biling.updatePaymentStatus);
 
+
+
+router.get('/client/viewSPprofile',viewSPprofile.getProfile);
+router.get('/client/viewSPservices',viewSPprofile.getServices);
+router.get('/client/viewSPreviews',viewSPprofile.getfeedback);
 router.get('/verify-client', verifyTokenAndRole('clients'), (req, res) => {
   res.status(200).json({ message: 'Client verified' });
 });

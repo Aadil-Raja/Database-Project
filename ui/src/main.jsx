@@ -34,6 +34,7 @@ import SpProtectedRoute from './components/utils/SpProtectedRoute.jsx'
 import ClientProtectedRoute from './components/utils/ClientProtectedRoute.jsx'
 import AdminLogin from './components/Admin/AdminLogin.jsx'
 import AdminDashboard from './components/Admin/Admin.jsx'
+import ViewSpProfile from './components/ViewSpProfile/ViewSpProfile.jsx';
 const router = createBrowserRouter([
   {
     path: '/',
@@ -93,6 +94,10 @@ const router = createBrowserRouter([
      {
       element :<ClientProtectedRoute/>
       ,children : [
+        {
+              path:'ViewProfile',
+              element:<ViewSpProfile/>
+        },
         {
           path:'Clientchat',
           element:<ClientChat/>

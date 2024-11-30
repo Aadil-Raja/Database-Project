@@ -19,7 +19,9 @@ function Layout() {
     /^\/Clientchat$/, // Matches /Clientchat
     /^\/Home$/, // Matches /Home
     /^\/Categories\/\d+\/\d+\/servicerequestform$/, 
-    /^\/About$/, // Matches /Categories/:categoryId/:serviceId/servicerequestform
+    /^\/About$/,
+    /^\/ViewProfile$/,
+     // Matches /Categories/:categoryId/:serviceId/servicerequestform
   ];
 
   const spRoutePatterns = [
