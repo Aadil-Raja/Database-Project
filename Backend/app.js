@@ -41,6 +41,7 @@ app.use('/', require('./routes/userRoutes'));
 app.use('/images', express.static('public/images'));
 app.use('/payments', express.static('public/payments'));
 app.use('/profile', express.static('public/profile'));
+app.use('/RequestImages', express.static('public/RequestImages'));
 
 const initializeApp = async () => {
     try {

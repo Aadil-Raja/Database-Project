@@ -8,13 +8,23 @@ import {
   MDBCardText,
   MDBRow,
   MDBCol,
-  MDBBtn
+  MDBBtn,
+  MDBModal,
+  MDBModalDialog,
+  MDBModalContent,
+  MDBModalHeader,
+  MDBModalBody,
+  MDBModalFooter,
+  MDBModalTitle
 } from 'mdb-react-ui-kit';
 import './Requests.css';
 
 const SearchResults = () => {
   const [data, setData] = useState([]);
   const [loading, setLoading] = useState(true);
+  const [showModal, setShowModal] = useState(false);
+  const [currentImageUrl, setCurrentImageUrl] = useState('');
+  const [imageAvailable, setImageAvailable] = useState({});
   const navigate = useNavigate();
 
   useEffect(() => {
@@ -23,12 +33,22 @@ const SearchResults = () => {
         const sp_id = localStorage.getItem('user_ID');
         const requestsResponse = await axios.get(`http://localhost:3000/getRequests/${sp_id}`);
         setData(requestsResponse.data);
-
         setLoading(false);
-      }
-      catch(error)
-      {
-        console.log("error in fetching requests");
+
+        // Check for image availability for each request
+        const imageAvailability = {};
+        for (let item of requestsResponse.data) {
+          const imageUrl = `http://localhost:3000/RequestImages/${item.request_id}.jpg`;
+          try {
+            await axios.head(imageUrl);
+            imageAvailability[item.request_id] = true;
+          } catch (error) {
+            imageAvailability[item.request_id] = false;
+          }
+        }
+        setImageAvailable(imageAvailability);
+      } catch (error) {
+        console.log("Error in fetching requests");
       }
     };
 
@@ -54,6 +74,18 @@ const SearchResults = () => {
     }
   };
 
+  // Function to open the image modal
+  const openImageModal = (requestId) => {
+    const imageUrl = `http://localhost:3000/RequestImages/${requestId}.jpg`;
+    setCurrentImageUrl(imageUrl);
+    setShowModal(true);
+  };
+
+  // Function to close the image modal
+  const closeImageModal = () => {
+    setShowModal(false);
+  };
+
   if (loading) {
     return <p className="loading-text">Loading...</p>;
   }
@@ -61,9 +93,9 @@ const SearchResults = () => {
   return (
     <div className="requests-container">
       <h2 className="requests-header">Client Requests</h2>
-      <MDBRow className='row-cols-1 row-cols-md-2 g-4'>
+      <MDBRow className="row-cols-1 row-cols-md-2 g-4">
         {data.length > 0 ? (
-          data.map((item,index) => (
+          data.map((item, index) => (
             <MDBCol key={index}>
               <MDBCard className="request-card">
                 <MDBCardBody>
@@ -83,6 +115,15 @@ const SearchResults = () => {
                   <MDBBtn className="message-btn" onClick={() => initiateChat(item.client_id)}>
                     Send Message
                   </MDBBtn>
+
+                  {imageAvailable[item.request_id] === true ? (
+                    <MDBBtn
+                      className="image-btn"
+                      onClick={() => openImageModal(item.request_id)}
+                    >
+                      View Attachment
+                    </MDBBtn>
+                  ) : null}
                 </MDBCardBody>
               </MDBCard>
             </MDBCol>
@@ -91,6 +132,33 @@ const SearchResults = () => {
           <p className="no-results">No results found</p>
         )}
       </MDBRow>
+
+      {/* Modal to display the image */}
+      <MDBModal open={showModal} setShow={setShowModal} tabIndex="-1">
+        <MDBModalDialog centered size="xl">
+          <MDBModalContent>
+            <MDBModalHeader>
+              <MDBModalTitle>Image Preview</MDBModalTitle>
+              <MDBBtn
+                className="btn-close"
+                color="none"
+                onClick={closeImageModal}
+              ></MDBBtn>
+            </MDBModalHeader>
+            <MDBModalBody style={{ padding: '0', textAlign: 'center' }}>
+              <img
+                src={currentImageUrl}
+                alt="Full Size"
+                style={{
+                  width: '100%',
+                  maxHeight: '90vh', // Ensure the image doesn't overflow the viewport height
+                  objectFit: 'contain', // Prevent distortion
+                }}
+              />
+            </MDBModalBody>
+          </MDBModalContent>
+        </MDBModalDialog>
+      </MDBModal>
     </div>
   );
 };

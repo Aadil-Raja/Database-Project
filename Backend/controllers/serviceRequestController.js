@@ -3,7 +3,7 @@ const sequelize = require("../config/db");
 
 exports.addimg = async(req,res) => {
    try{
-     res.json("Request Sent!")
+     res.json({message:"Image Uploaded"})
    }
    catch(error)
    {
@@ -37,7 +37,7 @@ exports.getallRequests = async(req,res) => {
      {
                 const {sp_id}=req.params;
             const query =`select DISTINCT  sr.client_id as client_id,ci.name as city_name,c.name as 
-            client_name,sr.address as address,s.name as service_name,sr.description as description
+            client_name,sr.address as address,s.name as service_name,sr.description as description,sr.request_id as request_id
              from servicerequests sr join clients c on c.client_id=sr.client_id 
             join cities ci on ci.city_id=sr.city_id join services s on s.service_id=sr.service_id  
             join serviceproviders sp on sp.city_id=sr.city_id

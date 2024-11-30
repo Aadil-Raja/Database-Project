@@ -41,11 +41,11 @@ const storage = multer.diskStorage({
         fileName = `${payment_id}_${sp_id}${extension}`; // Save as 'payment_id_sp_id.extension'
       } else if (req.body.folder === 'RequestImages') {
         const reqid = req.body.insertID || 'defaultID';
-        fileName = `${reqid}${extension}`; // Save as 'insertID.extension'
+        fileName = `${reqid}.jpg`; // Save as 'insertID.extension'
       } else {
         // Default naming convention for services
         const Name = req.body.name || 'default-name'; // Fallback to 'default-name' if name is not provided
-        fileName = `${Name.toLowerCase().replace(/ /g, '-')}${extension}`; // Save as 'name.extension'
+        fileName = `${Name.toLowerCase().replace(/ /g, '-')}.png`; // Save as 'name.extension'
       }
     }
 

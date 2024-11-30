@@ -1,4 +1,5 @@
 import React, { useState, useEffect } from 'react';
+
 import {
     MDBTabs,
     MDBTabsItem,
@@ -27,7 +28,8 @@ import {
     MDBCard,           // Added for summary cards
     MDBCardBody,       // Added for summary cards
     MDBRow,            // Added for layout
-    MDBCol,            // Added for layout
+    MDBCol,   
+    MDBInput,         // Added for layout
 } from 'mdb-react-ui-kit';
 import axios from 'axios';
 import './ClientDashboard.css'; // Make sure to update your CSS file accordingly
@@ -361,9 +363,78 @@ const ClientDashboard = () => {
 };
 
 // OrderTable Component
+
+
+
 const OrderTable = ({ orders, status, onCancel, onComplete, onFeedback, activeTab }) => {
   const [expandedRows, setExpandedRows] = useState({});
+  const [imageModalOpen, setImageModalOpen] = useState(false);
+  const [currentImageUrl, setCurrentImageUrl] = useState('');
+  const [imageAvailable, setImageAvailable] = useState({});
+  const [file, setFile] = useState(null);
 
+  // Handle file change (when a user selects an image)
+  const handleFileChange = (requestId) => (e) => {
+    setFile({ file: e.target.files[0], requestId });
+  };
+
+  // Handle file upload to the backend
+  const handleFileUpload = async () => {
+    if (file && file.file) {
+      const formData = new FormData();
+      formData.append('insertID', file.requestId); // the request_id
+      formData.append('folder', 'RequestImages');
+      formData.append('requestImg', file.file); // the actual file
+
+      try {
+        const response = await axios.post('http://localhost:3000/servicerequestform/uploadImage', formData , {
+          headers: {
+            Authorization: `Bearer ${localStorage.getItem('token')}`,
+            'Content-Type': 'multipart/form-data',
+          },
+        });
+        console.log(response.data.message);
+       
+        if (response.data.message === "Image Uploaded") {
+          alert('Image uploaded successfully');
+          setImageAvailable((prev) => ({
+            ...prev,
+            [file.requestId]: true,
+          }));
+        }
+      } catch (error) {
+        console.error('Error uploading image:', error);
+        alert('Error uploading image. Please try again.');
+      }
+    } else {
+      alert('Please select a file first');
+    }
+  };
+
+  // Fetch image availability for each order
+  useEffect(() => {
+    const fetchImg = async () => {
+      try {
+        const imageAvailability = {};
+        for (let order of orders) {
+          const imageUrl = `http://localhost:3000/RequestImages/${order.request_id}.jpg`;
+          try {
+            await axios.head(imageUrl); // Check if image exists
+            imageAvailability[order.request_id] = true;
+          } catch (error) {
+            imageAvailability[order.request_id] = false;
+          }
+        }
+        setImageAvailable(imageAvailability);
+      } catch (error) {
+        console.log("Error in fetching image availability");
+      }
+    };
+
+    fetchImg();
+  }, [orders]);
+
+  // Toggle row expansion for displaying full description
   const toggleRow = (index) => {
     setExpandedRows((prev) => ({
       ...prev,
@@ -372,91 +443,152 @@ const OrderTable = ({ orders, status, onCancel, onComplete, onFeedback, activeTa
   };
 
   return (
-    <MDBTable align="middle" hover responsive striped>
-      <MDBTableHead>
-        <tr>
-          <th scope="col">Order ID</th>
-          <th scope="col">Service</th>
-          <th scope="col">Description</th>
-          <th scope="col">Address</th>
-          <th scope="col">City</th>
-          {activeTab !== 'pending' && <th scope="col">Service Provider</th>}
-          <th scope="col">Request Date</th>
-          {activeTab !== 'pending' && <th scope="col">Price</th>}
-          <th scope="col">Status</th>
-          
-          {activeTab === 'completed' && <th scope="col">Completed Date</th>}
-          {activeTab !== 'accepted' && <th scope="col">Actions</th>}
-        </tr>
-      </MDBTableHead>
-      <MDBTableBody>
-        {orders.map((order, index) => (
-          <tr key={index}>
-            <td>{index + 1}</td>
-            <td>{order.name}</td>
-            <td>
-              {expandedRows[index] ? order.description : `${order.description.substring(0, 30)}...`}
-              <MDBIcon
-                icon={expandedRows[index] ? 'chevron-up' : 'chevron-down'}
-                onClick={() => toggleRow(index)}
-                style={{ cursor: 'pointer', color: '#007bff', marginLeft: '8px' }}
-              />
-            </td>
-            <td>{order.address}</td>
-            <td>{order.city}</td>
-            {activeTab !== 'pending' && <td>{order.sp_name}</td>}
-            
-            <td>{new Date(order.request_date).toLocaleDateString()}</td>
-            {activeTab !== 'pending' && <td>{order.price}</td> }
-            <td>
-              <MDBBadge color={getStatusColor(order.status)} pill>
-                {capitalizeFirstLetter(order.status)}
-              </MDBBadge>
-              {order.status === 'pending' && (
-                <MDBSpinner size="sm" role="status" tag="span" className="ms-2" />
-              )}
-              {order.status === 'accepted' && (
-                <MDBProgress className="mt-2" style={{ height: '6px' }}>
-                  <MDBProgressBar width={50} valuemin={0} valuemax={100} />
-                </MDBProgress>
-              )}
-            </td>
-           
-            {activeTab === 'completed' && (
-              <td>
-                {order.completed_date ? new Date(order.completed_date).toLocaleDateString() : ''}
-              </td>
-            )}
-            {activeTab !== 'accepted' && (
-              <td>
-                {status === 'pending' && (
-                  <MDBTooltip tag="span" title="Cancel this order">
-                    <MDBBtn color="danger" size="sm" onClick={() => onCancel(order.request_id, index + 1)}>
-                      Cancel
-                    </MDBBtn>
-                  </MDBTooltip>
-                )}
-                {status === 'completed' && order.review && order.rating && (
-                  <div>
-                    <StarRating rating={order.rating} readOnly={true} />
-                    <p>{order.review}</p>
-                  </div>
-                )}
-                {status === 'completed' && !order.rating && (
-                  <MDBTooltip tag="span" title="Provide feedback for this service">
-                    <MDBBtn color="info" size="sm" onClick={() => onFeedback(order.request_id)}>
-                      Provide Feedback
-                    </MDBBtn>
-                  </MDBTooltip>
-                )}
-              </td>
-            )}
+    <>
+      <MDBTable align="middle" hover responsive striped>
+        <MDBTableHead>
+          <tr>
+            <th scope="col">Order ID</th>
+            <th scope="col">Service</th>
+            <th scope="col">Description</th>
+            <th scope="col">Address</th>
+            <th scope="col">City</th>
+            {activeTab !== 'pending' && <th scope="col">Service Provider</th>}
+            <th scope="col">Request Date</th>
+            {activeTab !== 'pending' && <th scope="col">Price</th>}
+            <th scope="col">Status</th>
+            {activeTab === 'completed' && <th scope="col">Completed Date</th>}
+            {activeTab !== 'accepted' && <th scope="col">Actions</th>}
+            <th scope="col">Attachment</th>
           </tr>
-        ))}
-      </MDBTableBody>
-    </MDBTable>
+        </MDBTableHead>
+        <MDBTableBody>
+          {orders.map((order, index) => (
+            <tr key={index}>
+              <td>{index + 1}</td>
+              <td>{order.name}</td>
+              <td>
+                {expandedRows[index] ? order.description : `${order.description.substring(0, 30)}...`}
+                <MDBIcon
+                  icon={expandedRows[index] ? 'chevron-up' : 'chevron-down'}
+                  onClick={() => toggleRow(index)}
+                  style={{ cursor: 'pointer', color: '#007bff', marginLeft: '8px' }}
+                />
+              </td>
+              <td>{order.address}</td>
+              <td>{order.city}</td>
+              {activeTab !== 'pending' && <td>{order.sp_name}</td>}
+              <td>{new Date(order.request_date).toLocaleDateString()}</td>
+              {activeTab !== 'pending' && <td>{order.price}</td>}
+              <td>
+                <MDBBadge color={getStatusColor(order.status)} pill>
+                  {capitalizeFirstLetter(order.status)}
+                </MDBBadge>
+                {order.status === 'pending' && (
+                  <MDBSpinner size="sm" role="status" tag="span" className="ms-2" />
+                )}
+                {order.status === 'accepted' && (
+                  <MDBProgress className="mt-2" style={{ height: '6px' }}>
+                    <MDBProgressBar width={50} valuemin={0} valuemax={100} />
+                  </MDBProgress>
+                )}
+              </td>
+              {activeTab === 'completed' && (
+                <td>{order.completed_date ? new Date(order.completed_date).toLocaleDateString() : ''}</td>
+              )}
+              {activeTab !== 'accepted' && (
+                <td>
+                  {status === 'pending' && (
+                    <MDBTooltip tag="span" title="Cancel this order">
+                      <MDBBtn color="danger" size="sm" onClick={() => onCancel(order.request_id, index + 1)}>
+                        Cancel
+                      </MDBBtn>
+                    </MDBTooltip>
+                  )}
+                  {status === 'completed' && order.review && order.rating && (
+                    <div>
+                      <StarRating rating={order.rating} readOnly={true} />
+                      <p>{order.review}</p>
+                    </div>
+                  )}
+                  {status === 'completed' && !order.rating && (
+                    <MDBTooltip tag="span" title="Provide feedback for this service">
+                      <MDBBtn color="info" size="sm" onClick={() => onFeedback(order.request_id)}>
+                        Provide Feedback
+                      </MDBBtn>
+                    </MDBTooltip>
+                  )}
+                </td>
+              )}
+              <td>
+                {status==='pending' &&     (imageAvailable[order.request_id] === true ? (
+                  <img
+                    src={`http://localhost:3000/RequestImages/${order.request_id}.jpg`}
+                    alt={`Order ${order.request_id}`}
+                    style={{ width: '70px', cursor: 'pointer' }}
+                    onClick={() => {
+                      setCurrentImageUrl(`http://localhost:3000/RequestImages/${order.request_id}.jpg`);
+                      setImageModalOpen(true);
+                    }}
+                  />
+                ) : (
+                  <div className="mt-3">
+                    <input
+                      type="file"
+                      accept="image/*"
+                      onChange={handleFileChange(order.request_id)}
+                    />
+                    <MDBBtn color="primary" size="sm" onClick={handleFileUpload}>Upload</MDBBtn>
+                  </div>
+                )) } 
+                {status!='pending' &&     (imageAvailable[order.request_id] === true ? (
+                  <img
+                    src={`http://localhost:3000/RequestImages/${order.request_id}.jpg`}
+                    alt={`Order ${order.request_id}`}
+                    style={{ width: '70px', cursor: 'pointer' }}
+                    onClick={() => {
+                      setCurrentImageUrl(`http://localhost:3000/RequestImages/${order.request_id}.jpg`);
+                      setImageModalOpen(true);
+                    }}
+                  />
+                ) : (
+                  <div className="mt-3">
+                    Not Attached
+                  </div>
+                )) } 
+            
+              </td>
+            </tr>
+          ))}
+        </MDBTableBody>
+      </MDBTable>
+
+      {/* Modal to display the image */}
+      <MDBModal open={imageModalOpen} setShow={setImageModalOpen} tabIndex="-1">
+        <MDBModalDialog centered size="xl">
+          <MDBModalContent>
+            <MDBModalHeader>
+              <MDBModalTitle>Image Preview</MDBModalTitle>
+              <MDBBtn className="btn-close" color="none" onClick={() => setImageModalOpen(false)}></MDBBtn>
+            </MDBModalHeader>
+            <MDBModalBody style={{ padding: '0', textAlign: 'center' }}>
+              <img
+                src={currentImageUrl}
+                alt="Full Size"
+                style={{
+                  width: '100%',
+                  maxHeight: '90vh',
+                  objectFit: 'contain',
+                }}
+              />
+            </MDBModalBody>
+          </MDBModalContent>
+        </MDBModalDialog>
+      </MDBModal>
+    </>
   );
 };
+
+
 
 const getStatusColor = (status) => {
   switch (status) {

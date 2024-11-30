@@ -28,6 +28,7 @@
   
   .message-btn {
     background-color: #008080;
+    margin-right: 10px;
     color: #fff;
     font-weight: bold;
     border: none;
@@ -37,7 +38,18 @@
   .message-btn:hover {
     background-color: #006666;
   }
-  
+  .image-btn {
+    margin-right: 10px;
+    background-color: #008080;
+    color: #fff;
+    font-weight: bold;
+    border: none;
+    transition: background-color 0.3s;
+  }
+  .img-btn:hover {
+    background-color: #006666;
+  }
+
   .loading-text, .no-results {
     text-align: center;
     font-size: 18px;
