@@ -18,11 +18,12 @@ function Layout() {
     /^\/ClientDashBoard$/, // Matches /ClientDashBoard
     /^\/Clientchat$/, // Matches /Clientchat
     /^\/Home$/, // Matches /Home
-    /^\/Categories\/\d+\/\d+\/servicerequestform$/, 
-    /^\/About$/,
-    /^\/ViewProfile$/,
-     // Matches /Categories/:categoryId/:serviceId/servicerequestform
+    /^\/Categories\/\d+\/\d+\/servicerequestform$/, // Matches /Categories/:categoryId/:serviceId/servicerequestform
+    /^\/About$/, // Matches /About
+    /^\/ViewProfile$/, // Matches /ViewProfile
+    /^\/ViewProfile\/\d+$/, // Matches /ViewProfile/:sp_id (dynamic sp_id)
   ];
+  
 
   const spRoutePatterns = [
     /^\/Requests$/, // Matches /Requests

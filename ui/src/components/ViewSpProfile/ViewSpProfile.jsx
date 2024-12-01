@@ -2,6 +2,7 @@ import React, { useState, useEffect } from "react";
 import axios from "axios";
 import "mdb-react-ui-kit/dist/css/mdb.min.css";
 import { useLocation } from 'react-router-dom';
+import { useParams } from 'react-router-dom';
 import {
   MDBContainer,
   MDBRow,
@@ -34,7 +35,10 @@ const ViewSpProfile = () => {
    const[avgRating,setAvgRating]=useState(0);
    const[completedcount,setcompletedcount]=useState(0);
    const location = useLocation();
-   const[sp_id, setSpId]=useState(null);
+
+   const { sp_id } = useParams();
+   console.log(sp_id);
+
   const calculateAverageRating = (reviews) => {
     if (reviews.length === 0) {
       return null;
@@ -50,18 +54,13 @@ const ViewSpProfile = () => {
   };
 
   useEffect(() => {
-    const { sp_id } = location.state || {};
-
-    if (sp_id) {
-      setSpId(sp_id);
-    
-
-    } else {
- 
-      console.log('sp_id is undefined in location.state.');
-
+    if (reviews.length > 0) {
+        // Calculate the average rating after reviews are fetched
+        const avgRating = calculateAverageRating(reviews);
+        setAvgRating(avgRating);
+        setcompletedcount(reviews.length);
     }
-  }, []);
+}, [reviews])
   useEffect(()=>{
     const fetchReviews = async () => {
         try {
@@ -72,11 +71,10 @@ const ViewSpProfile = () => {
          
         setReviews(response.data)
  
-          const avgRating = calculateAverageRating(reviews);
+       
           
-          setAvgRating(avgRating);
-       setcompletedcount(response.data.length);
-      
+       
+    
         } catch (error) {
           console.error('Error fetching Reviews:', error);
         }
@@ -134,10 +132,7 @@ const ViewSpProfile = () => {
         console.error("Error fetching services and categories:", error);
       }
     };
-
-    if (activeTab === "services") {
       fetchServicesAndCategories();
-    }
   }, [sp_id]);
 
   if (!profile) return <div>Loading...</div>;
@@ -190,11 +185,11 @@ const ViewSpProfile = () => {
                     {avgRating}
                     <MDBIcon fas icon="star" className="text-warning" />
                    <br></br>
-                    <strong>Completed Orders  </strong>{'   '}
+                    <strong>Completed Orders:  </strong>{'   '}
 
                
                {completedcount}
-               <MDBIcon fas icon="star" className="text-warning" />
+               <MDBIcon fas icon="hard-hat" />
                 </MDBCardBody>
               </MDBCard>
             </MDBCol>

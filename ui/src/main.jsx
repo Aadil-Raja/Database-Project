@@ -95,7 +95,7 @@ const router = createBrowserRouter([
       element :<ClientProtectedRoute/>
       ,children : [
         {
-              path:'ViewProfile',
+              path:'ViewProfile/:sp_id',
               element:<ViewSpProfile/>
         },
         {

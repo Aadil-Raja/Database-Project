@@ -35,6 +35,7 @@ const Login = () => {
 
         if (response.data.first_time_login === "First time login") {
           navigate("/ServiceProviderForm");
+          window.location.reload();
         } else if (response.data.role === "serviceproviders") {
           navigate("/SpProfile");
           window.location.reload();

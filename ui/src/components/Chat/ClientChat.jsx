@@ -116,7 +116,8 @@ const ViewProfile= async(sp_id)=>
   sp_id: sp_id,
   
 };
-  navigate('/ViewProfile', { state:Data });
+  navigate(`/ViewProfile/${sp_id}`);
+  window.location.reload;
 }
   const sendMessage = async() => {
     if (message.trim() === '') return; 
