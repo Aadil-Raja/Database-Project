@@ -102,3 +102,82 @@
   color: rgba(0, 128, 128, 0.9);
   font-weight: bold;
 }
+
+.custom-chat-card {
+  border-radius: 15px;
+  background-color: #f8f9fa;
+  box-shadow: 0 4px 8px rgba(0, 0, 0, 0.1);
+}
+
+.search-input-group .search-input {
+  border: 2px solid #008080;
+  padding: 10px;
+}
+
+.search-addon {
+  background-color: #008080;
+  color: white;
+  cursor: pointer;
+}
+
+.custom-chat-scroll {
+  height: 400px;
+  overflow-y: auto;
+  padding-right: 5px;
+}
+
+.chat-list {
+  list-style: none;
+  margin: 0;
+  padding: 0;
+}
+
+.custom-chat-item {
+  transition: background-color 0.3s ease;
+  border-left: 4px solid transparent;
+  padding: 15px;
+  cursor: pointer;
+}
+
+.custom-chat-item:hover {
+  background-color: #f1f1f1;
+  border-left: 4px solid #008080;
+}
+
+.chat-avatar {
+  width: 50px;
+  height: 50px;
+  border: 2px solid #008080;
+  object-fit: cover;
+}
+
+.chat-content {
+  flex-grow: 1;
+}
+
+.chat-name {
+  font-size: 1rem;
+  color: #008080;
+}
+
+.chat-message {
+  font-size: 0.85rem;
+  color: #6c757d;
+}
+
+.view-profile-btn {
+  margin-top: 5px;
+  font-size: 0.8rem;
+  color: white;
+  background-color: #008080;
+  border: none;
+  border-radius: 5px;
+  padding: 5px 10px;
+  cursor: pointer;
+  transition: background-color 0.3s ease;
+}
+
+.view-profile-btn:hover {
+  background-color: #074b4b;
+}
+

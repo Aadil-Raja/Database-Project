@@ -3,7 +3,7 @@ import io from 'socket.io-client';
 import { useLocation } from 'react-router-dom';
 import axios from 'axios';
 
-import { useNavigate } from 'react-router-dom'; 
+import { useNavigate } from 'react-router-dom';
 import {
   MDBContainer,
   MDBRow,
@@ -32,7 +32,7 @@ const Chat = () => {
   const [pendingRequests, setPendingRequests] = useState([]);
   const [selectedRequestId, setSelectedRequestId] = useState('');
   const [selectedRequest, setSelectedRequest] = useState(null);
-  const[receiverName,setreceiverName]=useState('');
+  const [receiverName, setreceiverName] = useState('');
   const [chatHeads, setChatHeads] = useState([]);
   const [chatOpen, setChatOpen] = useState(true);
   const [isInRoom, setIsInRoom] = useState(false);
@@ -48,7 +48,7 @@ const Chat = () => {
     setRoom(roomName);
     setClientId(client_id);
     setSenderID(client_id);
-  
+
     if (sp_id) {
       setSpId(sp_id);
       setReceiverID(sp_id);
@@ -58,19 +58,18 @@ const Chat = () => {
       console.warn('sp_id is undefined in location.state.');
       // Optionally, handle this case, e.g., set a default receiverID or prompt the user
     }
-  
+
     socket.emit('join_room', roomName);
     fetchPendingRequests(client_id);
     fetchChatHeads(client_id);
   }, []);
-  const fetchemail=async(sp_id)=>{
+  const fetchemail = async (sp_id) => {
     try {
-      const response=await axios.get (`http://localhost:3000/getEmail?sp_id=${sp_id}`);
+      const response = await axios.get(`http://localhost:3000/getEmail?sp_id=${sp_id}`);
       setSpEmail(response.email);
 
     }
-    catch(error)
-    {
+    catch (error) {
       console.error('Error fetching chat heads:', error);
     }
   }
@@ -109,18 +108,18 @@ const Chat = () => {
     socket.emit('join_room', roomName);
     console.log('Updated receiverID:', sp_id);
     fetchPreviousMessages(roomName);
-   
+
   };
-const ViewProfile= async(sp_id)=>
-{ const Data = {
-  sp_id: sp_id,
-  
-};
-  navigate(`/ViewProfile/${sp_id}`);
-  window.location.reload;
-}
-  const sendMessage = async() => {
-    if (message.trim() === '') return; 
+  const ViewProfile = async (sp_id) => {
+    const Data = {
+      sp_id: sp_id,
+
+    };
+    navigate(`/ViewProfile/${sp_id}`);
+    window.location.reload;
+  }
+  const sendMessage = async () => {
+    if (message.trim() === '') return;
     if (!receiverID) {
       alert('Please select a chat to send the request.');
       return;
@@ -129,7 +128,7 @@ const ViewProfile= async(sp_id)=>
       sender_id: senderID,
       receiver_id: receiverID,
       message_text: message,
-      sender_type: 'clients', 
+      sender_type: 'clients',
       receiver_type: 'serviceproviders',
       room: room,
       created_at: Date.now(),
@@ -137,7 +136,7 @@ const ViewProfile= async(sp_id)=>
 
     socket.emit('client_send_message', { messageData, room });
     setMessages((prevMessages) => [...prevMessages, messageData]);
-   
+
     try {
       await axios.post('http://localhost:3000/saveMessage', messageData);
       const chatHeadData = {
@@ -146,26 +145,26 @@ const ViewProfile= async(sp_id)=>
         sp_id: receiverID,
         last_message: message,
       };
-     
+
       await axios.post('http://localhost:3000/createORupdateChatHead', chatHeadData);
       fetchChatHeads(clientId);
       setMessage('');
-    } catch(error) {
+    } catch (error) {
       console.error('Error saving message:', error);
     }
   };
 
   const cancelServiceRequest = async (requestId) => {
     const requestData = {
-      request_id:requestId,
+      request_id: requestId,
       status: 'cancelled',
-      room :room
+      room: room
     };
-          
+
     await axios.put('http://localhost:3000/updateRequestMessage', requestData);
     setMessages((prevMessages) =>
       prevMessages.map((msg) =>
-        msg.request_id === requestId && msg.status==='pending' ?  { ...msg, status: 'cancelled' } : msg
+        msg.request_id === requestId && msg.status === 'pending' ? { ...msg, status: 'cancelled' } : msg
       )
     );
     setSelectedRequestId('');
@@ -180,18 +179,18 @@ const ViewProfile= async(sp_id)=>
         return;
       }
       const priceValue = parseFloat(offeredPrice);
-  
+
       if (isNaN(priceValue)) {
         alert('Please enter a valid price.');
         return;
       }
-  
+
       const requestId = parseInt(selectedRequest.request_id);
       if (isNaN(requestId)) {
         console.error('Invalid request ID');
         return;
       }
-  
+
       const requestData = {
         sender_id: senderID,
         receiver_id: receiverID,
@@ -205,27 +204,27 @@ const ViewProfile= async(sp_id)=>
         status: 'pending',
         price: priceValue,
       };
-  
+
       try {
         console.log('Sending request data:', requestData);
-  
+
         // Emit the service request via socket
         socket.emit('service_request', { messageData: requestData, room });
         setMessages((prevMessages) => [...prevMessages, requestData]);
-  
+
         // Save the request message to the database
         await axios.post('http://localhost:3000/saveRequestMessage', requestData);
-  
+
         const chatHeadData = {
           room: room,
           client_id: senderID,
           sp_id: receiverID,
           last_message: `Request for ${selectedRequest.name}`,
         };
-  
+
         await axios.post('http://localhost:3000/createORupdateChatHead', chatHeadData);
         fetchChatHeads(clientId);
-  
+
         // Reset the form
         setSelectedRequestId('');
         setSelectedRequest(null);
@@ -235,13 +234,13 @@ const ViewProfile= async(sp_id)=>
       }
     }
   };
-  
-  
+
+
 
   useEffect(() => {
     socket.on('all_receive_message', (data) => {
       console.log("i am client receiveing msg");
-      console.log(data.room,room,data.sender_type,sender);
+      console.log(data.room, room, data.sender_type, sender);
       if (data.room === room && data.sender_type != sender) {
         console.log("i am client savingg msg");
         setMessages((prevMessages) => [...prevMessages, data]);
@@ -252,7 +251,7 @@ const ViewProfile= async(sp_id)=>
     socket.on('service_request_accepted', (data) => {
       setMessages((prevMessages) =>
         prevMessages.map((msg) =>
-          msg.request_id === data.request_id && msg.status==='pending' ? { ...msg, status: 'accepted' } : msg
+          msg.request_id === data.request_id && msg.status === 'pending' ? { ...msg, status: 'accepted' } : msg
         )
       );
       setPendingRequests((prevRequests) =>
@@ -269,38 +268,44 @@ const ViewProfile= async(sp_id)=>
     <MDBContainer fluid className="py-5 chat-head-body">
       <MDBRow>
         <MDBCol md="4">
-          <MDBCard id="chat-heads-card" style={{ borderRadius: "15px", backgroundColor: "white" }}>
+          <MDBCard id="chat-heads-card" className="custom-chat-card">
             <MDBCardBody>
-              <MDBInputGroup className="rounded mb-3">
+              <MDBInputGroup className="search-input-group mb-3">
                 <input
-                  className="form-control rounded"
-                  placeholder="Search"
+                  className="form-control rounded search-input"
+                  placeholder="Search for chats..."
                   type="search"
                 />
-                <span className="input-group-text border-0" id="search-addon">
+                <span className="input-group-text search-addon" id="search-addon">
                   <MDBIcon fas icon="search" />
                 </span>
               </MDBInputGroup>
-              <div className="chat-scrollbar" style={{ height: "400px" }}>
-                <MDBTypography listUnStyled className="mb-0">
+              <div className="chat-scrollbar custom-chat-scroll">
+                <MDBTypography listUnStyled className="chat-list mb-0">
                   {chatHeads.map((chat) => (
                     <li
-                      className="p-3 border-bottom chat-item"
+                      className="p-3 border-bottom chat-item custom-chat-item"
                       key={chat.client_id}
                       onClick={() => loadChat(chat.room, chat.sp_id)}
-                      style={{ cursor: "pointer" }}
                     >
                       <div className="d-flex align-items-center">
                         <img
                           src={`http://localhost:3000/profile/${chat.email}.jpg`}
                           alt="avatar"
-                          className="rounded-circle me-3"
-                          width="50"
+                          className="rounded-circle me-3 chat-avatar"
                         />
-                        <div className="pt-1">
-                          <p className="fw-bold mb-0" style={{ color: "#008080" }}>{chat.sp_name}</p>
-                          <p className="small text-muted text-truncate">{chat.lastmsg}</p>
-                          <button onClick={()=>ViewProfile(chat.sp_id)}>view profile</button>
+                        <div className="pt-1 chat-content">
+                          <p className="fw-bold mb-1 chat-name">{chat.sp_name}</p>
+                          <p className="small text-muted text-truncate chat-message">{chat.lastmsg}</p>
+                          <button
+                            className="view-profile-btn"
+                            onClick={(e) => {
+                              e.stopPropagation(); // Prevent parent onClick
+                              ViewProfile(chat.sp_id);
+                            }}
+                          >
+                            View Profile
+                          </button>
                         </div>
                       </div>
                     </li>
@@ -310,6 +315,7 @@ const ViewProfile= async(sp_id)=>
             </MDBCardBody>
           </MDBCard>
         </MDBCol>
+
         {isInRoom && (
           <MDBCol md="8">
             <MDBCard style={{ borderRadius: "15px", backgroundColor: "white" }}>
@@ -325,40 +331,40 @@ const ViewProfile= async(sp_id)=>
                   />
                 </div>
                 <div className="chat-scrollbar mb-3" style={{ height: "400px" }}>
-  {messages.map((msg, index) => (
-    <div
-      key={index}
-      className={`message ${msg.sender_type === "clients" ? "sent" : "received"}`}
-    >
-      <div className="message-content">
-  <p>{msg.message_text}</p>
-  
-  <span className="message-time">
-    {new Date(msg.created_at).toLocaleTimeString([], {
-      hour: '2-digit',
-      minute: '2-digit',
-    })}
-  </span>
-</div>
+                  {messages.map((msg, index) => (
+                    <div
+                      key={index}
+                      className={`message ${msg.sender_type === "clients" ? "sent" : "received"}`}
+                    >
+                      <div className="message-content">
+                        <p>{msg.message_text}</p>
 
-      {msg.type === "service_request" && (
-        <div className="text-muted small">
-          <p>Status: {msg.status ? msg.status.charAt(0).toUpperCase() + msg.status.slice(1) : "Pending"}</p>
-          <p>Offered Price: {msg.price}</p>
-          {msg.status === "pending" && (
-            <button
-              className="btn btn-sm btn-link text-danger ms-2"
-              onClick={() => cancelServiceRequest(msg.request_id)}
-            >
-              Cancel Request
-            </button>
-          )}
-        </div>
-      )}
-    </div>
-  ))}
-</div>
-<div className="request-selection mb-3">
+                        <span className="message-time">
+                          {new Date(msg.created_at).toLocaleTimeString([], {
+                            hour: '2-digit',
+                            minute: '2-digit',
+                          })}
+                        </span>
+                      </div>
+
+                      {msg.type === "service_request" && (
+                        <div className="text-muted small">
+                          <p>Status: {msg.status ? msg.status.charAt(0).toUpperCase() + msg.status.slice(1) : "Pending"}</p>
+                          <p>Offered Price: {msg.price}</p>
+                          {msg.status === "pending" && (
+                            <button
+                              className="btn btn-sm btn-link text-danger ms-2"
+                              onClick={() => cancelServiceRequest(msg.request_id)}
+                            >
+                              Cancel Request
+                            </button>
+                          )}
+                        </div>
+                      )}
+                    </div>
+                  ))}
+                </div>
+                <div className="request-selection mb-3">
                   <select
                     className="form-select"
                     value={selectedRequestId}
@@ -417,7 +423,7 @@ const ViewProfile= async(sp_id)=>
                   )}
                 </div>
 
- 
+
 
                 <div className="chat-box-footer d-flex align-items-center">
                   <input

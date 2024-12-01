@@ -11,7 +11,7 @@ const initializeCategoriesAndServices = async () => {
       name: 'Plumbing Services', 
       description: 'Professional plumbing services for all your needs',
       services: [
-        { name: 'Leak Repair', description: 'Fix leaks in pipes, faucets, and fixtures', image: 'leak-repair.jpg' },
+        { name: 'Leak Repair', description: 'Fix leaks in pipes, faucets, and fixtures', image: 'pipe-repair.png' },
         { name: 'Pipe Installation', description: 'Install new pipes or replace old ones', image: 'pipe-installation.jpg' },
         { name: 'Drain Cleaning', description: 'Unclog and clean drains and sewage lines', image: 'drain-cleaning.jpg' },
         { name: 'Water Heater Services', description: 'Install and repair water heaters', image: 'water-heater-services.jpg' },
@@ -30,60 +30,49 @@ const initializeCategoriesAndServices = async () => {
       ]
     },
     { 
-      name: 'Carpentry and Woodwork', 
+      name: 'Carpentry Services', 
       description: 'Custom carpentry and woodwork services',
       services: [
-        { name: 'Custom Furniture Making', description: 'Build custom furniture pieces', image: 'custom-furniture-making.jpg' },
-        { name: 'Cabinet Installation', description: 'Install or repair kitchen and bathroom cabinets', image: 'cabinet-installation.jpg' },
-        { name: 'Door and Window Installation', description: 'Install and repair doors and windows', image: 'door-window-installation.jpg' },
-        { name: 'Deck Construction', description: 'Build and repair outdoor decks and patios', image: 'deck-construction.jpg' },
-        { name: 'Flooring Installation', description: 'Install hardwood, laminate, or vinyl flooring', image: 'flooring-installation.jpg' }
+        { name: 'Furniture Assembly', description: 'Assemble furniture efficiently and professionally', image: 'furniture-assembly.jpg' },
+        { name: 'Cabinet Installation', description: 'Design and install custom cabinets', image: 'cabinet-installation.jpg' },
+        { name: 'Wood Repair', description: 'Repair broken wooden items and fixtures', image: 'wood-repair.jpg' },
+        { name: 'Deck Building', description: 'Construct durable and stylish outdoor decks', image: 'deck-building.jpg' },
+        { name: 'Custom Woodworking', description: 'Create custom wooden pieces for your space', image: 'custom-woodworking.jpg' }
       ]
     },
     { 
-      name: 'HVAC Services', 
-      description: 'Heating, ventilation, and air conditioning services',
+      name: 'Cleaning Services', 
+      description: 'Reliable cleaning solutions for homes and offices',
       services: [
-        { name: 'Air Conditioner Installation', description: 'Install and service AC units', image: 'ac-installation.jpg' },
-        { name: 'Furnace Repair', description: 'Install and repair heating furnaces', image: 'furnace-repair.jpg' },
-        { name: 'Ventilation Maintenance', description: 'Clean and maintain ventilation systems', image: 'ventilation-maintenance.jpg' },
-        { name: 'Thermostat Installation', description: 'Install and program thermostats', image: 'thermostat-installation.jpg' },
-        { name: 'Duct Cleaning', description: 'Clean air ducts and seal leaks', image: 'duct-cleaning.jpg' }
+        { name: 'Residential Cleaning', description: 'Thorough cleaning of your home', image: 'residential-cleaning.jpg' },
+        { name: 'Office Cleaning', description: 'Professional cleaning services for offices', image: 'office-cleaning.jpg' },
+        { name: 'Carpet Cleaning', description: 'Deep clean and sanitize carpets', image: 'carpet-cleaning.jpg' },
+        { name: 'Window Cleaning', description: 'Clean and polish windows to a shine', image: 'window-cleaning.jpg' },
+        { name: 'Move-in/Move-out Cleaning', description: 'Comprehensive cleaning for moving', image: 'move-cleaning.jpg' }
       ]
     },
     { 
-      name: 'Painting and Decorating', 
-      description: 'Professional painting and decorating services',
+      name: 'Home Renovation Services', 
+      description: 'Upgrade your living space with expert renovations',
       services: [
-        { name: 'Interior Painting', description: 'Paint walls, ceilings, and interiors', image: 'interior-painting.jpg' },
-        { name: 'Exterior Painting', description: 'Paint building exteriors, fences, and decks', image: 'exterior-painting.jpg' },
-        { name: 'Wallpaper Installation', description: 'Apply or remove wallpaper', image: 'wallpaper-installation.jpg' },
-        { name: 'Drywall Repair', description: 'Fix holes and cracks in drywall', image: 'drywall-repair.jpg' },
-        { name: 'Decorative Finishes', description: 'Faux finishes and artistic painting', image: 'decorative-finishes.jpg' }
+        { name: 'Bathroom Renovation', description: 'Modernize and improve bathrooms', image: 'bathroom-renovation.jpg' },
+        { name: 'Kitchen Remodeling', description: 'Create functional and beautiful kitchens', image: 'kitchen-remodeling.jpg' },
+        { name: 'Flooring Installation', description: 'Install or refinish floors', image: 'flooring-installation.jpg' },
+        { name: 'Painting Services', description: 'Interior and exterior painting', image: 'painting-services.jpg' },
+        { name: 'Room Additions', description: 'Expand your home with new rooms', image: 'room-additions.jpg' }
       ]
     },
     { 
-      name: 'Landscaping and Gardening', 
-      description: 'Complete landscaping and gardening solutions',
+      name: 'Automotive Services', 
+      description: 'Expert services for your vehicle needs',
       services: [
-        { name: 'Lawn Mowing', description: 'Regular grass cutting and lawn care', image: 'lawn-mowing.jpg' },
-        { name: 'Garden Design', description: 'Design gardens and plant flowers', image: 'garden-design.jpg' },
-        { name: 'Tree Trimming', description: 'Prune or remove trees and shrubs', image: 'tree-trimming.jpg' },
-        { name: 'Irrigation Installation', description: 'Install and repair sprinkler systems', image: 'irrigation-installation.jpg' },
-        { name: 'Hardscaping', description: 'Build patios, walkways, and walls', image: 'hardscaping.jpg' }
+        { name: 'Car Washing', description: 'Thorough cleaning for your car', image: 'car-washing.jpg' },
+        { name: 'Oil Change', description: 'Regular oil changes for optimal performance', image: 'oil-change.jpg' },
+        { name: 'Tire Replacement', description: 'Replace and align tires', image: 'tire-replacement.jpg' },
+        { name: 'Brake Repair', description: 'Maintain and repair brake systems', image: 'brake-repair.jpg' },
+        { name: 'Battery Replacement', description: 'Replace old car batteries', image: 'battery-replacement.jpg' }
       ]
-    },
-    { 
-      name: 'Solar Services', 
-      description: 'Solar panel installation and maintenance services',
-      services: [
-        { name: 'Solar Panel Installation', description: 'Install solar panels on rooftops', image: 'solar-panel-installation.jpg' },
-        { name: 'Solar Panel Maintenance', description: 'Routine maintenance of solar systems', image: 'solar-panel-maintenance.jpg' },
-        { name: 'Solar Cleaning', description: 'Clean solar panels for optimal efficiency', image: 'solar-cleaning.jpg' },
-        { name: 'Energy Audits', description: 'Assess energy needs and savings', image: 'energy-audits.jpg' },
-        { name: 'Battery Storage Solutions', description: 'Install solar battery storage systems', image: 'battery-storage-solutions.jpg' }
-      ]
-    },
+    }
   ];
 
   for (const category of categories) {

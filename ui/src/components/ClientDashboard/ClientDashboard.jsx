@@ -1,58 +1,58 @@
 import React, { useState, useEffect } from 'react';
 
 import {
-    MDBTabs,
-    MDBTabsItem,
-    MDBTabsLink,
-    MDBTabsContent,
-    MDBTabsPane,
-    MDBTable,
-    MDBTableHead,
-    MDBTableBody,
-    MDBBtn,
-    MDBBadge,
-    MDBIcon,
-    MDBContainer,
-    MDBModal,
-    MDBModalDialog,
-    MDBModalContent,
-    MDBModalHeader,
-    MDBModalTitle,
-    MDBModalBody,
-    MDBModalFooter,
-    MDBSpinner,
-    MDBTextArea,
-    MDBProgress,
-    MDBProgressBar,
-    MDBTooltip,
-    MDBCard,           // Added for summary cards
-    MDBCardBody,       // Added for summary cards
-    MDBRow,            // Added for layout
-    MDBCol,   
-    MDBInput,         // Added for layout
+  MDBTabs,
+  MDBTabsItem,
+  MDBTabsLink,
+  MDBTabsContent,
+  MDBTabsPane,
+  MDBTable,
+  MDBTableHead,
+  MDBTableBody,
+  MDBBtn,
+  MDBBadge,
+  MDBIcon,
+  MDBContainer,
+  MDBModal,
+  MDBModalDialog,
+  MDBModalContent,
+  MDBModalHeader,
+  MDBModalTitle,
+  MDBModalBody,
+  MDBModalFooter,
+  MDBSpinner,
+  MDBTextArea,
+  MDBProgress,
+  MDBProgressBar,
+  MDBTooltip,
+  MDBCard,           // Added for summary cards
+  MDBCardBody,       // Added for summary cards
+  MDBRow,            // Added for layout
+  MDBCol,
+  MDBInput,         // Added for layout
 } from 'mdb-react-ui-kit';
 import axios from 'axios';
 import './ClientDashboard.css'; // Make sure to update your CSS file accordingly
 
 const StarRating = ({ rating, onRatingChange, readOnly = false }) => {
-    return (
-      <div>
-        {[1, 2, 3, 4, 5].map((star) => (
-          <MDBIcon
-            key={star}
-            icon="star"
-            fas
-            size="lg"
-            style={{
-              cursor: readOnly ? 'default' : 'pointer',
-              color: star <= rating ? '#ffc107' : '#e4e5e9',
-            }}
-            onClick={() => !readOnly && onRatingChange && onRatingChange(star)}
-          />
-        ))}
-      </div>
-    );
-  };
+  return (
+    <div>
+      {[1, 2, 3, 4, 5].map((star) => (
+        <MDBIcon
+          key={star}
+          icon="star"
+          fas
+          size="lg"
+          style={{
+            cursor: readOnly ? 'default' : 'pointer',
+            color: star <= rating ? '#ffc107' : '#e4e5e9',
+          }}
+          onClick={() => !readOnly && onRatingChange && onRatingChange(star)}
+        />
+      ))}
+    </div>
+  );
+};
 
 const ClientDashboard = () => {
   const [activeTab, setActiveTab] = useState('pending');
@@ -114,32 +114,32 @@ const ClientDashboard = () => {
     setActiveTab(value);
   };
 
-  const handleCancelOrder = async (orderId,index) => {
+  const handleCancelOrder = async (orderId, index) => {
     alert(`Canceling order ID: ${index}`);
     setOrders((prevOrders) => ({
-        ...prevOrders,
-        pending: prevOrders.pending.filter((order) => order.request_id !== orderId),
-      }));
+      ...prevOrders,
+      pending: prevOrders.pending.filter((order) => order.request_id !== orderId),
+    }));
     // Update counts
     setPendingCount((prev) => prev - 1);
     setTotalRequests((prev) => prev - 1);
     await updateOrderStatus(orderId, 'cancelled');
   };
 
-  const handleCompleteOrder = async (orderId,index) => {
+  const handleCompleteOrder = async (orderId, index) => {
     alert(`Completing order ID: ${index}`);
     setOrders((prevOrders) => {
-        // Find the completed order
-        const completedOrder = prevOrders.accepted.find((order) => order.request_id === orderId);
-        // Update the status locally
-        const updatedOrder = { ...completedOrder, status: 'completed' };
+      // Find the completed order
+      const completedOrder = prevOrders.accepted.find((order) => order.request_id === orderId);
+      // Update the status locally
+      const updatedOrder = { ...completedOrder, status: 'completed' };
 
-        return {
-          ...prevOrders,
-          accepted: prevOrders.accepted.filter((order) => order.request_id !== orderId),
-          completed: [...prevOrders.completed, updatedOrder],
-        };
-      });
+      return {
+        ...prevOrders,
+        accepted: prevOrders.accepted.filter((order) => order.request_id !== orderId),
+        completed: [...prevOrders.completed, updatedOrder],
+      };
+    });
     // Update counts
     setAcceptedCount((prev) => prev - 1);
     setCompletedCount((prev) => prev + 1);
@@ -173,13 +173,13 @@ const ClientDashboard = () => {
       setFeedbackComment('');
 
       alert('Feedback submitted successfully.');
-      
+
       await axios.post('http://localhost:3000/client/feedback', {
         request_id: feedbackOrderId,
         rating: feedbackRating,
         comment: feedbackComment,
       });
-       
+
     } catch (error) {
       console.error('Error submitting feedback:', error);
       alert('Error submitting feedback. Please try again.');
@@ -387,14 +387,14 @@ const OrderTable = ({ orders, status, onCancel, onComplete, onFeedback, activeTa
       formData.append('requestImg', file.file); // the actual file
 
       try {
-        const response = await axios.post('http://localhost:3000/servicerequestform/uploadImage', formData , {
+        const response = await axios.post('http://localhost:3000/servicerequestform/uploadImage', formData, {
           headers: {
             Authorization: `Bearer ${localStorage.getItem('token')}`,
             'Content-Type': 'multipart/form-data',
           },
         });
         console.log(response.data.message);
-       
+
         if (response.data.message === "Image Uploaded") {
           alert('Image uploaded successfully');
           setImageAvailable((prev) => ({
@@ -520,43 +520,50 @@ const OrderTable = ({ orders, status, onCancel, onComplete, onFeedback, activeTa
                 </td>
               )}
               <td>
-                {status==='pending' &&     (imageAvailable[order.request_id] === true ? (
-                  <img
-                    src={`http://localhost:3000/RequestImages/${order.request_id}.jpg`}
-                    alt={`Order ${order.request_id}`}
-                    style={{ width: '70px', cursor: 'pointer' }}
-                    onClick={() => {
-                      setCurrentImageUrl(`http://localhost:3000/RequestImages/${order.request_id}.jpg`);
-                      setImageModalOpen(true);
-                    }}
-                  />
-                ) : (
-                  <div className="mt-3">
-                    <input
-                      type="file"
-                      accept="image/*"
-                      onChange={handleFileChange(order.request_id)}
+                {status === 'pending' ? (
+                  imageAvailable[order.request_id] ? (
+                    <img
+                      src={`http://localhost:3000/RequestImages/${order.request_id}.jpg`}
+                      alt={`Order ${order.request_id}`}
+                      className="request-image"
+                      onClick={() => {
+                        setCurrentImageUrl(`http://localhost:3000/RequestImages/${order.request_id}.jpg`);
+                        setImageModalOpen(true);
+                      }}
                     />
-                    <MDBBtn color="primary" size="sm" onClick={handleFileUpload}>Upload</MDBBtn>
-                  </div>
-                )) } 
-                {status!='pending' &&     (imageAvailable[order.request_id] === true ? (
-                  <img
-                    src={`http://localhost:3000/RequestImages/${order.request_id}.jpg`}
-                    alt={`Order ${order.request_id}`}
-                    style={{ width: '70px', cursor: 'pointer' }}
-                    onClick={() => {
-                      setCurrentImageUrl(`http://localhost:3000/RequestImages/${order.request_id}.jpg`);
-                      setImageModalOpen(true);
-                    }}
-                  />
+                  ) : (
+                    <div className="upload-container">
+                      <input
+                        type="file"
+                        accept="image/*"
+                        className="upload-input"
+                        onChange={handleFileChange(order.request_id)}
+                      />
+                      <MDBBtn color="teal" size="sm" className="upload-btn" onClick={handleFileUpload}>
+                        Upload Image
+                      </MDBBtn>
+                    </div>
+                  )
                 ) : (
-                  <div className="mt-3">
-                    Not Attached
-                  </div>
-                )) } 
-            
+                  imageAvailable[order.request_id] ? (
+                    <img
+                      src={`http://localhost:3000/RequestImages/${order.request_id}.jpg`}
+                      alt={`Order ${order.request_id}`}
+                      className="request-image"
+                      onClick={() => {
+                        setCurrentImageUrl(`http://localhost:3000/RequestImages/${order.request_id}.jpg`);
+                        setImageModalOpen(true);
+                      }}
+                    />
+                  ) : (
+                    <div className="no-attachment-message">
+                      <MDBIcon fas icon="paperclip" className="me-2 text-muted" />
+                      <span>No files attached</span>
+                    </div>
+                  )
+                )}
               </td>
+
             </tr>
           ))}
         </MDBTableBody>
