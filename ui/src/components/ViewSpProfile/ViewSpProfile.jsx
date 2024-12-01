@@ -182,6 +182,7 @@ const ViewSpProfile = () => {
                     style={{ width: "150px" }}
                     fluid
                     onClick={toggleModal}
+                    onError={(e) => { e.target.onerror = null; e.target.src = 'http://localhost:3000/profile/default-avatar.png'; }} 
                   />
                   <h4 className="mt-3">
                     {profile.firstName} {profile.lastName}
@@ -282,6 +283,7 @@ const ViewSpProfile = () => {
               src={`http://localhost:3000/profile/${profile.email}.jpg`}
               alt="Expanded Profile"
               style={{ width: '100%', borderRadius: '10px' }}
+              onError={(e) => { e.target.onerror = null; e.target.src = 'http://localhost:3000/profile/default-avatar.png'; }} 
             />
           </div>
         </div>

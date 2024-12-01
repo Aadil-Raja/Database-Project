@@ -199,12 +199,7 @@ const Chat = () => {
             style={{ borderRadius: '15px', backgroundColor: 'white' }}
           >
             <MDBCardBody>
-              <MDBInputGroup className="rounded mb-3">
-                <input className="form-control rounded" placeholder="Search" type="search" />
-                <span className="input-group-text border-0" id="search-addon">
-                  <MDBIcon fas icon="search" />
-                </span>
-              </MDBInputGroup>
+              
               <div className="chat-scrollbar" style={{ height: '400px' }}>
                 <MDBTypography listUnStyled className="mb-0">
                   {chatHeads.map((chat) => (

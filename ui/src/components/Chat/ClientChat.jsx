@@ -270,16 +270,7 @@ const Chat = () => {
         <MDBCol md="4">
           <MDBCard id="chat-heads-card" className="custom-chat-card">
             <MDBCardBody>
-              <MDBInputGroup className="search-input-group mb-3">
-                <input
-                  className="form-control rounded search-input"
-                  placeholder="Search for chats..."
-                  type="search"
-                />
-                <span className="input-group-text search-addon" id="search-addon">
-                  <MDBIcon fas icon="search" />
-                </span>
-              </MDBInputGroup>
+              
               <div className="chat-scrollbar custom-chat-scroll">
                 <MDBTypography listUnStyled className="chat-list mb-0">
                   {chatHeads.map((chat) => (
@@ -293,6 +284,7 @@ const Chat = () => {
                           src={`http://localhost:3000/profile/${chat.email}.jpg`}
                           alt="avatar"
                           className="rounded-circle me-3 chat-avatar"
+                          onError={(e) => { e.target.onerror = null; e.target.src = 'http://localhost:3000/profile/default-avatar.png'; }} 
                         />
                         <div className="pt-1 chat-content">
                           <p className="fw-bold mb-1 chat-name">{chat.sp_name}</p>

@@ -273,7 +273,9 @@ const ProfileTab = () => {
                     onClick={() => {
                       console.log('Image clicked');
                       setModalOpen(true);
-                    }} // Open modal when image is clicked
+                    }}
+                     // Open modal when image is clicked
+                     onError={(e) => { e.target.onerror = null; e.target.src = 'http://localhost:3000/profile/default-avatar.png'; }} 
                   />
                   {isEditing && (
                     <div className="mt-3">
@@ -428,6 +430,7 @@ const ProfileTab = () => {
                   }
                   alt="Expanded Profile"
                   style={{ width: '100%', borderRadius: '10px' }}
+                  onError={(e) => { e.target.onerror = null; e.target.src = 'http://localhost:3000/profile/default-avatar.png'; }} 
                 />
               </div>
             </div>
