@@ -21,7 +21,14 @@ import {
   MDBTable,
   MDBTableHead,
   MDBTableBody,
+  MDBModal,
+  MDBModalDialog,
+  MDBModalContent,
+  MDBModalHeader,
+  MDBModalBody,
+  MDBModalFooter,
   MDBIcon,
+  MDBBtn
 } from "mdb-react-ui-kit";
 import "./SpProfile.css";
 
@@ -29,12 +36,16 @@ const ViewSpProfile = () => {
   const [profile, setProfile] = useState(null);
   const [reviews, setReviews] = useState([]);
   const [activeTab, setActiveTab] = useState("profile");
+  const [modalOpen, setModalOpen] = useState(false);
   const [selectedServices, setSelectedServices] = useState([]);
   const [categories, setCategories] = useState([]);
   const [servicesByCategory, setServicesByCategory] = useState({});
    const[avgRating,setAvgRating]=useState(0);
    const[completedcount,setcompletedcount]=useState(0);
    const location = useLocation();
+   const toggleModal = () => {
+    setModalOpen(!modalOpen);
+  };
 
    const { sp_id } = useParams();
    console.log(sp_id);
@@ -146,18 +157,12 @@ const ViewSpProfile = () => {
           </MDBTabsLink>
         </MDBTabsItem>
         <MDBTabsItem>
-          <MDBTabsLink
-            onClick={() => setActiveTab("services")}
-            active={activeTab === "services"}
-          >
+          <MDBTabsLink onClick={() => setActiveTab("services")} active={activeTab === "services"}>
             <MDBIcon fas icon="briefcase" className="me-2" /> Services Offered
           </MDBTabsLink>
         </MDBTabsItem>
         <MDBTabsItem>
-          <MDBTabsLink
-            onClick={() => setActiveTab("reviews")}
-            active={activeTab === "reviews"}
-          >
+          <MDBTabsLink onClick={() => setActiveTab("reviews")} active={activeTab === "reviews"}>
             <MDBIcon fas icon="briefcase" className="me-2" /> Reviews
           </MDBTabsLink>
         </MDBTabsItem>
@@ -176,20 +181,18 @@ const ViewSpProfile = () => {
                     className="rounded-circle profile-picture"
                     style={{ width: "150px" }}
                     fluid
+                    onClick={toggleModal}
                   />
                   <h4 className="mt-3">
                     {profile.firstName} {profile.lastName}
                   </h4>
                   <strong>Average Rating:</strong>{' '}
-               
-                    {avgRating}
-                    <MDBIcon fas icon="star" className="text-warning" />
-                   <br></br>
-                    <strong>Completed Orders:  </strong>{'   '}
-
-               
-               {completedcount}
-               <MDBIcon fas icon="hard-hat" />
+                  {avgRating}
+                  <MDBIcon fas icon="star" className="text-warning" />
+                  <br />
+                  <strong>Completed Orders: </strong>{' '}
+                  {completedcount}
+                  <MDBIcon fas icon="hard-hat" />
                 </MDBCardBody>
               </MDBCard>
             </MDBCol>
@@ -203,9 +206,9 @@ const ViewSpProfile = () => {
                         <strong>Name:</strong>
                       </div>
                       <div className="profile-value">
-                        <MDBCardText className="text-muted profile-text">
+                        <span className="text-muted profile-text">
                           {profile.firstName} {profile.lastName}
-                        </MDBCardText>
+                        </span>
                       </div>
                     </MDBListGroupItem>
                     <MDBListGroupItem className="d-flex align-items-center profile-item">
@@ -213,7 +216,7 @@ const ViewSpProfile = () => {
                         <strong>City:</strong>
                       </div>
                       <div className="profile-value">
-                        <MDBCardText className="text-muted profile-text">{profile.city_name}</MDBCardText>
+                        <span className="text-muted profile-text">{profile.city_name}</span>
                       </div>
                     </MDBListGroupItem>
                     <MDBListGroupItem className="d-flex align-items-center profile-item">
@@ -221,7 +224,7 @@ const ViewSpProfile = () => {
                         <strong>Gender:</strong>
                       </div>
                       <div className="profile-value">
-                        <MDBCardText className="text-muted profile-text">{profile.gender}</MDBCardText>
+                        <span className="text-muted profile-text">{profile.gender}</span>
                       </div>
                     </MDBListGroupItem>
                     <MDBListGroupItem className="d-flex align-items-center profile-item">
@@ -229,7 +232,7 @@ const ViewSpProfile = () => {
                         <strong>Date of Birth:</strong>
                       </div>
                       <div className="profile-value">
-                        <MDBCardText className="text-muted profile-text">{profile.dob}</MDBCardText>
+                        <span className="text-muted profile-text">{profile.dob}</span>
                       </div>
                     </MDBListGroupItem>
                   </MDBListGroup>
@@ -241,7 +244,7 @@ const ViewSpProfile = () => {
 
         {/* Services Tab */}
         <MDBTabsPane open={activeTab === "services"}>
-          <div className="preferences-body">
+        <div className="preferences-body">
             <div className="preferences-container">
               <h1 className="profile-header">{profile.firstName}'s Services</h1>
               <hr />
@@ -264,15 +267,31 @@ const ViewSpProfile = () => {
             </div>
           </div>
         </MDBTabsPane>
-        <MDBTabsPane open={activeTab === 'reviews'}>
-              <ReviewsTable reviews={reviews} />
-            </MDBTabsPane>
+
+        
+        <MDBTabsPane open={activeTab === "reviews"}>
+        <ReviewsTable reviews={reviews} />
+        </MDBTabsPane>
       </MDBTabsContent>
+
+      {modalOpen && (
+        <div className="custom-modal">
+          <div className="modal-content">
+            <button className="close-button" onClick={toggleModal}>X</button>
+            <img
+              src={`http://localhost:3000/profile/${profile.email}.jpg`}
+              alt="Expanded Profile"
+              style={{ width: '100%', borderRadius: '10px' }}
+            />
+          </div>
+        </div>
+      )}
     </MDBContainer>
   );
 };
 const ReviewsTable = ({ reviews }) => {
     return (
+      <MDBContainer className="SpReviews-container">
       <MDBTable responsive className="SpReviewsTable-table">
         <MDBTableHead>
           <tr>
@@ -312,6 +331,7 @@ const ReviewsTable = ({ reviews }) => {
           )}
         </MDBTableBody>
       </MDBTable>
+      </MDBContainer>
     );
   };
 export default ViewSpProfile;

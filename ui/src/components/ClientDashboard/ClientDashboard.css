@@ -1,3 +1,83 @@
 .client-dashboard-section{
     min-height: 60vh;
 }
+.no-attachment-message {
+    display: flex;
+    align-items: center;
+    align-content: center;
+    justify-content: center;
+    color: #6c757d;
+    font-size: 0.75rem;
+    background-color: #f8f9fa;
+    padding: 10px;
+    border-radius: 8px;
+    border: 1px dashed #ced4da;
+    transition: background-color 0.3s ease;
+  }
+
+  .no-attachment-message:hover {
+    background-color: #e9ecef;
+  }
+
+  /* General Image Styling */
+.request-image {
+    width: 70px;
+    height: auto;
+    cursor: pointer;
+    border-radius: 8px;
+    box-shadow: 0 2px 4px rgba(0, 0, 0, 0.2);
+    transition: transform 0.3s ease, box-shadow 0.3s ease;
+  }
+  
+  .request-image:hover {
+    transform: scale(1.1);
+    box-shadow: 0 4px 8px rgba(0, 0, 0, 0.3);
+  }
+  
+  /* Upload Container */
+  .upload-container {
+    display: flex;
+    flex-direction: column;
+    align-items: center;
+    gap: 8px;
+    margin-top: 10px;
+  }
+  
+  .upload-input {
+    border: 1px dashed #ced4da;
+    padding: 6px;
+    border-radius: 8px;
+    background-color: #f8f9fa;
+    cursor: pointer;
+    font-size: 0.9rem;
+    width: 100%;
+  }
+  
+  .upload-btn {
+    margin-top: 5px;
+    background-color: #008080;
+    color: white;
+  }
+  
+  .upload-btn:hover {
+    background-color: #006666;
+  }
+  
+  /* No Attachment Message */
+  .no-attachment-message {
+    display: flex;
+    align-items: center;
+    justify-content: center;
+    color: #6c757d;
+    font-size: 0.95rem;
+    background-color: #f8f9fa;
+    padding: 10px;
+    border-radius: 8px;
+    border: 1px dashed #ced4da;
+    transition: background-color 0.3s ease;
+  }
+  
+  .no-attachment-message:hover {
+    background-color: #e9ecef;
+  }
+  
