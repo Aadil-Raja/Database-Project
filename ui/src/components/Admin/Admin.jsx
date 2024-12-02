@@ -183,14 +183,14 @@ const AdminDashboard = () => {
     }
   };
   const handleApprove = async (id) => {
-    alert(id);
+   
     setRequests((prevRequests) =>
       prevRequests.filter((req) => req.id !== id)
     );
     await axios.delete(`http://localhost:3000/removeReqCategories/${id}`)
    
 
-    alert(`Approved request with ID: ${id}`);
+    alert(`Request Processed with ID: ${id}`);
   };
 
   const handleReject = async(id) => {
@@ -339,11 +339,9 @@ const AdminDashboard = () => {
                       <td>{request.fullname}</td>
                       <td>
                         <MDBBtn color="success" size="sm" onClick={() => handleApprove(request.id)}>
-                          Approve
+                          Done
                         </MDBBtn>{' '}
-                        <MDBBtn color="danger" size="sm" onClick={() => handleReject(request.id)}>
-                          Reject
-                        </MDBBtn>
+                       
                       </td>
                     </tr>
                   ))}

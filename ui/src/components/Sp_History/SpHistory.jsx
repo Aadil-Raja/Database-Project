@@ -36,6 +36,7 @@ const SpHistory = () => {
     lastMonth: 0,
     lastSixMonths: 0,
   });
+  const[avgRating,setAvgRating]=useState(0);
   const [selectedPeriod, setSelectedPeriod] = useState('lastWeek');
   const [totalEarnings, setTotalEarnings] = useState(0);
   const [overallTotalEarnings, setOverallTotalEarnings] = useState(0);
@@ -107,17 +108,21 @@ const SpHistory = () => {
       setReviews(extractedReviews);
 
       // Simplify average rating calculation
-      const avgRating = calculateAverageRating(extractedReviews);
+    
 
-      setSpInfo((prevInfo) => ({
-        ...prevInfo,
-        averageRating: avgRating,
-      }));
+     
     } catch (error) {
       console.error('Error fetching orders:', error);
     }
   };
-
+  useEffect(() => {
+    if (reviews.length > 0) {
+        // Calculate the average rating after reviews are fetched
+        const avgRating = calculateAverageRating(reviews);
+        setAvgRating(avgRating);
+   
+    }
+}, [reviews])
   const calculateAverageRating = (reviews) => {
     if (reviews.length === 0) {
       return null;
@@ -264,7 +269,7 @@ const SpHistory = () => {
                 <strong>Average Rating:</strong>{' '}
                 {spInfo.averageRating !== null ? (
                   <>
-                    {spInfo.averageRating}{' '}
+                     {avgRating}{' '}
                     <MDBIcon fas icon="star" className="text-warning" />
                   </>
                 ) : (
