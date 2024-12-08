@@ -40,7 +40,9 @@ router.post('/forgotpassword',forgetPasswordController.forgotPassword);
 router.post('/resetpassword',resetPasswordController.resetpassword);
 
 router.get ('/categories',categoryController.getCategories);
+router.get('/Allcategories',categoryController.getAllCategories);
 router.get('/services/:categoryId', serviceController.getServicesByCategory);
+router.get('/Allservices/:categoryId', serviceController.getAllServicesByCategory);
 
 router.post('/service-provider/preferences',verifyTokenAndRole('serviceproviders'),savePreferences.savePreferences);
 
@@ -108,6 +110,10 @@ router.get('/verify-client', verifyTokenAndRole('clients'), (req, res) => {
   res.status(200).json({ message: 'Client verified' });
 });
 
+router.put('/updateCategoryStatus/:category_id',adminController.updateCategoryStatus);
+
+router.put('/updateServiceStatus/:service_id',adminController.updateServiceStatus);
+
 // Endpoint to verify service provider access
 router.get('/verify-serviceprovider', verifyTokenAndRole('serviceproviders'), (req, res) => {
   res.status(200).json({ message: 'Service Provider verified' });
@@ -118,5 +124,8 @@ router.get('/verify-token', verifyTokenAndRole, (req, res) => {
     // If the token is valid, return success
     res.json({ isValid: true });
   });
+
+
+
 
 module.exports = router;

@@ -3,7 +3,17 @@ const sequelize = require('../config/db'); // Assuming you're using sequelize fo
 
 exports.getCategories = async (req, res) => {
   try {
-    const query = `SELECT * FROM categories`;
+    const query = `SELECT * FROM categories where status='active'`;
+    const [categories] = await sequelize.query(query); // Using raw SQL query
+    res.json(categories); // Sending the fetched categories in response
+  } catch (error) {
+    res.status(500).json({ message: error.message });
+  }
+};
+
+exports.getAllCategories = async (req, res) => {
+  try {
+    const query = `SELECT * FROM categories `;
     const [categories] = await sequelize.query(query); // Using raw SQL query
     res.json(categories); // Sending the fetched categories in response
   } catch (error) {

@@ -6,7 +6,7 @@ exports.getServicesByCategory = async (req, res) => {
     const { categoryId } = req.params;
 
     // Raw SQL query to fetch services by category_id
-    const query = `SELECT * FROM services WHERE category_id = ${categoryId}`;
+    const query = `SELECT * FROM services WHERE category_id = ${categoryId} and status='active'`;
     const [services] = await sequelize.query(query); // Executing the raw SQL query
 
     res.json(services); // Returning the fetched services
@@ -15,7 +15,20 @@ exports.getServicesByCategory = async (req, res) => {
     res.status(500).json({ message: 'Server error fetching services' });
   }
 };
+exports.getAllServicesByCategory = async (req, res) => {
+  try {
+    const { categoryId } = req.params;
 
+    // Raw SQL query to fetch services by category_id
+    const query = `SELECT * FROM services WHERE category_id = ${categoryId} ;`;
+    const [services] = await sequelize.query(query); // Executing the raw SQL query
+
+    res.json(services); // Returning the fetched services
+  } catch (error) {
+    console.error('Error fetching services:', error);
+    res.status(500).json({ message: 'Server error fetching services' });
+  }
+};
 exports.AddaService = async( req,res ) => {
   try {
       const {name ,description,category_id} =req.body;

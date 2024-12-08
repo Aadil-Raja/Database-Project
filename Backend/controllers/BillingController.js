@@ -60,65 +60,74 @@ exports.getProfile = async (req, res) => {
 
 
 
+exports.generateMonthlyInvoices=async () =>
+{
+  try{
 
+    const query=`CALL sp_generateMonthlyInvoices();`
+    await sequelize.query(query);
+    console.log('Monthly invoices generated successfully.');
+  }
+  catch (error) {
+        console.error('Error generating monthly invoices:', error);
+       }
+}
+// exports.generateMonthlyInvoices = async () => {
+//   try {
 
-
-exports.generateMonthlyInvoices = async () => {
-  try {
-
-    const date = new Date();
-    date.setMonth(date.getMonth() - 1);
-    const billingMonth = date.getMonth() + 1; 
-    const billingYear = date.getFullYear();
- const query=`SELECT sp_id FROM serviceproviders;`
+//     const date = new Date();
+//     date.setMonth(date.getMonth() - 1);
+//     const billingMonth = date.getMonth() + 1; 
+//     const billingYear = date.getFullYear();
+//  const query=`SELECT sp_id FROM serviceproviders;`
  
-    const [serviceProviders] = await sequelize.query(query);
+//     const [serviceProviders] = await sequelize.query(query);
 
 
-    for (const sp of serviceProviders) {
-      const spId = sp.sp_id;
+//     for (const sp of serviceProviders) {
+//       const spId = sp.sp_id;
 
-        const query1=`SELECT payment_id 
-         FROM payments 
-         WHERE sp_id = ${spId} 
-         AND billing_month = ${billingMonth} 
-         AND billing_year = ${billingYear};`
-      const [existingInvoice] = await sequelize.query(query1);
+//         const query1=`SELECT payment_id 
+//          FROM payments 
+//          WHERE sp_id = ${spId} 
+//          AND billing_month = ${billingMonth} 
+//          AND billing_year = ${billingYear};`
+//       const [existingInvoice] = await sequelize.query(query1);
    
 
-      if (existingInvoice.length === 0) {
-        const query2=`SELECT SUM(price) AS total_earnings
-           FROM servicerequests
-           WHERE sp_id = ${spId}
-             AND status = 'completed'
-             AND MONTH(completed_date) = ${billingMonth}
-             AND YEAR(completed_date) = ${billingYear};`
-        const [totalEarningsResult] = await sequelize.query(query2);
+//       if (existingInvoice.length === 0) {
+//         const query2=`SELECT SUM(price) AS total_earnings
+//            FROM servicerequests
+//            WHERE sp_id = ${spId}
+//              AND status = 'completed'
+//              AND MONTH(completed_date) = ${billingMonth}
+//              AND YEAR(completed_date) = ${billingYear};`
+//         const [totalEarningsResult] = await sequelize.query(query2);
 
-        let totalEarnings = totalEarningsResult[0]?.total_earnings || 0;
-        totalEarnings = parseFloat(totalEarnings);
-        if (totalEarnings > 0) {
+//         let totalEarnings = totalEarningsResult[0]?.total_earnings || 0;
+//         totalEarnings = parseFloat(totalEarnings);
+//         if (totalEarnings > 0) {
 
-          const percentageFee = 10;
-          let amountDue = (percentageFee * totalEarnings) / 100;
-          amountDue=parseFloat(amountDue);
-          const dueDate = new Date();
-          dueDate.setDate(15);
-          const dueDateFormatted = dueDate.toISOString().split('T')[0]; // Format due date to YYYY-MM-DD
-         const query3=`INSERT INTO payments 
-             (sp_id, billing_month, billing_year, total_earnings, amount_due, due_date) 
-             VALUES 
-             (${spId}, ${billingMonth}, ${billingYear}, ${totalEarnings.toFixed(2)}, ${amountDue.toFixed(2)}, '${dueDateFormatted}');`
-          await sequelize.query(query3);
-        }
-      }
-    }
+//           const percentageFee = 10;
+//           let amountDue = (percentageFee * totalEarnings) / 100;
+//           amountDue=parseFloat(amountDue);
+//           const dueDate = new Date();
+//           dueDate.setDate(15);
+//           const dueDateFormatted = dueDate.toISOString().split('T')[0]; // Format due date to YYYY-MM-DD
+//          const query3=`INSERT INTO payments 
+//              (sp_id, billing_month, billing_year, total_earnings, amount_due, due_date) 
+//              VALUES 
+//              (${spId}, ${billingMonth}, ${billingYear}, ${totalEarnings.toFixed(2)}, ${amountDue.toFixed(2)}, '${dueDateFormatted}');`
+//           await sequelize.query(query3);
+//         }
+//       }
+//     }
 
-    console.log('Monthly invoices generated successfully.');
-  } catch (error) {
-    console.error('Error generating monthly invoices:', error);
-  }
-};
+//     console.log('Monthly invoices generated successfully.');
+//   } catch (error) {
+//     console.error('Error generating monthly invoices:', error);
+//   }
+// };
 
 
 exports.getInvoices = async (req, res) => {

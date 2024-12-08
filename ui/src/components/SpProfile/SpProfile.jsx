@@ -417,24 +417,26 @@ const ProfileTab = () => {
               </MDBCard>
             </MDBCol>
           </MDBRow>
-
           {modalOpen && (
-            <div className="custom-modal">
-              <div className="modal-content">
-                <button className="close-button" onClick={() => setModalOpen(false)}>X</button>
-                <img
-                  src={
-                    selectedImage
-                      ? URL.createObjectURL(selectedImage)
-                      : `http://localhost:3000/profile/${profile.email}.jpg`
-                  }
-                  alt="Expanded Profile"
-                  style={{ width: '100%', borderRadius: '10px' }}
-                  onError={(e) => { e.target.onerror = null; e.target.src = 'http://localhost:3000/profile/default-avatar.png'; }} 
-                />
-              </div>
-            </div>
-          )}
+  <div className="custom-modal">
+    <div className="modal-content">
+      <button className="close-button" onClick={() => setModalOpen(false)}>X</button>
+      <img
+        src={
+          selectedImage
+            ? URL.createObjectURL(selectedImage)
+            : `http://localhost:3000/profile/${profile.email}.jpg`
+        }
+        alt="Expanded Profile"
+        onError={(e) => { 
+          e.target.onerror = null; 
+          e.target.src = 'http://localhost:3000/profile/default-avatar.png'; 
+        }}
+      />
+    </div>
+  </div>
+)}
+
 
         </MDBTabsPane>
 

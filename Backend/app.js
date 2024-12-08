@@ -52,14 +52,14 @@ const initializeApp = async () => {
       Category.createCategoriesTable();
       Services.createServicesTable();
     ServiceRequest.createServiceRequestsTable();
-     ServiceProviderServices.createServiceProviderServicesTable();
+    ServiceProviderServices.createServiceProviderServicesTable();
      RequestCategoryService.createRequestCategoryTable();
       ChatHeads.createChatHeadTable();
       messsages.createMessageTable();
       RequestMessages.createRequestMessageTable();
     
-      feedback.createfeedbackTable();
-      payment.createPaymentsTable();
+     feedback.createfeedbackTable();
+     payment.createPaymentsTable();
       resetpasswordlog.createResetPasswordLog();
       generateMonthlyInvoices();
       deleteExpiredResetToken.deleteExpiredTokens();
@@ -73,11 +73,11 @@ const initializeApp = async () => {
   };
   
   // Call the initialization function
-  initializeApp();
-  cron.schedule('0 0 1 * *', () => {
-    console.log('Running monthly invoice generation task...');
+   initializeApp();
+  // cron.schedule('0 0 1 * *', () => {
+  //   console.log('Running monthly invoice generation task...');
    
-  });
+  // });
 app.get("/",(req,res)=>{
     res.send("Server running");
 })
@@ -87,6 +87,15 @@ app.get("/",(req,res)=>{
 //   generateMonthlyInvoices();
 // });
 
+cron.schedule('*/15 * * * *  ', () => {
+  console.log('Running task to delete expired tokens every 15 minute...');
+  deleteExpiredResetToken.deleteExpiredTokens();
+});
+
+cron.schedule('0 0 1 * *', () => {
+  console.log('Running monthly invoice generation task...');
+  generateMonthlyInvoices();
+});
 app.listen(PORT, () => {
     console.log(`Server is running on portt ${PORT}`);
 });

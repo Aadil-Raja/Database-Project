@@ -30,7 +30,7 @@ import {
   MDBIcon,
   MDBBtn
 } from "mdb-react-ui-kit";
-import "./SpProfile.css";
+import "./spProfile.css";
 
 const ViewSpProfile = () => {
   const [profile, setProfile] = useState(null);
@@ -79,12 +79,20 @@ const ViewSpProfile = () => {
           const response = await axios.get(`http://localhost:3000/client/viewSPreviews?sp_id=${sp_id}`);
          
     
-         
-        setReviews(response.data)
+          const completedOrders = response.data;
+          const extractedReviews = completedOrders
+        .filter((order) => order.rating && order.review)
+        .map((order) => ({
+  
+          rating: order.rating,
+          comment: order.review,
+          service: order.name,
+          created_at: order.review_date,
+        }));
  
        
           
-       
+        setReviews(extractedReviews);
     
         } catch (error) {
           console.error('Error fetching Reviews:', error);
@@ -282,7 +290,7 @@ const ViewSpProfile = () => {
             <img
               src={`http://localhost:3000/profile/${profile.email}.jpg`}
               alt="Expanded Profile"
-              style={{ width: '100%', borderRadius: '10px' }}
+              style={{ width: '50%', borderRadius: '10px' }}
               onError={(e) => { e.target.onerror = null; e.target.src = 'http://localhost:3000/profile/default-avatar.png'; }} 
             />
           </div>
@@ -306,22 +314,23 @@ const ReviewsTable = ({ reviews }) => {
           </tr>
         </MDBTableHead>
         <MDBTableBody>
+    
           {reviews.length > 0 ? (
             reviews.map((review, index) => (
               <tr key={index} className="SpReviewsTable-row">
                 <td>{index + 1}</td>
             
-                <td>{review.name}</td>
+                <td>{review.service}</td>
                 <td>
                   {review.rating}{' '}
                   <MDBIcon fas icon="star" className="text-warning" />
                 </td>
                 <td className="SpReviewsTable-comment">
-                  {review.review.length > 50
-                    ? `${review.review.substring(0, 50)}...`
-                    : review.review}
+                  {review.comment.length > 50
+                    ? `${review.comment.substring(0, 50)}...`
+                    : review.comment}
                 </td>
-                <td>{new Date(review.review_date).toLocaleDateString()}</td>
+                <td>{new Date(review.created_at).toLocaleDateString()}</td>
               </tr>
             ))
           ) : (

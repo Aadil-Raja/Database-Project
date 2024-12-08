@@ -98,3 +98,41 @@ exports.getPayments = async (req, res) => {
     res.status(500).json({ error: 'Failed to fetch payments' });
   }
 };
+
+
+
+
+
+
+exports.updateCategoryStatus= async (req, res) => {
+  const{status}=req.body
+  const {category_id}= req.params;
+  try {
+     const query=`update categories set status='${status}' where category_id=${category_id}`;
+     await sequelize.query(query);
+   
+     res.json({message:"Successful"});
+   
+  } catch (error) {
+    console.error('Error updating category:', error);
+    res.status(500).json({ error: 'Failed to fetch payments' });
+  }
+};
+
+
+
+
+exports.updateServiceStatus= async (req, res) => {
+  const{status}=req.body
+  const {service_id}= req.params;
+  try {
+     const query=`update services set status='${status}' where service_id=${service_id}`;
+     await sequelize.query(query);
+   
+     res.json({message:"Successful"});
+   
+  } catch (error) {
+    console.error('Error updating services:', error);
+    res.status(500).json({ error: 'Failed to fetch payments' });
+  }
+};

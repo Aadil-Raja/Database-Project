@@ -53,12 +53,22 @@ exports.resetpassword = async (req, res) => {
 };
 
 
+// exports.deleteExpiredTokens = async () => {
+//   try {
+//     const query = `
+//       DELETE FROM resetpasswordlogs
+//       WHERE resetPasswordExpires < NOW();
+//     `;
+//     await sequelize.query(query);
+//     console.log("Expired reset password records deleted successfully.");
+//   } catch (error) {
+//     console.error("Error deleting expired reset password records:", error);
+//   }
+// };
+
 exports.deleteExpiredTokens = async () => {
   try {
-    const query = `
-      DELETE FROM resetpasswordlogs
-      WHERE resetPasswordExpires < NOW();
-    `;
+    const query = `CALL deleteExpiredTokens(); `;
     await sequelize.query(query);
     console.log("Expired reset password records deleted successfully.");
   } catch (error) {

@@ -139,28 +139,53 @@
     left: 0;
     width: 100%;
     height: 100%;
-    background-color: rgba(0, 0, 0, 0.5);
     display: flex;
     justify-content: center;
     align-items: center;
+    background-color: rgba(0, 0, 0, 0.5);
     z-index: 1000;
   }
+  
   .modal-content {
+    display: flex;
+    flex-direction: column;
+    align-items: center;
     background-color: #fff;
     padding: 20px;
     border-radius: 10px;
-    max-width: 90%;
+    box-shadow: 0 5px 15px rgba(0, 0, 0, 0.3);
+    max-width: 90%; /* Will shrink on smaller screens */
+    width: 700px;   /* Slightly larger default width */
     max-height: 90%;
-    overflow: auto;
+    overflow-y: auto;
   }
+  
   .close-button {
-    position: absolute;
-    top: 10px;
-    right: 10px;
-    background: transparent;
+    align-self: flex-end;
+    background: none;
     border: none;
-    font-size: 1.5rem;
+    font-size: 24px; /* Slightly larger close button */
     cursor: pointer;
+    margin-bottom: 10px;
+  }
+  
+  .modal-content img {
+    max-width: 100%;
+    max-height: 80vh; /* Ensure the image doesn't overflow vertically */
+    height: auto;
+    border-radius: 10px;
+  }
+  
+  /* Media queries for even better responsiveness */
+  @media (max-width: 768px) {
+    .modal-content {
+      width: 90%;
+      padding: 15px;
+    }
+  
+    .close-button {
+      font-size: 20px;
+    }
   }
   
   

@@ -142,14 +142,14 @@ const AdminDashboard = () => {
   useEffect(() => {
     const fetchCategoriesAndServices = async () => {
       try {
-        const categoriesResponse = await axios.get('http://localhost:3000/categories');
+        const categoriesResponse = await axios.get('http://localhost:3000/Allcategories');
         const fetchedCategories = categoriesResponse.data;
         setcurrentCategories(fetchedCategories);
 
         // Fetch services for each category
         const servicesData = {};
         for (const category of fetchedCategories) {
-          const servicesResponse = await axios.get(`http://localhost:3000/services/${category.category_id}`);
+          const servicesResponse = await axios.get(`http://localhost:3000/Allservices/${category.category_id}`);
           servicesData[category.category_id] = servicesResponse.data;
         }
         setServicesByCategory(servicesData);
@@ -191,6 +191,7 @@ const AdminDashboard = () => {
    
 
     alert(`Request Processed with ID: ${id}`);
+    window.location.reload();
   };
 
   const handleReject = async(id) => {
@@ -209,6 +210,7 @@ const AdminDashboard = () => {
     alert(`Payment Marked as Paid: ${id}`);
 
     await axios.put(`http://localhost:3000/updatePaymentStatus/${id}`)
+    window.location.reload();
    
 
     
@@ -229,6 +231,7 @@ const AdminDashboard = () => {
       if (response.data === 'Successful') {
         alert('Category Added Successfully');
       }
+      window.location.reload();
     } catch (error) {
       alert('Failed to add category');
     }
@@ -250,6 +253,7 @@ const AdminDashboard = () => {
       });
       if (response.data === 'Successful') {
         alert('Service Added Successfully');
+        window.location.reload();
       }
     } catch (error) {
       alert('Failed to add service');
@@ -261,6 +265,48 @@ const AdminDashboard = () => {
       return;
     }
     setActiveTab(value);
+  };
+ 
+  
+  const handleCategoryStatusChange = async (category_id, isChecked) => {
+    try {
+      const newStatus = isChecked ? 'active' : 'inactive';
+      await axios.put(`http://localhost:3000/updateCategoryStatus/${category_id}`, { status: newStatus });
+      // Update the state
+      setcurrentCategories((prevCategories) =>
+        prevCategories.map((category) =>
+          category.category_id === category_id ? { ...category, status: newStatus } : category
+        )
+      );
+      alert(`Category ${isChecked ? 'marked as available' : 'marked as unavailable'}`);
+      window.location.reload();
+    } catch (error) {
+      console.error('Error updating category status:', error);
+      alert('Failed to update category status.');
+    }
+  };
+
+  const handleServiceStatusChange = async (service_id, isChecked) => {
+    try {
+      const newStatus = isChecked ? 'active' : 'inactive';
+      setServicesByCategory((prevServicesByCategory) => {
+        const newServicesByCategory = { ...prevServicesByCategory };
+        for (const category_id in newServicesByCategory) {
+          newServicesByCategory[category_id] = newServicesByCategory[category_id].map((service) =>
+            service.service_id === service_id ? { ...service, status: newStatus } : service
+          );
+        }
+        return newServicesByCategory;
+      });
+      await axios.put(`http://localhost:3000/updateServiceStatus/${service_id}`, { status: newStatus });
+      // Update the state
+      console.log("Service status updated successfully on the backend.");
+      alert(`Service ${isChecked ? 'marked as available' : 'marked as unavailable'}`);
+      window.location.reload();
+    } catch (error) {
+      console.error('Error updating service status:', error);
+      alert('Failed to update service status.');
+    }
   };
 
   return (
@@ -359,17 +405,41 @@ const AdminDashboard = () => {
               <MDBCol md="4" key={category.category_id} className="mb-4">
                 <MDBCard>
                   <MDBCardBody>
-                    <h5 className="category-name">
-                      <MDBIcon fas icon="folder" className="me-2" />
-                      {category.name} ({category.status})
-                    </h5>
+                    <div className="d-flex align-items-center justify-content-between">
+                      <h5 className="category-name mb-0">
+                        <MDBIcon fas icon="folder" className="me-2" />
+                        {category.name}
+                      </h5>
+                      <label className="availability-label">
+                        Active:
+                        <input
+                          type="checkbox"
+                          className="availability-checkbox ms-2"
+                          checked={category.status === 'active'}
+                          onChange={(e) => handleCategoryStatusChange(category.category_id, e.target.checked)}
+                        />
+                      </label>
+                    </div>
                     <MDBTypography className="text-muted">{category.description}</MDBTypography>
                     <MDBListGroup className="mt-3">
                       {servicesByCategory[category.category_id] &&
                         servicesByCategory[category.category_id].map((service) => (
                           <MDBListGroupItem key={service.service_id}>
-                            <MDBIcon fas icon="wrench" className="me-2" />
-                            {service.name} ({service.status})
+                            <div className="d-flex align-items-center justify-content-between">
+                              <span>
+                                <MDBIcon fas icon="wrench" className="me-2" />
+                                {service.name}
+                              </span>
+                              <label className="availability-label">
+                                Active:
+                                <input
+                                  type="checkbox"
+                                  className="availability-checkbox ms-2"
+                                  checked={service.status === 'active'}
+                                  onChange={(e) => handleServiceStatusChange(service.service_id, e.target.checked)}
+                                />
+                              </label>
+                            </div>
                           </MDBListGroupItem>
                         ))}
                     </MDBListGroup>
@@ -379,8 +449,6 @@ const AdminDashboard = () => {
             ))}
           </MDBRow>
         </MDBTabsPane>
-
-        {/* Add New Category Tab */}
         <MDBTabsPane open={activeTab === 'AddCategory'}>
           <MDBCard className="mb-4">
             <MDBCardBody>
@@ -407,6 +475,7 @@ const AdminDashboard = () => {
             </MDBCardBody>
           </MDBCard>
         </MDBTabsPane>
+
 
         {/* Add New Service Tab */}
         <MDBTabsPane open={activeTab === 'AddService'}>
