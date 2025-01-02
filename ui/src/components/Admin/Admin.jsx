@@ -48,7 +48,7 @@ const AdminDashboard = () => {
   const [serviceImg, setserviceImg] = useState(null);
   const [servicesByCategory, setServicesByCategory] = useState({});
   const[payments,setPayments]=useState([]);
-  const BASE_URL = import.meta.env.VITE_BACKEND_URL || 'http://localhost:3000';
+  const BASE_URL = import.meta.env.VITE_BACKEND_URL ;
   async function getFileUrl(baseUrl, fileName) {
     const possibleExtensions = ['.png', '.jpeg', '.jpg', '.gif', '.pdf'];
     for (let ext of possibleExtensions) {

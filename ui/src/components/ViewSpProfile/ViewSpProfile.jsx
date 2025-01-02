@@ -43,7 +43,7 @@ const ViewSpProfile = () => {
    const[avgRating,setAvgRating]=useState(0);
    const[completedcount,setcompletedcount]=useState(0);
    const location = useLocation();
-   const BASE_URL = import.meta.env.VITE_BACKEND_URL || 'http://localhost:3000';
+   const BASE_URL = import.meta.env.VITE_BACKEND_URL ;
    const toggleModal = () => {
     setModalOpen(!modalOpen);
   };

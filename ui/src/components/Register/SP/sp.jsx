@@ -33,7 +33,7 @@ const SP = () => {
   });
   const [cities, setCities] = useState([]);
   const navigate = useNavigate();
-  const BASE_URL = import.meta.env.VITE_BACKEND_URL || 'http://localhost:3000';
+  const BASE_URL = import.meta.env.VITE_BACKEND_URL ;
   useEffect(() => {
     const fetchCities = async () => {
       try {

@@ -13,7 +13,7 @@ exports.createPaymentsTable = async () => {
       due_date DATE,                                         
       payment_date DATE,                              
       proof_of_payment VARCHAR(255),                       
-      FOREIGN KEY (sp_id) REFERENCES serviceproviders(sp_id) on delete set null
+      FOREIGN KEY (sp_id) REFERENCES ServiceProviders(sp_id) on delete set null
     );
   `;
   await sequelize.query(query);

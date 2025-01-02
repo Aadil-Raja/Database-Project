@@ -29,7 +29,7 @@ const ServiceRequestForm = () => {
   const [service, setService] = useState(null);
   const navigate = useNavigate();
   const [progress, setProgress] = useState(33);
-  const BASE_URL = import.meta.env.VITE_BACKEND_URL || 'http://localhost:3000';
+  const BASE_URL = import.meta.env.VITE_BACKEND_URL;
   useEffect(() => {
     const fetchCities = async () => {
       try {

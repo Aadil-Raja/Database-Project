@@ -16,7 +16,7 @@ import "./Home.css";
 
 export default function Home() {
   const [categories, setCategories] = useState([]);
-  const BASE_URL = import.meta.env.VITE_BACKEND_URL || "http://localhost:3000";
+  const BASE_URL = import.meta.env.VITE_BACKEND_URL ;
 
   useEffect(() => {
     const fetchCategories = async () => {

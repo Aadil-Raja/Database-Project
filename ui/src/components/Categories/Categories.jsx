@@ -19,7 +19,7 @@ import "./categories.css"; // Import custom CSS for additional styling
 export default function Categories() {
   const [categories, setCategories] = useState([]);
   const [loading, setLoading] = useState(true); // Added loading state
-  const BASE_URL = import.meta.env.VITE_BACKEND_URL || 'http://localhost:3000';
+  const BASE_URL = import.meta.env.VITE_BACKEND_URL ;
 
   useEffect(() => {
     const fetchCategories = async () => {

@@ -10,7 +10,7 @@ exports.createMessageTable = async () => {
       sender_type ENUM('clients', 'serviceproviders') NOT NULL,
       receiver_type ENUM('clients', 'serviceproviders') NOT NULL,
       room VARCHAR(255),
-       FOREIGN KEY (room) REFERENCES  chatheads(room) ON DELETE CASCADE,
+       FOREIGN KEY (room) REFERENCES  ChatHeads(room) ON DELETE CASCADE,
       type ENUM('regular', 'service_request') DEFAULT 'regular',
       created_at TIMESTAMP DEFAULT CURRENT_TIMESTAMP
     );

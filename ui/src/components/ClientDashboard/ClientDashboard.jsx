@@ -73,7 +73,7 @@ const ClientDashboard = () => {
   const [pendingCount, setPendingCount] = useState(0);
   const [acceptedCount, setAcceptedCount] = useState(0);
   const [completedCount, setCompletedCount] = useState(0);
-  const BASE_URL = import.meta.env.VITE_BACKEND_URL || 'http://localhost:3000';
+  const BASE_URL = import.meta.env.VITE_BACKEND_URL;
 
   useEffect(() => {
     // Fetch orders from your API and categorize them

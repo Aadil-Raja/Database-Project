@@ -12,7 +12,7 @@ import {
 } from "mdb-react-ui-kit";
 import { useNavigate } from "react-router-dom";
 import "./Client.css"; // Optional: For any additional custom styling
-const BASE_URL = import.meta.env.VITE_BACKEND_URL || 'http://localhost:3000';
+const BASE_URL = import.meta.env.VITE_BACKEND_URL ;
 const Client = () => {
   const [formData, setFormData] = useState({
     name: "",

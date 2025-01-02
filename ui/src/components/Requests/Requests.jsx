@@ -25,7 +25,7 @@ const SearchResults = () => {
   const [showModal, setShowModal] = useState(false);
   const [currentImageUrl, setCurrentImageUrl] = useState('');
   const [imageAvailable, setImageAvailable] = useState({});
-  const BASE_URL = import.meta.env.VITE_BACKEND_URL || 'http://localhost:3000';
+  const BASE_URL = import.meta.env.VITE_BACKEND_URL ;
   const navigate = useNavigate();
 
   useEffect(() => {

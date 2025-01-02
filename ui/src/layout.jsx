@@ -11,7 +11,7 @@ function Layout() {
   const location = useLocation();
   const [isClientAuthorized, setIsClientAuthorized] = useState(null);
   const [isSpAuthorized, setIsSpAuthorized] = useState(null);
-  const BASE_URL = import.meta.env.VITE_BACKEND_URL || 'http://localhost:3000';
+  const BASE_URL = import.meta.env.VITE_BACKEND_URL;
 
   // Regular expressions to match routes for client and service provider
   const clientRoutePatterns = [

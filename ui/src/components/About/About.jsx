@@ -3,7 +3,7 @@ import { MDBRow, MDBCol, MDBBtn, MDBIcon, MDBRipple, MDBContainer } from "mdb-re
 import "./About.css";
 
 export default function About() {
-  const BASE_URL = import.meta.env.VITE_BACKEND_URL || 'http://localhost:3000';
+  const BASE_URL = import.meta.env.VITE_BACKEND_URL ;
   return (
     <MDBContainer fluid className="about-section py-5">
       <MDBRow className="align-items-center mb-5">

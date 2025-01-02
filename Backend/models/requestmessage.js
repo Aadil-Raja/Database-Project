@@ -9,7 +9,7 @@ exports.createRequestMessageTable = async () => {
         price FLOAT,
         status ENUM('pending', 'accepted', 'cancelled') DEFAULT 'pending',
         FOREIGN KEY (message_id) REFERENCES Messages(message_id) ON DELETE CASCADE,
-        FOREIGN KEY (request_id) REFERENCES servicerequests(request_id) ON DELETE CASCADE
+        FOREIGN KEY (request_id) REFERENCES ServiceRequests(request_id) ON DELETE CASCADE
 
       );
     `;

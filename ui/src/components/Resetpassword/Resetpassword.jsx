@@ -22,7 +22,7 @@ const ResetPassword = () => {
   const token = query.get("token"); // Get token from the URL
   const type = query.get("type"); 
   const user_id=query.get("user_id")  // Get user type from the URL (sp or client)
-  const BASE_URL = import.meta.env.VITE_BACKEND_URL || 'http://localhost:3000';
+  const BASE_URL = import.meta.env.VITE_BACKEND_URL;
 
   const navigate = useNavigate();
 

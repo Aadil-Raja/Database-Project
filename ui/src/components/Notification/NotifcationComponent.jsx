@@ -10,7 +10,7 @@ import {
   MDBBadge,
 } from 'mdb-react-ui-kit';
 import './NotificationComponent.css'; // Updated CSS file with animations
-const SOCKET_URL = import.meta.env.VITE_SOCKET_URL || 'http://localhost:3002';
+const SOCKET_URL = import.meta.env.VITE_SOCKET_URL ;
 const socket = io(SOCKET_URL);
 
 const NotificationComponent = () => {
