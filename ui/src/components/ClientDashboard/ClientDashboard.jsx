@@ -35,6 +35,7 @@ import axios from 'axios';
 import './ClientDashboard.css'; // Make sure to update your CSS file accordingly
 
 const StarRating = ({ rating, onRatingChange, readOnly = false }) => {
+  const BASE_URL = import.meta.env.VITE_BACKEND_URL || 'http://localhost:3000';
   return (
     <div>
       {[1, 2, 3, 4, 5].map((star) => (
@@ -72,6 +73,7 @@ const ClientDashboard = () => {
   const [pendingCount, setPendingCount] = useState(0);
   const [acceptedCount, setAcceptedCount] = useState(0);
   const [completedCount, setCompletedCount] = useState(0);
+  const BASE_URL = import.meta.env.VITE_BACKEND_URL || 'http://localhost:3000';
 
   useEffect(() => {
     // Fetch orders from your API and categorize them
@@ -82,7 +84,7 @@ const ClientDashboard = () => {
     try {
       // Replace with your API endpoint
       const clientId = localStorage.getItem('user_ID'); // Assuming you store client ID in localStorage
-      const response = await fetch(`http://localhost:3000/client/orders/${clientId}`);
+      const response = await fetch(`${BASE_URL}/client/orders/${clientId}`);
       const data = await response.json();
 
       // Assuming data is an array of orders with a 'status' field
@@ -174,7 +176,7 @@ const ClientDashboard = () => {
 
       alert('Feedback submitted successfully.');
 
-      await axios.post('http://localhost:3000/client/feedback', {
+      await axios.post(`${BASE_URL}/client/feedback`, {
         request_id: feedbackOrderId,
         rating: feedbackRating,
         comment: feedbackComment,
@@ -188,7 +190,7 @@ const ClientDashboard = () => {
 
   const updateOrderStatus = async (orderId, status) => {
     try {
-      await axios.put(`http://localhost:3000/client/orders/${orderId}`, { status });
+      await axios.put(`${BASE_URL}/client/orders/${orderId}`, { status });
     } catch (error) {
       console.error(`Error updating order status to ${status}:`, error);
     }
@@ -372,7 +374,7 @@ const OrderTable = ({ orders, status, onCancel, onComplete, onFeedback, activeTa
   const [currentImageUrl, setCurrentImageUrl] = useState('');
   const [imageAvailable, setImageAvailable] = useState({});
   const [file, setFile] = useState(null);
-
+  const BASE_URL = import.meta.env.VITE_BACKEND_URL || 'http://localhost:3000';
   // Handle file change (when a user selects an image)
   const handleFileChange = (requestId) => (e) => {
     setFile({ file: e.target.files[0], requestId });
@@ -387,7 +389,7 @@ const OrderTable = ({ orders, status, onCancel, onComplete, onFeedback, activeTa
       formData.append('requestImg', file.file); // the actual file
 
       try {
-        const response = await axios.post('http://localhost:3000/servicerequestform/uploadImage', formData, {
+        const response = await axios.post(`${BASE_URL}/servicerequestform/uploadImage`, formData, {
           headers: {
             Authorization: `Bearer ${localStorage.getItem('token')}`,
             'Content-Type': 'multipart/form-data',
@@ -417,7 +419,7 @@ const OrderTable = ({ orders, status, onCancel, onComplete, onFeedback, activeTa
       try {
         const imageAvailability = {};
         for (let order of orders) {
-          const imageUrl = `http://localhost:3000/RequestImages/${order.request_id}.jpg`;
+          const imageUrl = `${BASE_URL}/RequestImages/${order.request_id}.jpg`;
           try {
             await axios.head(imageUrl); // Check if image exists
             imageAvailability[order.request_id] = true;
@@ -523,11 +525,11 @@ const OrderTable = ({ orders, status, onCancel, onComplete, onFeedback, activeTa
                 {status === 'pending' ? (
                   imageAvailable[order.request_id] ? (
                     <img
-                      src={`http://localhost:3000/RequestImages/${order.request_id}.jpg`}
+                      src={`${BASE_URL}/RequestImages/${order.request_id}.jpg`}
                       alt={`Order ${order.request_id}`}
                       className="request-image"
                       onClick={() => {
-                        setCurrentImageUrl(`http://localhost:3000/RequestImages/${order.request_id}.jpg`);
+                        setCurrentImageUrl(`${BASE_URL}/RequestImages/${order.request_id}.jpg`);
                         setImageModalOpen(true);
                       }}
                     />
@@ -547,11 +549,11 @@ const OrderTable = ({ orders, status, onCancel, onComplete, onFeedback, activeTa
                 ) : (
                   imageAvailable[order.request_id] ? (
                     <img
-                      src={`http://localhost:3000/RequestImages/${order.request_id}.jpg`}
+                      src={`${BASE_URL}/RequestImages/${order.request_id}.jpg`}
                       alt={`Order ${order.request_id}`}
                       className="request-image"
                       onClick={() => {
-                        setCurrentImageUrl(`http://localhost:3000/RequestImages/${order.request_id}.jpg`);
+                        setCurrentImageUrl(`${BASE_URL}/RequestImages/${order.request_id}.jpg`);
                         setImageModalOpen(true);
                       }}
                     />
@@ -571,26 +573,39 @@ const OrderTable = ({ orders, status, onCancel, onComplete, onFeedback, activeTa
 
       {/* Modal to display the image */}
       <MDBModal open={imageModalOpen} setShow={setImageModalOpen} tabIndex="-1">
-        <MDBModalDialog centered size="xl">
-          <MDBModalContent>
-            <MDBModalHeader>
-              <MDBModalTitle>Image Preview</MDBModalTitle>
-              <MDBBtn className="btn-close" color="none" onClick={() => setImageModalOpen(false)}></MDBBtn>
-            </MDBModalHeader>
-            <MDBModalBody style={{ padding: '0', textAlign: 'center' }}>
-              <img
-                src={currentImageUrl}
-                alt="Full Size"
-                style={{
-                  width: '100%',
-                  maxHeight: '90vh',
-                  objectFit: 'contain',
-                }}
-              />
-            </MDBModalBody>
-          </MDBModalContent>
-        </MDBModalDialog>
-      </MDBModal>
+  <MDBModalDialog centered size="xl">
+    <MDBModalContent>
+      <MDBModalHeader>
+        <MDBModalTitle>Image Preview</MDBModalTitle>
+        <MDBBtn
+          className="btn-close"
+          color="none"
+          onClick={() => setImageModalOpen(false)}
+        ></MDBBtn>
+      </MDBModalHeader>
+      <MDBModalBody
+        style={{
+          padding: '0',
+          textAlign: 'center',
+          display: 'flex',
+          justifyContent: 'center',
+          alignItems: 'center',
+        }}
+      >
+        <img
+          src={currentImageUrl}
+          alt="Full Size"
+          style={{
+            width: '100%',
+            maxHeight: '90vh',
+            objectFit: 'contain',
+          }}
+        />
+      </MDBModalBody>
+    </MDBModalContent>
+  </MDBModalDialog>
+</MDBModal>
+
     </>
   );
 };

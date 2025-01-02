@@ -17,18 +17,19 @@ const ServiceProviderForm = () => {
   const [categories, setCategories] = useState([]);
   const [servicesByCategory, setServicesByCategory] = useState({});
   const [selectedServices, setSelectedServices] = useState([]);
+  const BASE_URL = import.meta.env.VITE_BACKEND_URL || 'http://localhost:3000';
   const navigate = useNavigate();
 
   useEffect(() => {
     const fetchCategoriesAndServices = async () => {
       try {
-        const categoriesResponse = await axios.get('http://localhost:3000/categories');
+        const categoriesResponse = await axios.get(`${BASE_URL}/categories`);
         const fetchedCategories = categoriesResponse.data;
         setCategories(fetchedCategories);
 
         const servicesData = {};
         for (const category of fetchedCategories) {
-          const servicesResponse = await axios.get(`http://localhost:3000/services/${category.category_id}`);
+          const servicesResponse = await axios.get(`${BASE_URL}/services/${category.category_id}`);
           servicesData[category.category_id] = servicesResponse.data;
         }
         setServicesByCategory(servicesData);
@@ -63,7 +64,7 @@ const ServiceProviderForm = () => {
         })),
       };
 
-      const response = await axios.post('http://localhost:3000/service-provider/preferences', data, {
+      const response = await axios.post(`${BASE_URL}/service-provider/preferences`, data, {
         headers: {
           'Authorization': `Bearer ${localStorage.getItem('token')}`,
         },

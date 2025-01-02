@@ -3,13 +3,14 @@ import { MDBRow, MDBCol, MDBBtn, MDBIcon, MDBRipple, MDBContainer } from "mdb-re
 import "./About.css";
 
 export default function About() {
+  const BASE_URL = import.meta.env.VITE_BACKEND_URL || 'http://localhost:3000';
   return (
     <MDBContainer fluid className="about-section py-5">
       <MDBRow className="align-items-center mb-5">
         <MDBCol md="6">
           <MDBRipple rippleTag="div" className="bg-image hover-overlay hover-zoom hover-shadow">
             <img
-              src="http://localhost:3000/images/about-1.jpg"
+              src={`${BASE_URL}/images/about-1.jpg`}
               alt="About Us"
               className="about-image img-fluid"
             />
@@ -47,7 +48,7 @@ export default function About() {
         <MDBCol md="6">
           <MDBRipple rippleTag="div" className="bg-image hover-overlay hover-zoom hover-shadow">
             <img
-             src="http://localhost:3000/images/about-2.jpg"
+             src={`${BASE_URL}/images/about-2.jpg`}
               alt="Serving Clients"
               className="about-image img-fluid"
             />
@@ -61,7 +62,7 @@ export default function About() {
         <MDBCol md="6  order-2 order-md-1">
           <MDBRipple rippleTag="div" className="bg-image hover-overlay hover-zoom hover-shadow">
             <img
-              src="http://localhost:3000/images/about-3.jpg"
+              src={`${BASE_URL}/images/about-3.jpg`}
               alt="Serving Providers"
               className="about-image img-fluid"
             />

@@ -17,7 +17,8 @@ import {
 
 import './ClientChat.css';
 
-const socket = io('http://localhost:3002');
+const SOCKET_URL = import.meta.env.VITE_SOCKET_URL || 'http://localhost:3002';
+const socket = io(SOCKET_URL);
 
 const Chat = () => {
   const [message, setMessage] = useState('');
@@ -40,7 +41,7 @@ const Chat = () => {
 
   const location = useLocation();
   const navigate = useNavigate();
-
+  const BASE_URL = import.meta.env.VITE_BACKEND_URL || 'http://localhost:3000';
   useEffect(() => {
     const { room, sp_id } = location.state || {};
     const client_id = localStorage.getItem('user_ID');
@@ -65,7 +66,7 @@ const Chat = () => {
   }, []);
   const fetchemail = async (sp_id) => {
     try {
-      const response = await axios.get(`http://localhost:3000/getEmail?sp_id=${sp_id}`);
+      const response = await axios.get(`${BASE_URL}/getEmail?sp_id=${sp_id}`);
       setSpEmail(response.email);
 
     }
@@ -75,7 +76,7 @@ const Chat = () => {
   }
   const fetchChatHeads = async (client_id) => {
     try {
-      const response = await axios.get(`http://localhost:3000/getChatHeads?user_id=${client_id}&user_type=clients`);
+      const response = await axios.get(`${BASE_URL}/getChatHeads?user_id=${client_id}&user_type=clients`);
       setChatHeads(response.data);
     } catch (error) {
       console.error('Error fetching chat heads:', error);
@@ -84,7 +85,7 @@ const Chat = () => {
 
   const fetchPreviousMessages = async (roomName) => {
     try {
-      const response = await axios.get(`http://localhost:3000/getMessages?room=${roomName}`);
+      const response = await axios.get(`${BASE_URL}/getMessages?room=${roomName}`);
       setMessages(response.data);
     } catch (error) {
       console.error('Error fetching previous messages:', error);
@@ -93,7 +94,7 @@ const Chat = () => {
 
   const fetchPendingRequests = async (clientId) => {
     try {
-      const response = await axios.post('http://localhost:3000/getPendingRequestofClient', { user_ID: clientId });
+      const response = await axios.post(`${BASE_URL}/getPendingRequestofClient`, { user_ID: clientId });
       setPendingRequests(response.data);
     } catch (error) {
       console.error('Error fetching pending requests:', error);
@@ -138,7 +139,7 @@ const Chat = () => {
     setMessages((prevMessages) => [...prevMessages, messageData]);
 
     try {
-      await axios.post('http://localhost:3000/saveMessage', messageData);
+      await axios.post(`${BASE_URL}/saveMessage`, messageData);
       const chatHeadData = {
         room: room,
         client_id: senderID,
@@ -146,7 +147,7 @@ const Chat = () => {
         last_message: message,
       };
 
-      await axios.post('http://localhost:3000/createORupdateChatHead', chatHeadData);
+      await axios.post(`${BASE_URL}/createORupdateChatHead`, chatHeadData);
       fetchChatHeads(clientId);
       setMessage('');
     } catch (error) {
@@ -161,7 +162,7 @@ const Chat = () => {
       room: room
     };
 
-    await axios.put('http://localhost:3000/updateRequestMessage', requestData);
+    await axios.put(`${BASE_URL}/updateRequestMessage`, requestData);
     setMessages((prevMessages) =>
       prevMessages.map((msg) =>
         msg.request_id === requestId && msg.status === 'pending' ? { ...msg, status: 'cancelled' } : msg
@@ -213,7 +214,7 @@ const Chat = () => {
         setMessages((prevMessages) => [...prevMessages, requestData]);
 
         // Save the request message to the database
-        await axios.post('http://localhost:3000/saveRequestMessage', requestData);
+        await axios.post(`${BASE_URL}/saveRequestMessage`, requestData);
 
         const chatHeadData = {
           room: room,
@@ -222,7 +223,7 @@ const Chat = () => {
           last_message: `Request for ${selectedRequest.name}`,
         };
 
-        await axios.post('http://localhost:3000/createORupdateChatHead', chatHeadData);
+        await axios.post(`${BASE_URL}/createORupdateChatHead`, chatHeadData);
         fetchChatHeads(clientId);
 
         // Reset the form
@@ -281,10 +282,10 @@ const Chat = () => {
                     >
                       <div className="d-flex align-items-center">
                         <img
-                          src={`http://localhost:3000/profile/${chat.email}.jpg`}
+                          src={`${BASE_URL}/profile/${chat.email}.jpg`}
                           alt="avatar"
                           className="rounded-circle me-3 chat-avatar"
-                          onError={(e) => { e.target.onerror = null; e.target.src = 'http://localhost:3000/profile/default-avatar.png'; }} 
+                          onError={(e) => { e.target.onerror = null; e.target.src = `${BASE_URL}/profile/default-avatar.png`; }} 
                         />
                         <div className="pt-1 chat-content">
                           <p className="fw-bold mb-1 chat-name">{chat.sp_name}</p>

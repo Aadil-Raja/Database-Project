@@ -11,6 +11,7 @@ function Layout() {
   const location = useLocation();
   const [isClientAuthorized, setIsClientAuthorized] = useState(null);
   const [isSpAuthorized, setIsSpAuthorized] = useState(null);
+  const BASE_URL = import.meta.env.VITE_BACKEND_URL || 'http://localhost:3000';
 
   // Regular expressions to match routes for client and service provider
   const clientRoutePatterns = [
@@ -47,7 +48,7 @@ function Layout() {
     const verifyClientAccess = async () => {
       try {
         const token = localStorage.getItem('token');
-        const response = await axios.get('http://localhost:3000/verify-client', {
+        const response = await axios.get(`${BASE_URL}/verify-client`, {
           headers: { Authorization: `Bearer ${token}` }
         });
 
@@ -67,7 +68,7 @@ function Layout() {
     const verifyServiceProviderAccess = async () => {
       try {
         const token = localStorage.getItem('token');
-        const response = await axios.get('http://localhost:3000/verify-serviceprovider', {
+        const response = await axios.get(`${BASE_URL}/verify-serviceprovider`, {
           headers: { Authorization: `Bearer ${token}` }
         });
 

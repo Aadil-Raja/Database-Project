@@ -15,7 +15,7 @@ const SpProfile = () => {
 
   const handleSaveProfile = async () => {
     try {
-      const response = await axios.put('http://localhost:3000/service-provider/updateProfile', profile, {
+      const response = await axios.put('${VITE_BACKEND_URL}/service-provider/updateProfile', profile, {
         headers: {
           Authorization: `Bearer ${localStorage.getItem('token')}`,
         },
@@ -30,14 +30,14 @@ const SpProfile = () => {
   useEffect(() => {
     const fetchCategoriesAndServices = async () => {
       try {
-        const categoriesResponse = await axios.get('http://localhost:3000/categories');
+        const categoriesResponse = await axios.get('${VITE_BACKEND_URL}/categories');
         const fetchedCategories = categoriesResponse.data;
         setCategories(fetchedCategories);
 
         // Fetch services for each category
         const servicesData = {};
         for (const category of fetchedCategories) {
-          const servicesResponse = await axios.get(`http://localhost:3000/services/${category.category_id}`);
+          const servicesResponse = await axios.get(`${VITE_BACKEND_URL}/services/${category.category_id}`);
           servicesData[category.category_id] = servicesResponse.data;
         }
         setServicesByCategory(servicesData);
@@ -85,7 +85,7 @@ const SpProfile = () => {
         })),
       };
 
-      const response = await axios.post('http://localhost:3000/service-provider/preferences', data, {
+      const response = await axios.post('${VITE_BACKEND_URL}/service-provider/preferences', data, {
         headers: {
           'Authorization': `Bearer ${localStorage.getItem('token')}`,
         },
@@ -106,7 +106,7 @@ const SpProfile = () => {
   useEffect(() => {
     const fetchProfile = async () => {
       try {
-        const response = await axios.get('http://localhost:3000/service-provider/profile', {
+        const response = await axios.get('${VITE_BACKEND_URL}/service-provider/profile', {
           headers: {
             Authorization: `Bearer ${localStorage.getItem('token')}`,
           },
@@ -124,7 +124,7 @@ const SpProfile = () => {
     if (activeTab === 'services' || activeTab === 'add-services') {
       const fetchServices = async () => {
         try {
-          const response = await axios.get('http://localhost:3000/service-provider/services', {
+          const response = await axios.get('${VITE_BACKEND_URL}/service-provider/services', {
             headers: {
               Authorization: `Bearer ${localStorage.getItem('token')}`,
             },
@@ -148,7 +148,7 @@ const SpProfile = () => {
   const handleToggleAvailability = async (serviceId, currentAvailability) => {
     try {
       const newAvailability = !currentAvailability; // Toggle the current availability status
-      await axios.put(`http://localhost:3000/service-provider/updateAvailability/${serviceId}`, { available: newAvailability }, {
+      await axios.put(`${VITE_BACKEND_URL}/service-provider/updateAvailability/${serviceId}`, { available: newAvailability }, {
         headers: {
           Authorization: `Bearer ${localStorage.getItem('token')}`,
         },
@@ -169,7 +169,7 @@ const SpProfile = () => {
   // Remove a service completely
   const handleRemoveService = async (serviceId) => {
     try {
-      await axios.delete(`http://localhost:3000/service-provider/removeService/${serviceId}`, {
+      await axios.delete(`${VITE_BACKEND_URL}/service-provider/removeService/${serviceId}`, {
         headers: {
           Authorization: `Bearer ${localStorage.getItem('token')}`,
         },

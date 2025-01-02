@@ -24,6 +24,7 @@ import axios from 'axios';
 import './SpHistory.css'
 
 const SpHistory = () => {
+  const BASE_URL = import.meta.env.VITE_BACKEND_URL || 'http://localhost:3000';
   const [services, setServices] = useState({
     accepted: [],
     completed: [],
@@ -65,7 +66,7 @@ const SpHistory = () => {
   const fetchSpInfo = async () => {
     try {
       const token = localStorage.getItem('token'); // Assuming token is stored in localStorage
-      const response = await axios.get('http://localhost:3000/service-provider/profile', {
+      const response = await axios.get(`${BASE_URL}/service-provider/profile`, {
         headers: {
           Authorization: `Bearer ${token}`,
         },
@@ -79,7 +80,7 @@ const SpHistory = () => {
   const fetchServices = async () => {
     try {
       const sp_id = localStorage.getItem('user_ID');
-      const response = await axios.get(`http://localhost:3000/sp/orders/${sp_id}`);
+      const response = await axios.get(`${BASE_URL}/sp/orders/${sp_id}`);
       const orders = response.data;
 
       const cancelledOrders = orders.filter((order) => order.status === 'cancelled');
@@ -250,7 +251,7 @@ const SpHistory = () => {
 
       // Then make the API call
       const status = 'completed';
-      await axios.put(`http://localhost:3000/client/orders/${orderId}`, { status });
+      await axios.put(`${BASE_URL}/client/orders/${orderId}`, { status });
     } catch (error) {
       console.error('Error marking order as completed:', error);
       alert('Failed to mark order as completed.');

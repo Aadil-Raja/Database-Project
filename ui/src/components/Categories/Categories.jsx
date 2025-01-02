@@ -19,11 +19,12 @@ import "./categories.css"; // Import custom CSS for additional styling
 export default function Categories() {
   const [categories, setCategories] = useState([]);
   const [loading, setLoading] = useState(true); // Added loading state
+  const BASE_URL = import.meta.env.VITE_BACKEND_URL || 'http://localhost:3000';
 
   useEffect(() => {
     const fetchCategories = async () => {
       try {
-        const response = await axios.get("http://localhost:3000/categories");
+        const response = await axios.get(`${BASE_URL}/categories`);
         setCategories(response.data);
         setLoading(false); // Set loading to false after data is fetched
       } catch (error) {
@@ -59,7 +60,7 @@ export default function Categories() {
                   <MDBCard className="h-100 category-card shadow-sm p-3 rounded hover-shadow">
                     <div className="category-icon-wrapper">
                       <MDBCardImage
-                        src={`http://localhost:3000/images/${category.name
+                        src={`${BASE_URL}/images/${category.name
                           .toLowerCase()
                           .replace(/ /g, "-")}.png`}
                         alt={category.name}

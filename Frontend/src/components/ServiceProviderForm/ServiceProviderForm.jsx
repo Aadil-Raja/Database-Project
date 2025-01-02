@@ -13,14 +13,14 @@ const ServiceProviderForm = () => {
   useEffect(() => {
     const fetchCategoriesAndServices = async () => {
       try {
-        const categoriesResponse = await axios.get('http://localhost:3000/categories');
+        const categoriesResponse = await axios.get('${VITE_BACKEND_URL}/categories');
         const fetchedCategories = categoriesResponse.data;
         setCategories(fetchedCategories);
 
         // Fetch services for each category
         const servicesData = {};
         for (const category of fetchedCategories) {
-          const servicesResponse = await axios.get(`http://localhost:3000/services/${category.category_id}`);
+          const servicesResponse = await axios.get(`${VITE_BACKEND_URL}/services/${category.category_id}`);
           servicesData[category.category_id] = servicesResponse.data;
         }
         setServicesByCategory(servicesData);
@@ -55,7 +55,7 @@ const ServiceProviderForm = () => {
         })),
       };
 
-      const response = await axios.post('http://localhost:3000/service-provider/preferences', data, {
+      const response = await axios.post('${VITE_BACKEND_URL}/service-provider/preferences', data, {
         headers: {
           'Authorization': `Bearer ${localStorage.getItem('token')}`,
         },

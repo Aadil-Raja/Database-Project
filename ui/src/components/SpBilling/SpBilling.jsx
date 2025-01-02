@@ -42,6 +42,7 @@ const SpBilling = () => {
   const [currentDate, setCurrentDate] = useState(new Date());
 
   const percentageFee = 10; // 5% fee
+  const BASE_URL = import.meta.env.VITE_BACKEND_URL || 'http://localhost:3000';
 
   useEffect(() => {
     fetchSpProfile();
@@ -51,7 +52,7 @@ const SpBilling = () => {
   const fetchSpProfile = async () => {
     try {
       const spId = localStorage.getItem('user_ID');
-      const response = await axios.get(`http://localhost:3000/sp/getprofile/${spId}`);
+      const response = await axios.get(`${BASE_URL}/sp/getprofile/${spId}`);
       setSpProfile(response.data);
     } catch (error) {
       console.error('Error fetching service provider profile:', error);
@@ -62,7 +63,7 @@ const SpBilling = () => {
 const fetchInvoices = async () => {
     try {
       const spId = localStorage.getItem('user_ID');
-      const response = await axios.get(`http://localhost:3000/sp/invoices/${spId}`);
+      const response = await axios.get(`${BASE_URL}/sp/invoices/${spId}`);
       setInvoices(response.data);
     } catch (error) {
       console.error('Error fetching invoices:', error);
@@ -113,7 +114,7 @@ const fetchInvoices = async () => {
       formData.append('folder', 'payments');
       formData.append('proofOfPayment', proofFile);
      
-      const response = await axios.put('http://localhost:3000/sp/invoice/payment', formData, {
+      const response = await axios.put(`${BASE_URL}/sp/invoice/payment`, formData, {
         headers: {
           'Content-Type': 'multipart/form-data',
         },
@@ -130,7 +131,7 @@ const fetchInvoices = async () => {
   const handleViewInvoice = async (invoice) => {
     try {
       const response = await axios.get(
-        `http://localhost:3000/sp/invoiceDetails/${invoice.payment_id}`
+        `${BASE_URL}/sp/invoiceDetails/${invoice.payment_id}`
       );
       setSelectedInvoice(response.data);
       setCompletedOrders(response.data.orders);
@@ -160,7 +161,7 @@ const fetchInvoices = async () => {
       const spId = localStorage.getItem('user_ID');
   
       
-      const response = await axios.post('http://localhost:3000/api/sp/payment', {
+      const response = await axios.post(`${BASE_URL}/api/sp/payment`, {
         invoice});
   
       

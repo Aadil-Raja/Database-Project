@@ -33,11 +33,11 @@ const SP = () => {
   });
   const [cities, setCities] = useState([]);
   const navigate = useNavigate();
-
+  const BASE_URL = import.meta.env.VITE_BACKEND_URL || 'http://localhost:3000';
   useEffect(() => {
     const fetchCities = async () => {
       try {
-        const response = await axios.get("http://localhost:3000/cities");
+        const response = await axios.get(`${BASE_URL}/cities`);
         setCities(response.data);
       } catch (error) {
         console.error("Error fetching cities:", error);
@@ -77,7 +77,7 @@ const SP = () => {
       return;
     }
     try {
-      const response = await axios.post("http://localhost:3000/register/sp", formData);
+      const response = await axios.post(`${BASE_URL}/register/sp`, formData);
       if (response.data.message === "Email already exists") {
         alert("The email address is already registered. Please use a different email.");
       } else if (response.data.message === "User Created Successfully") {

@@ -29,11 +29,11 @@ const ServiceRequestForm = () => {
   const [service, setService] = useState(null);
   const navigate = useNavigate();
   const [progress, setProgress] = useState(33);
-
+  const BASE_URL = import.meta.env.VITE_BACKEND_URL || 'http://localhost:3000';
   useEffect(() => {
     const fetchCities = async () => {
       try {
-        const response = await axios.get('http://localhost:3000/cities');
+        const response = await axios.get(`${BASE_URL}/cities`);
         setCities(response.data);
       } catch (error) {
         console.error('Error fetching cities:', error);
@@ -45,10 +45,10 @@ const ServiceRequestForm = () => {
   useEffect(() => {
     const fetchData = async () => {
       try {
-        const categoryResponse = await axios.get(`http://localhost:3000/categories/${categoryId}`);
+        const categoryResponse = await axios.get(`${BASE_URL}/categories/${categoryId}`);
         setCategory(categoryResponse.data);
 
-        const serviceResponse = await axios.get(`http://localhost:3000/getServiceName?service_id=${serviceId}`);
+        const serviceResponse = await axios.get(`${BASE_URL}/getServiceName?service_id=${serviceId}`);
         setService(serviceResponse.data);
       } catch (error) {
         console.error('Error fetching category or service:', error);
@@ -83,7 +83,7 @@ const ServiceRequestForm = () => {
     try {
       // First, send the service request data to create the request
       const response = await axios.post(
-        'http://localhost:3000/servicerequestform',
+        `${BASE_URL}/servicerequestform`,
         {
           description,
           city_id: city,
@@ -107,7 +107,7 @@ const ServiceRequestForm = () => {
         formData.append('requestImg', file);
         
 
-        await axios.post('http://localhost:3000/servicerequestform/uploadImage', formData, {
+        await axios.post(`${BASE_URL}/servicerequestform/uploadImage`, formData, {
           headers: {
             Authorization: `Bearer ${localStorage.getItem('token')}`,
             'Content-Type': 'multipart/form-data',

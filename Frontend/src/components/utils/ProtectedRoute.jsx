@@ -15,7 +15,7 @@ const ProtectedRoute = () => {
         }
 
         // Make a request to the backend to verify the token
-        const response = await axios.get('http://localhost:3000/verify-token', {
+        const response = await axios.get('${VITE_BACKEND_URL}/verify-token', {
           headers: {
             Authorization: `Bearer ${token}`,
           },

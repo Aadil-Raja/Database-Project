@@ -22,7 +22,7 @@ const ServiceRequestForm = () => {
     // Fetch cities from the backend
     const fetchCities = async () => {
       try {
-        const response = await axios.get('http://localhost:3000/cities');
+        const response = await axios.get('${VITE_BACKEND_URL}/cities');
         setCities(response.data); // Assume the API returns a list of cities
       } catch (error) {
         console.error('Error fetching cities:', error);
@@ -48,7 +48,7 @@ const ServiceRequestForm = () => {
       try {
        
         const response = await axios.post(
-          `http://localhost:3000/servicerequestform`,
+          `${VITE_BACKEND_URL}/servicerequestform`,
           requestData,
           {
             headers: {

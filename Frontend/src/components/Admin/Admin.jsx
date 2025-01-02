@@ -22,14 +22,14 @@ const handleserviceFileChange = (event) => {
   useEffect(() => {
     const fetchCategoriesAndServices = async () => {
       try {
-        const categoriesResponse = await axios.get('http://localhost:3000/categories');
+        const categoriesResponse = await axios.get('${VITE_BACKEND_URL}/categories');
         const fetchedCategories = categoriesResponse.data;
         setcurrentCategories(fetchedCategories);
 
         // Fetch services for each category
         const servicesData = {};
         for (const category of fetchedCategories) {
-          const servicesResponse = await axios.get(`http://localhost:3000/services/${category.category_id}`);
+          const servicesResponse = await axios.get(`${VITE_BACKEND_URL}/services/${category.category_id}`);
           servicesData[category.category_id] = servicesResponse.data;
         }
         setServicesByCategory(servicesData);
@@ -46,7 +46,7 @@ const handleserviceFileChange = (event) => {
   }, []);
 
   const fetchRequests = async () => {
-    const response = await fetch('http://localhost:3000/admin');
+    const response = await fetch('${VITE_BACKEND_URL}/admin');
     if (!response.ok) {
       throw new Error('Network response was not ok');
     }
@@ -69,7 +69,7 @@ const handleserviceFileChange = (event) => {
       formData.append('name', newCategory.name); // Add the category name
       formData.append('description', newCategory.description); // Add the category description
       formData.append('categoryImg', categoryImg); 
-      const response = await axios.post('http://localhost:3000/Addcategories', formData, {
+      const response = await axios.post('${VITE_BACKEND_URL}/Addcategories', formData, {
         headers: {
           'Content-Type': 'multipart/form-data', // Set the correct header for file upload
         },
@@ -92,7 +92,7 @@ const handleserviceFileChange = (event) => {
       formData.append('category_id', newService.category_id); 
       formData.append('serviceImg', serviceImg); 
       
-      const response = await axios.post('http://localhost:3000/AddService', formData,{
+      const response = await axios.post('${VITE_BACKEND_URL}/AddService', formData,{
         headers: {
           'Content-Type': 'multipart/form-data', // Set the correct header for file upload
         },

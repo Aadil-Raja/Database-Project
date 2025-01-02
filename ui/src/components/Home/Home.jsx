@@ -1,19 +1,31 @@
 import React, { useState, useEffect } from "react";
-import { MDBContainer, MDBRow, MDBCol, MDBBtn, MDBCard, MDBCardBody, MDBIcon,MDBCarousel, MDBCarouselItem } from 'mdb-react-ui-kit';
-import './Home.css';
-import { Link } from 'react-router-dom';
+import {
+  MDBContainer,
+  MDBRow,
+  MDBCol,
+  MDBBtn,
+  MDBCard,
+  MDBCardBody,
+  MDBIcon,
+  MDBCarousel,
+  MDBCarouselItem,
+} from "mdb-react-ui-kit";
+import { Link } from "react-router-dom";
 import axios from "axios";
+import "./Home.css";
 
 export default function Home() {
   const [categories, setCategories] = useState([]);
+  const BASE_URL = import.meta.env.VITE_BACKEND_URL || "http://localhost:3000";
 
   useEffect(() => {
     const fetchCategories = async () => {
       try {
-        const response = await axios.get("http://localhost:3000/categories");
-        setCategories(response.data);
+        const response = await axios.get(`${BASE_URL}/categories`);
+        setCategories(Array.isArray(response.data) ? response.data : []);
       } catch (error) {
         console.error("Error fetching categories:", error);
+        setCategories([]); // Fallback in case of error
       }
     };
 
@@ -22,87 +34,83 @@ export default function Home() {
 
   return (
     <div className="home-section">
-      
-      <MDBContainer
-  fluid
-  className="text-center text-lg-start d-flex align-items-center home-banner"
->
-  {/* Image Slider Background */}
-  <MDBCarousel showIndicators className="w-100 h-100">
-    <MDBCarouselItem itemId={1}>
-      <img
-        src="http://localhost:3000/images/home-main-1.jpg"
-        className="carousel-image"
-        alt="Slide 1"
-      />
-    </MDBCarouselItem>
-    <MDBCarouselItem itemId={2}>
-      <img
-        src="http://localhost:3000/images/home-main-2.jpg"
-        className="carousel-image"
-        alt="Slide 2"
-      />
-    </MDBCarouselItem>
-    <MDBCarouselItem itemId={3}>
-      <img
-        src="http://localhost:3000/images/home-main-3.jpg"
-        className="carousel-image"
-        alt="Slide 3"
-      />
-    </MDBCarouselItem>
-  </MDBCarousel>
+      {/* Banner Section */}
+      <MDBContainer fluid className="text-center text-lg-start d-flex align-items-center home-banner">
+        <MDBCarousel showIndicators className="w-100 h-100">
+          <MDBCarouselItem itemId={1}>
+            <img
+              src={`${BASE_URL}/images/home-main-1.jpg`}
+              className="carousel-image"
+              alt="Slide 1"
+            />
+          </MDBCarouselItem>
+          <MDBCarouselItem itemId={2}>
+            <img
+              src={`${BASE_URL}/images/home-main-2.jpg`}
+              className="carousel-image"
+              alt="Slide 2"
+            />
+          </MDBCarouselItem>
+          <MDBCarouselItem itemId={3}>
+            <img
+              src={`${BASE_URL}/images/home-main-3.jpg`}
+              className="carousel-image"
+              alt="Slide 3"
+            />
+          </MDBCarouselItem>
+        </MDBCarousel>
 
-  {/* Dark overlay for text readability */}
-  <div className="home-overlay"></div>
-
-  {/* Text and Buttons */}
-  <MDBRow className="text-overlay">
-    <MDBCol lg="12">
-      <h1 className="home-heading">Find Top Services for Every Task</h1>
-      <p className="lead">
-        Connecting you with top professionals across various fields for efficient, reliable work.
-      </p>
-      <div className="home-buttons">
-        <MDBBtn outline color="light" size="lg" className="ms-3">
-          <Link to="/Register">Register Now</Link>
-        </MDBBtn>
-      </div>
-    </MDBCol>
-  </MDBRow>
-</MDBContainer>
-
+        <div className="home-overlay"></div>
+        <MDBRow className="text-overlay">
+          <MDBCol lg="12">
+            <h1 className="home-heading">Find Top Services for Every Task</h1>
+            <p className="lead">
+              Connecting you with top professionals across various fields for efficient, reliable work.
+            </p>
+            <div className="home-buttons">
+              <MDBBtn outline color="light" size="lg" className="ms-3">
+                <Link to="/Register" className="btn-link">
+                  Register Now
+                </Link>
+              </MDBBtn>
+            </div>
+          </MDBCol>
+        </MDBRow>
+      </MDBContainer>
 
       {/* Services Section */}
       <MDBContainer className="services-section py-5">
         <h2 className="text-center mb-5">Explore Our Services</h2>
         <MDBRow className="text-center">
-          {categories
-            .filter((category) => category.status === 'active')
-            .map((category) => (
-              <MDBCol key={category.category_id} md="6" lg="4" className="mb-4">
-                <Link to={`/categories/${category.category_id}`} className="service-link">
-                  <MDBCard className="service-card shadow-sm p-3 rounded">
-                    <MDBCardBody>
-                      <div className="service-icon-wrapper">
-                        <img
-                          src={`http://localhost:3000/images/${category.name
-                            .toLowerCase()
-                            .replace(/ /g, "-")}.png`}
-                          alt={category.name}
-                          className="service-icon"
-                        />
-                      </div>
-                      <h5 className="service-name mt-3">{category.name}</h5>
-                      <p className="service-description mt-2">{category.description}</p>
-                    </MDBCardBody>
-                  </MDBCard>
-                </Link>
-              </MDBCol>
-            ))}
+          {categories.length > 0 ? (
+            categories
+              .filter((category) => category.status === "active")
+              .map((category) => (
+                <MDBCol key={category.category_id} md="6" lg="4" className="mb-4">
+                  <Link to={`/categories/${category.category_id}`} className="service-link">
+                    <MDBCard className="service-card shadow-sm p-3 rounded">
+                      <MDBCardBody>
+                        <div className="service-icon-wrapper">
+                          <img
+                            src={`${BASE_URL}/images/${category.name.toLowerCase().replace(/ /g, "-")}.png`}
+                            alt={category.name}
+                            className="service-icon"
+                          />
+                        </div>
+                        <h5 className="service-name mt-3">{category.name}</h5>
+                        <p className="service-description mt-2">{category.description}</p>
+                      </MDBCardBody>
+                    </MDBCard>
+                  </Link>
+                </MDBCol>
+              ))
+          ) : (
+            <p>No services available at the moment. Please check back later!</p>
+          )}
         </MDBRow>
       </MDBContainer>
 
-      {/* New Benefits Section */}
+      {/* Benefits Section */}
       <MDBContainer className="benefits-section py-5">
         <h2 className="text-center mb-5">Why Choose Us?</h2>
         <MDBRow className="text-center">
@@ -182,22 +190,38 @@ export default function Home() {
         <h2 className="text-center mb-5">Meet Our Top Service Providers</h2>
         <MDBRow className="text-center">
           <MDBCol md="3">
-            <img src="https://mdbcdn.b-cdn.net/img/Photos/Avatars/img%20(1).jpg" alt="Provider" className="featured-img rounded-circle" />
+            <img
+              src="https://mdbcdn.b-cdn.net/img/Photos/Avatars/img%20(1).jpg"
+              alt="Provider"
+              className="featured-img rounded-circle"
+            />
             <h6 className="mt-3">Alex Johnson</h6>
             <p>Web Developer</p>
           </MDBCol>
           <MDBCol md="3">
-            <img src="https://mdbcdn.b-cdn.net/img/Photos/Avatars/img%20(2).jpg" alt="Provider" className="featured-img rounded-circle" />
+            <img
+              src="https://mdbcdn.b-cdn.net/img/Photos/Avatars/img%20(2).jpg"
+              alt="Provider"
+              className="featured-img rounded-circle"
+            />
             <h6 className="mt-3">Emily Davis</h6>
             <p>Graphic Designer</p>
           </MDBCol>
           <MDBCol md="3">
-            <img src="https://mdbcdn.b-cdn.net/img/Photos/Avatars/img%20(3).jpg" alt="Provider" className="featured-img rounded-circle" />
+            <img
+              src="https://mdbcdn.b-cdn.net/img/Photos/Avatars/img%20(3).jpg"
+              alt="Provider"
+              className="featured-img rounded-circle"
+            />
             <h6 className="mt-3">Michael Brown</h6>
             <p>SEO Specialist</p>
           </MDBCol>
           <MDBCol md="3">
-            <img src="https://mdbcdn.b-cdn.net/img/Photos/Avatars/img%20(4).jpg" alt="Provider" className="featured-img rounded-circle" />
+            <img
+              src="https://mdbcdn.b-cdn.net/img/Photos/Avatars/img%20(4).jpg"
+              alt="Provider"
+              className="featured-img rounded-circle"
+            />
             <h6 className="mt-3">Jessica White</h6>
             <p>Content Writer</p>
           </MDBCol>

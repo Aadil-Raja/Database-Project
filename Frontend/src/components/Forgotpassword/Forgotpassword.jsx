@@ -15,7 +15,7 @@ function Forgotpassword() {
     e.preventDefault(); e.preventDefault();
 
     try {
-      const response = await axios.post("http://localhost:3000/forgotpassword", { email });
+      const response = await axios.post("${VITE_BACKEND_URL}/forgotpassword", { email });
       if (response.data.message === "Password reset link sent") {
         // Store the email in localStorage for later use (e.g., when resending the reset link)
         localStorage.setItem("resetEmail", email);

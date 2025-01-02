@@ -10,8 +10,8 @@ import {
   MDBBadge,
 } from 'mdb-react-ui-kit';
 import './NotificationComponent.css'; // Updated CSS file with animations
-
-const socket = io('http://localhost:3002'); // Backend socket URL
+const SOCKET_URL = import.meta.env.VITE_SOCKET_URL || 'http://localhost:3002';
+const socket = io(SOCKET_URL);
 
 const NotificationComponent = () => {
   const [notifications, setNotifications] = useState([]); // Stores the notifications

@@ -4,12 +4,13 @@ import axios from 'axios';
 
 const ServiceProviderProtectedRoute = () => {
   const [isAuthorized, setIsAuthorized] = useState(null);
+  const BASE_URL = import.meta.env.VITE_BACKEND_URL || 'http://localhost:3000';
 
   useEffect(() => {
     const verifyServiceProviderAccess = async () => {
       try {
         const token = localStorage.getItem('token');
-        const response = await axios.get('http://localhost:3000/verify-serviceprovider', {
+        const response = await axios.get(`${BASE_URL}/verify-serviceprovider`, {
           headers: { Authorization: `Bearer ${token}` }
         });
 

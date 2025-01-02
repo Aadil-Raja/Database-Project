@@ -13,11 +13,11 @@ export default function CategoryDetails() {
     const fetchCategoryDetails = async () => {
       try {
         // Fetch category details separately
-        const categoryResponse = await axios.get(`http://localhost:3000/categories/${categoryId}`);
+        const categoryResponse = await axios.get(`${VITE_BACKEND_URL}/categories/${categoryId}`);
         setCategory(categoryResponse.data);
 
         // Fetch services separately
-        const servicesResponse = await axios.get(`http://localhost:3000/services/${categoryId}`);
+        const servicesResponse = await axios.get(`${VITE_BACKEND_URL}/services/${categoryId}`);
         setServices(servicesResponse.data);
       } catch (error) {
         console.error("Error fetching category or services:", error);
@@ -44,7 +44,7 @@ export default function CategoryDetails() {
                     <div key={index} className="group relative">
                       <div className="relative h-60 w-full overflow-hidden rounded-lg bg-white sm:aspect-h-1 sm:aspect-w-2 lg:aspect-h-1 lg:aspect-w-1 group-hover:opacity-75 sm:h-64">
                         
-                        < img src={`http://localhost:3000/images/${service.name.toLowerCase().replace(/ /g, '-')}.jpg`} alt={service.name}
+                        < img src={`${VITE_BACKEND_URL}/images/${service.name.toLowerCase().replace(/ /g, '-')}.jpg`} alt={service.name}
  
   className="h-full w-full object-cover object-center"
 />

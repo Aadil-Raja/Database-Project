@@ -12,7 +12,7 @@ import {
 } from "mdb-react-ui-kit";
 import { useNavigate } from "react-router-dom";
 import "./Client.css"; // Optional: For any additional custom styling
-
+const BASE_URL = import.meta.env.VITE_BACKEND_URL || 'http://localhost:3000';
 const Client = () => {
   const [formData, setFormData] = useState({
     name: "",
@@ -45,7 +45,7 @@ const Client = () => {
     }
 
     try {
-      const response = await axios.post("http://localhost:3000/register/client", {
+      const response = await axios.post(`${BASE_URL}/register/client`, {
         name: formData.name,
         email: formData.email,
         password: formData.password,

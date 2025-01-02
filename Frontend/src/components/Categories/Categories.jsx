@@ -9,7 +9,7 @@ export default function Categories() {
   useEffect(() => {
     const fetchCategories = async () => {
       try {
-        const response = await axios.get("http://localhost:3000/categories");  // Call your API
+        const response = await axios.get("${VITE_BACKEND_URL}/categories");  // Call your API
         setCategories(response.data);  // Set the fetched categories to state
       } catch (error) {
         console.error("Error fetching categories:", error);
@@ -33,7 +33,7 @@ export default function Categories() {
                 <div key={category.category_id} className="group relative">
                   <div className="relative h-60 w-full overflow-hidden rounded-lg bg-white sm:aspect-h-1 sm:aspect-w-2 lg:aspect-h-1 lg:aspect-w-1 group-hover:opacity-75 sm:h-64">
                   <img
-  src={`http://localhost:3000/images/${category.name.toLowerCase().replace(/ /g, '-')}.jpg`} 
+  src={`${VITE_BACKEND_URL}/images/${category.name.toLowerCase().replace(/ /g, '-')}.jpg`} 
   alt={category.name}
   className="h-full w-full object-cover object-center"
 />

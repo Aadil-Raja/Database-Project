@@ -25,20 +25,21 @@ const SearchResults = () => {
   const [showModal, setShowModal] = useState(false);
   const [currentImageUrl, setCurrentImageUrl] = useState('');
   const [imageAvailable, setImageAvailable] = useState({});
+  const BASE_URL = import.meta.env.VITE_BACKEND_URL || 'http://localhost:3000';
   const navigate = useNavigate();
 
   useEffect(() => {
     const fetchRequests = async () => {
       try {
         const sp_id = localStorage.getItem('user_ID');
-        const requestsResponse = await axios.get(`http://localhost:3000/getRequests/${sp_id}`);
+        const requestsResponse = await axios.get(`${BASE_URL}/getRequests/${sp_id}`);
         setData(requestsResponse.data);
         setLoading(false);
 
         // Check for image availability for each request
         const imageAvailability = {};
         for (let item of requestsResponse.data) {
-          const imageUrl = `http://localhost:3000/RequestImages/${item.request_id}.jpg`;
+          const imageUrl = `${BASE_URL}/RequestImages/${item.request_id}.jpg`;
           try {
             await axios.head(imageUrl);
             imageAvailability[item.request_id] = true;
@@ -66,7 +67,7 @@ const SearchResults = () => {
         last_message: ' ',
       };
 
-      await axios.post('http://localhost:3000/createORupdateChatHead', chatHeadData);
+      await axios.post(`${BASE_URL}/createORupdateChatHead`, chatHeadData);
       navigate('/Spchat', { state: chatHeadData });
 
     } catch (error) {
@@ -76,7 +77,7 @@ const SearchResults = () => {
 
   // Function to open the image modal
   const openImageModal = (requestId) => {
-    const imageUrl = `http://localhost:3000/RequestImages/${requestId}.jpg`;
+    const imageUrl = `${BASE_URL}/RequestImages/${requestId}.jpg`;
     setCurrentImageUrl(imageUrl);
     setShowModal(true);
   };

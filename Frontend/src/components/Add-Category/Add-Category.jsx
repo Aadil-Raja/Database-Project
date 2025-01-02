@@ -20,7 +20,7 @@ const AddCategory = () => {
 
     try {
       // Send POST request to the backend with correct field names
-      const response = await axios.post("http://localhost:3000/Add-Category", { 
+      const response = await axios.post("${VITE_BACKEND_URL}/Add-Category", { 
         title: categoryName, 
         description: categoryDescription 
       },{

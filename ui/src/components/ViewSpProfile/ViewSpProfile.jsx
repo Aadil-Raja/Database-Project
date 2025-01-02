@@ -43,6 +43,7 @@ const ViewSpProfile = () => {
    const[avgRating,setAvgRating]=useState(0);
    const[completedcount,setcompletedcount]=useState(0);
    const location = useLocation();
+   const BASE_URL = import.meta.env.VITE_BACKEND_URL || 'http://localhost:3000';
    const toggleModal = () => {
     setModalOpen(!modalOpen);
   };
@@ -76,7 +77,7 @@ const ViewSpProfile = () => {
     const fetchReviews = async () => {
         try {
       
-          const response = await axios.get(`http://localhost:3000/client/viewSPreviews?sp_id=${sp_id}`);
+          const response = await axios.get(`${BASE_URL}/client/viewSPreviews?sp_id=${sp_id}`);
          
     
           const completedOrders = response.data;
@@ -106,7 +107,7 @@ const ViewSpProfile = () => {
   useEffect(() => {
     const fetchProfile = async () => {
       try {
-        const response = await axios.get(`http://localhost:3000/client/viewSPprofile?sp_id=${sp_id}`);
+        const response = await axios.get(`${BASE_URL}/client/viewSPprofile?sp_id=${sp_id}`);
         setProfile(response.data);
       } catch (error) {
         console.error("Error fetching profile:", error);
@@ -120,12 +121,12 @@ const ViewSpProfile = () => {
     const fetchServicesAndCategories = async () => {
       try {
         // Fetch selected services
-        const servicesResponse = await axios.get(`http://localhost:3000/client/viewSPservices?sp_id=${sp_id}`);
+        const servicesResponse = await axios.get(`${BASE_URL}/client/viewSPservices?sp_id=${sp_id}`);
         const selectedServiceIds = servicesResponse.data.services.map((service) => service.service_id);
         setSelectedServices(selectedServiceIds);
 
         // Fetch categories and their services
-        const categoriesResponse = await axios.get("http://localhost:3000/categories");
+        const categoriesResponse = await axios.get(`${BASE_URL}/categories`);
         const fetchedCategories = categoriesResponse.data;
 
         const filteredCategories = [];
@@ -133,7 +134,7 @@ const ViewSpProfile = () => {
 
         for (const category of fetchedCategories) {
           const categoryServicesResponse = await axios.get(
-            `http://localhost:3000/services/${category.category_id}`
+            `${BASE_URL}/services/${category.category_id}`
           );
           const categoryServices = categoryServicesResponse.data.filter((service) =>
             selectedServiceIds.includes(service.service_id)
@@ -184,13 +185,13 @@ const ViewSpProfile = () => {
               <MDBCard className="mb-4 profile-container">
                 <MDBCardBody className="text-center">
                   <MDBCardImage
-                    src={`http://localhost:3000/profile/${profile.email}.jpg`}
+                    src={`${BASE_URL}/profile/${profile.email}.jpg`}
                     alt="Profile Image"
                     className="rounded-circle profile-picture"
                     style={{ width: "150px" }}
                     fluid
                     onClick={toggleModal}
-                    onError={(e) => { e.target.onerror = null; e.target.src = 'http://localhost:3000/profile/default-avatar.png'; }} 
+                    onError={(e) => { e.target.onerror = null; e.target.src = `${BASE_URL}/profile/default-avatar.png`; }} 
                   />
                   <h4 className="mt-3">
                     {profile.firstName} {profile.lastName}
@@ -288,10 +289,10 @@ const ViewSpProfile = () => {
           <div className="modal-content">
             <button className="close-button" onClick={toggleModal}>X</button>
             <img
-              src={`http://localhost:3000/profile/${profile.email}.jpg`}
+              src={`${BASE_URL}/profile/${profile.email}.jpg`}
               alt="Expanded Profile"
               style={{ width: '50%', borderRadius: '10px' }}
-              onError={(e) => { e.target.onerror = null; e.target.src = 'http://localhost:3000/profile/default-avatar.png'; }} 
+              onError={(e) => { e.target.onerror = null; e.target.src = `${BASE_URL}/profile/default-avatar.png`; }} 
             />
           </div>
         </div>

@@ -20,12 +20,13 @@ function Forgotpassword() {
   const handleEmail = (e) => {
     setEmail(e.target.value);
   };
+  const BASE_URL = import.meta.env.VITE_BACKEND_URL || 'http://localhost:3000';
 
   const handleReset = async (e) => {
     e.preventDefault();
 
     try {
-      const response = await axios.post("http://localhost:3000/forgotpassword", { email });
+      const response = await axios.post(`${BASE_URL}/forgotpassword`, { email });
       if (response.data.message === "Password reset link sent") {
         localStorage.setItem("resetEmail", email);
         alert("Password reset link has been sent to your email.");

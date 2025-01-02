@@ -25,7 +25,7 @@ const SP = () => {
     // Fetch cities from backend when the component loads
     const fetchCities = async () => {
       try {
-        const response = await axios.get("http://localhost:3000/cities");
+        const response = await axios.get("${VITE_BACKEND_URL}/cities");
         setCities(response.data);
       } catch (error) {
         console.error("Error fetching cities:", error);
@@ -49,7 +49,7 @@ const SP = () => {
       return;
     }
     try {
-      const response = await axios.post("http://localhost:3000/register/sp", formData);
+      const response = await axios.post("${VITE_BACKEND_URL}/register/sp", formData);
       if (response.data.message === "Email already exists") {
         alert("The email address is already registered. Please use a different email.");
       } else if (response.data.message==="User Created Successfully") {

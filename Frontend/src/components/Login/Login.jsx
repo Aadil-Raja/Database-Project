@@ -20,7 +20,7 @@ const Login = () => {
     e.preventDefault();
   
     try {
-      const response = await axios.post("http://localhost:3000/login", { email, password });
+      const response = await axios.post("${VITE_BACKEND_URL}/login", { email, password });
       console.log(response);  // Log the entire response
      
       if (response.data.message === "exist") {

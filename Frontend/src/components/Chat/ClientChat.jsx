@@ -43,7 +43,7 @@ const Chat = () => {
 
   const fetchPreviousMessages = async (roomName) => {
     try {
-      const response = await axios.get(`http://localhost:3000/getMessages?room=${roomName}`);
+      const response = await axios.get(`${VITE_BACKEND_URL}/getMessages?room=${roomName}`);
       setMessages(response.data);
     } catch (error) {
       console.error('Error fetching previous messages:', error);
@@ -66,7 +66,7 @@ const Chat = () => {
     setMessages([...messages, messageData]);
     setMessage('');
     try {
-      await axios.post('http://localhost:3000/saveMessage', messageData);
+      await axios.post('${VITE_BACKEND_URL}/saveMessage', messageData);
     } catch(error) {
       console.log(error);
     }
@@ -74,7 +74,7 @@ const Chat = () => {
 
   const fetchPendingRequests = async (clientId) => {
     try {
-      const response = await axios.post('http://localhost:3000/getPendingRequestofClient', { user_ID: clientId });
+      const response = await axios.post('${VITE_BACKEND_URL}/getPendingRequestofClient', { user_ID: clientId });
       setPendingRequests(response.data);
     } catch (error) {
       console.error('Error fetching pending requests:', error);

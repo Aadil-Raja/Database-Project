@@ -19,12 +19,12 @@ const Login = () => {
 
   const emailHandler = (e) => setEmail(e.target.value);
   const passwordHandler = (e) => setPassword(e.target.value);
-
+  const BASE_URL = import.meta.env.VITE_BACKEND_URL || 'http://localhost:3000';
   const handleLogin = async (e) => {
     e.preventDefault();
 
     try {
-      const response = await axios.post("http://localhost:3000/login", { email, password });
+      const response = await axios.post(`${BASE_URL}/login`, { email, password });
       console.log(response);
 
       if (response.data.message === "exist") {
@@ -63,7 +63,7 @@ const Login = () => {
           <MDBCardBody className="px-5">
             <div className="text-center">
               <MDBCardImage
-                src="http://localhost:3000/images/logo.png"
+                src={`${BASE_URL}/images/logo.png`}
                 style={{ width: '185px' }}
                 alt="logo"
               />

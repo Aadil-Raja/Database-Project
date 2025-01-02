@@ -4,12 +4,13 @@ import axios from 'axios';
 
 const ClientProtectedRoute = () => {
   const [isAuthorized, setIsAuthorized] = useState(null);
+  const BASE_URL = import.meta.env.VITE_BACKEND_URL || 'http://localhost:3000';
 
   useEffect(() => {
     const verifyClientAccess = async () => {
       try {
         const token = localStorage.getItem('token');
-        const response = await axios.get('http://localhost:3000/verify-client', {
+        const response = await axios.get(`${BASE_URL}/verify-client`, {
           headers: { Authorization: `Bearer ${token}` }
         });
 

@@ -23,14 +23,15 @@ export default function CategoryDetails() {
   const [category, setCategory] = useState(null);
   const [services, setServices] = useState([]);
   const [loading, setLoading] = useState(true); // Added loading state
+  const BASE_URL = import.meta.env.VITE_BACKEND_URL || 'http://localhost:3000';
 
   useEffect(() => {
     const fetchCategoryDetails = async () => {
       try {
-        const categoryResponse = await axios.get(`http://localhost:3000/categories/${categoryId}`);
+        const categoryResponse = await axios.get(`${BASE_URL}/categories/${categoryId}`);
         setCategory(categoryResponse.data);
 
-        const servicesResponse = await axios.get(`http://localhost:3000/services/${categoryId}`);
+        const servicesResponse = await axios.get(`${BASE_URL}/services/${categoryId}`);
         setServices(servicesResponse.data);
         setLoading(false); // Set loading to false after data is fetched
       } catch (error) {
@@ -84,7 +85,7 @@ export default function CategoryDetails() {
                     <MDBCard className="h-100 service-card shadow-sm p-3 rounded hover-shadow">
                       <div className="service-icon-wrapper">
                         <MDBCardImage
-                          src={`http://localhost:3000/images/${service.name
+                          src={`${BASE_URL}/images/${service.name
                             .toLowerCase()
                             .replace(/ /g, "-")}.png`}
                           alt={service.name}

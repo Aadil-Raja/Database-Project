@@ -10,21 +10,21 @@ const SearchResults = () => {
     const fetchRequests = async () => {
       try {
         // Fetch all service requests
-        const requestsResponse = await axios.get('http://localhost:3000/getRequests');
+        const requestsResponse = await axios.get('${VITE_BACKEND_URL}/getRequests');
         const requests = requestsResponse.data;
          
         const cityNamesPromises = requests.map((request) =>
-          axios.get(`http://localhost:3000/getCityName?city_id=${request.city_id}`)
+          axios.get(`${VITE_BACKEND_URL}/getCityName?city_id=${request.city_id}`)
         );
         
         // Fetch client names, city names, and service names in parallel, sending the IDs in the body
         const clientNamesPromises = requests.map((request) =>
-          axios.get(`http://localhost:3000/getClientName?client_id=${request.client_id}`)
+          axios.get(`${VITE_BACKEND_URL}/getClientName?client_id=${request.client_id}`)
         );
         
         
         const serviceNamesPromises = requests.map((request) =>
-          axios.get(`http://localhost:3000/getServiceName?service_id=${request.service_id}`)
+          axios.get(`${VITE_BACKEND_URL}/getServiceName?service_id=${request.service_id}`)
         );
   
         // Resolve all promises

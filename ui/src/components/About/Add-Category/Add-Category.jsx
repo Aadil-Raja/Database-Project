@@ -20,7 +20,7 @@ const AddCategory = () => {
   // State to display success or error messages after form submission
   const [successMessage, setSuccessMessage] = useState('');
   const [errorMessage, setErrorMessage] = useState('');
-
+  BASE_URL = import.meta.env.VITE_BACKEND_URL || 'http://localhost:3000';
   // Handler to handle form submission
   const handleSubmit = async (e) => {
     e.preventDefault();
@@ -28,7 +28,7 @@ const AddCategory = () => {
     try {
       // Send POST request to the backend with correct field names
       const response = await axios.post(
-        'http://localhost:3000/Add-Category',
+        `${BASE_URL}/Add-Category`,
         {
           title: categoryName,
           description: categoryDescription,

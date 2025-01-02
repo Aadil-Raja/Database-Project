@@ -22,7 +22,7 @@ const Client = () => {
   
     try {
       
-      const response = await axios.post("http://localhost:3000/register/client", formData);
+      const response = await axios.post("${VITE_BACKEND_URL}/register/client", formData);
       if (response.data.message === "Email already exists") {
         alert("The email address is already registered. Please use a different email.");
       } else {

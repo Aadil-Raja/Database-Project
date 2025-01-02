@@ -48,7 +48,7 @@ const AdminDashboard = () => {
   const [serviceImg, setserviceImg] = useState(null);
   const [servicesByCategory, setServicesByCategory] = useState({});
   const[payments,setPayments]=useState([]);
-
+  const BASE_URL = import.meta.env.VITE_BACKEND_URL || 'http://localhost:3000';
   async function getFileUrl(baseUrl, fileName) {
     const possibleExtensions = ['.png', '.jpeg', '.jpg', '.gif', '.pdf'];
     for (let ext of possibleExtensions) {
@@ -86,7 +86,7 @@ const AdminDashboard = () => {
     useEffect(() => {
       const fetchFile = async () => {
         console.log(proof_of_payment);
-        const baseUrl = 'http://localhost:3000/payments'; // Base URL for file storage
+        const baseUrl = `${BASE_URL}/payments`; // Base URL for file storage
         const result = await getFileUrl(baseUrl, proof_of_payment);
         setFileSrc(result);
       };
@@ -142,14 +142,14 @@ const AdminDashboard = () => {
   useEffect(() => {
     const fetchCategoriesAndServices = async () => {
       try {
-        const categoriesResponse = await axios.get('http://localhost:3000/Allcategories');
+        const categoriesResponse = await axios.get(`${BASE_URL}/Allcategories`);
         const fetchedCategories = categoriesResponse.data;
         setcurrentCategories(fetchedCategories);
 
         // Fetch services for each category
         const servicesData = {};
         for (const category of fetchedCategories) {
-          const servicesResponse = await axios.get(`http://localhost:3000/Allservices/${category.category_id}`);
+          const servicesResponse = await axios.get(`${BASE_URL}/Allservices/${category.category_id}`);
           servicesData[category.category_id] = servicesResponse.data;
         }
         setServicesByCategory(servicesData);
@@ -168,7 +168,7 @@ const AdminDashboard = () => {
 
   const fetchRequests = async () => {
     try {
-      const response = await axios.get('http://localhost:3000/admin');
+      const response = await axios.get(`${BASE_URL}/admin`);
       setRequests(response.data);
     } catch (error) {
       console.error('Error fetching requests:', error);
@@ -176,7 +176,7 @@ const AdminDashboard = () => {
   };
   const fetchpayments = async () => {
     try {
-      const response = await axios.get('http://localhost:3000/getPendingPayments');
+      const response = await axios.get(`${BASE_URL}/getPendingPayments`);
       setPayments(response.data);
     } catch (error) {
       console.error('Error fetching requests:', error);
@@ -187,7 +187,7 @@ const AdminDashboard = () => {
     setRequests((prevRequests) =>
       prevRequests.filter((req) => req.id !== id)
     );
-    await axios.delete(`http://localhost:3000/removeReqCategories/${id}`)
+    await axios.delete(`${BASE_URL}/removeReqCategories/${id}`)
    
 
     alert(`Request Processed with ID: ${id}`);
@@ -198,7 +198,7 @@ const AdminDashboard = () => {
     setRequests((prevRequests) =>
       prevRequests.filter((req) => req.id !== id)
     );
-    await axios.delete(`http://localhost:3000/removeReqCategories/${id}`)
+    await axios.delete(`${BASE_URL}/removeReqCategories/${id}`)
    
 
     alert(`Rejected request with ID: ${id}`);
@@ -209,7 +209,7 @@ const AdminDashboard = () => {
     );
     alert(`Payment Marked as Paid: ${id}`);
 
-    await axios.put(`http://localhost:3000/updatePaymentStatus/${id}`)
+    await axios.put(`${BASE_URL}/updatePaymentStatus/${id}`)
     window.location.reload();
    
 
@@ -223,7 +223,7 @@ const AdminDashboard = () => {
       formData.append('name', newCategory.name);
       formData.append('description', newCategory.description);
       formData.append('categoryImg', categoryImg);
-      const response = await axios.post('http://localhost:3000/Addcategories', formData, {
+      const response = await axios.post(`${BASE_URL}/Addcategories`, formData, {
         headers: {
           'Content-Type': 'multipart/form-data',
         },
@@ -246,7 +246,7 @@ const AdminDashboard = () => {
       formData.append('category_id', newService.category_id);
       formData.append('serviceImg', serviceImg);
 
-      const response = await axios.post('http://localhost:3000/AddService', formData, {
+      const response = await axios.post(`${BASE_URL}/AddService`, formData, {
         headers: {
           'Content-Type': 'multipart/form-data',
         },
@@ -271,7 +271,7 @@ const AdminDashboard = () => {
   const handleCategoryStatusChange = async (category_id, isChecked) => {
     try {
       const newStatus = isChecked ? 'active' : 'inactive';
-      await axios.put(`http://localhost:3000/updateCategoryStatus/${category_id}`, { status: newStatus });
+      await axios.put(`${BASE_URL}/updateCategoryStatus/${category_id}`, { status: newStatus });
       // Update the state
       setcurrentCategories((prevCategories) =>
         prevCategories.map((category) =>
@@ -298,7 +298,7 @@ const AdminDashboard = () => {
         }
         return newServicesByCategory;
       });
-      await axios.put(`http://localhost:3000/updateServiceStatus/${service_id}`, { status: newStatus });
+      await axios.put(`${BASE_URL}/updateServiceStatus/${service_id}`, { status: newStatus });
       // Update the state
       console.log("Service status updated successfully on the backend.");
       alert(`Service ${isChecked ? 'marked as available' : 'marked as unavailable'}`);

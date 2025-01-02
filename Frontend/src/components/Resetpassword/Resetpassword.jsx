@@ -21,7 +21,7 @@ const ResetPassword = () => {
       return;
     }
     try {
-      const response = await axios.post(`http://localhost:3000/resetpassword`, { password, token, type });
+      const response = await axios.post(`${VITE_BACKEND_URL}/resetpassword`, { password, token, type });
 
       if (response.data.message === "Token is invalid or has expired") {
         setErrorMessage("Token is invalid or has expired. Do you want to resend the link?");

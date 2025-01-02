@@ -1,4 +1,3 @@
-// AdminLogin.jsx
 import React, { useState } from 'react';
 import axios from 'axios';
 import {
@@ -8,7 +7,7 @@ import {
   MDBInput,
   MDBCard,
   MDBCardBody,
-  MDBCardImage
+  MDBCardImage,
 } from 'mdb-react-ui-kit';
 import { useNavigate } from 'react-router-dom';
 import './AdminLogin.css'; // Import the CSS file for styling
@@ -16,6 +15,8 @@ import './AdminLogin.css'; // Import the CSS file for styling
 const AdminLogin = () => {
   const [formData, setFormData] = useState({ username: '', password: '' });
   const navigate = useNavigate();
+
+  const BASE_URL = import.meta.env.VITE_BACKEND_URL || 'http://localhost:3000';
 
   // Handle input changes
   const handleChange = (e) => {
@@ -28,7 +29,7 @@ const AdminLogin = () => {
     e.preventDefault();
     try {
       // Send credentials to the server
-      const response = await axios.post('http://localhost:3000/LoginAdmin', formData);
+      const response = await axios.post(`${BASE_URL}/LoginAdmin`, formData);
 
       if (response.data.message === 'Successful') {
         // Store the token securely
@@ -44,13 +45,16 @@ const AdminLogin = () => {
   };
 
   return (
-    <MDBContainer fluid className="d-flex align-items-center justify-content-center admin-login-bg">
+    <MDBContainer
+      fluid
+      className="d-flex align-items-center justify-content-center admin-login-bg"
+    >
       <MDBCol xl="4" lg="5" md="7" sm="9" className="d-flex justify-content-center">
         <MDBCard className="admin-login-card">
           <MDBCardBody className="px-5">
             <div className="text-center">
               <MDBCardImage
-                src="http://localhost:3000/images/logo.png" // Update the logo path if necessary
+                src={`${BASE_URL}/images/logo.png`} // Corrected the dynamic path
                 style={{ width: '185px' }}
                 alt="logo"
               />

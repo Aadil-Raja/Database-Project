@@ -13,8 +13,8 @@ import {
   MDBTypography,
   MDBInputGroup,
 } from 'mdb-react-ui-kit';
-
-const socket = io('http://localhost:3002');
+const SOCKET_URL = import.meta.env.VITE_SOCKET_URL || 'http://localhost:3002';
+const socket = io(SOCKET_URL);
 
 const Chat = () => {
   const [message, setMessage] = useState(''); // Message input state
@@ -28,6 +28,7 @@ const Chat = () => {
   const [receiverID, setReceiverID] = useState(null); // Receiver ID
   const [chatHeads, setChatHeads] = useState([]); // Chat heads
   const [isInRoom, setIsInRoom] = useState(false); // Flag to check if in a room
+  const BASE_URL = import.meta.env.VITE_BACKEND_URL || 'http://localhost:3000';
 
   const location = useLocation();
 
@@ -54,7 +55,7 @@ const Chat = () => {
   const fetchChatHeads = async (sp_id) => {
     try {
       const response = await axios.get(
-        `http://localhost:3000/getChatHeads?user_id=${sp_id}&user_type=serviceproviders`
+        `${BASE_URL}/getChatHeads?user_id=${sp_id}&user_type=serviceproviders`
       );
       setChatHeads(response.data);
     } catch (error) {
@@ -64,7 +65,7 @@ const Chat = () => {
 
   const fetchPreviousMessages = async (roomName) => {
     try {
-      const response = await axios.get(`http://localhost:3000/getMessages?room=${roomName}`);
+      const response = await axios.get(`${BASE_URL}/getMessages?room=${roomName}`);
       setMessages(response.data);
     } catch (error) {
       console.error('Error fetching previous messages:', error);
@@ -104,7 +105,7 @@ const Chat = () => {
     setMessage('');
 
     try {
-      await axios.post('http://localhost:3000/saveMessage', messageData);
+      await axios.post(`${BASE_URL}/saveMessage`, messageData);
 
       const chatHeadData = {
         room: room,
@@ -113,7 +114,7 @@ const Chat = () => {
         last_message: messageData.message_text,
       };
 
-      await axios.post('http://localhost:3000/createORupdateChatHead', chatHeadData);
+      await axios.post(`${BASE_URL}/createORupdateChatHead`, chatHeadData);
       fetchChatHeads(spId); // Update chat heads with the last message
     } catch (error) {
       console.log(error);
@@ -161,7 +162,7 @@ const Chat = () => {
 
     };
 
-    await axios.put('http://localhost:3000/updateRequestMessage', requestData);
+    await axios.put(`${BASE_URL}/updateRequestMessage`, requestData);
 
     setMessages((prevMessages) =>
       prevMessages.map((msg) =>
@@ -172,7 +173,7 @@ const Chat = () => {
     socket.emit('accept_service_request', { request_id: requestId, room });
 
     try {
-      await axios.post('http://localhost:3000/addAcceptedRequest', {
+      await axios.post(`${BASE_URL}/addAcceptedRequest`, {
 
         request_id: requestId,
         sp_id: spId,
@@ -211,7 +212,7 @@ const Chat = () => {
                     >
                       <div className="d-flex align-items-center">
                         <img
-                           src={`http://localhost:3000/images/chat-head-icon.png`}
+                           src={`${BASE_URL}/images/chat-head-icon.png`}
                           alt="avatar"
                           className="rounded-circle me-3"
                           width="50"

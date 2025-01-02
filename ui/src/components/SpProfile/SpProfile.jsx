@@ -47,10 +47,11 @@ const ProfileTab = () => {
   const handleTabChange = (tab) => setActiveTab(tab);
   const navigate = useNavigate();
   const [selectedImage, setSelectedImage] = useState(null);
+  const BASE_URL = import.meta.env.VITE_BACKEND_URL || 'http://localhost:3000';
   useEffect(() => {
     const fetchCities = async () => {
       try {
-        const response = await axios.get("http://localhost:3000/cities");
+        const response = await axios.get(`${BASE_URL}/cities`);
         setCities(response.data);
       } catch (error) {
         console.error("Error fetching cities:", error);
@@ -61,7 +62,7 @@ const ProfileTab = () => {
   useEffect(() => {
     const fetchProfile = async () => {
       try {
-        const response = await axios.get('http://localhost:3000/service-provider/profile', {
+        const response = await axios.get(`${BASE_URL}/service-provider/profile`, {
           headers: { Authorization: `Bearer ${localStorage.getItem('token')}` },
         });
         setProfile(response.data);
@@ -74,14 +75,14 @@ const ProfileTab = () => {
   useEffect(() => {
     const fetchCategoriesAndServices = async () => {
       try {
-        const categoriesResponse = await axios.get('http://localhost:3000/categories');
+        const categoriesResponse = await axios.get(`${BASE_URL}/categories`);
         const fetchedCategories = categoriesResponse.data;
         setCategories(fetchedCategories);
 
         // Fetch services for each category
         const servicesData = {};
         for (const category of fetchedCategories) {
-          const servicesResponse = await axios.get(`http://localhost:3000/services/${category.category_id}`);
+          const servicesResponse = await axios.get(`${BASE_URL}/services/${category.category_id}`);
           servicesData[category.category_id] = servicesResponse.data;
         }
         setServicesByCategory(servicesData);
@@ -127,7 +128,7 @@ const ProfileTab = () => {
         })),
       };
 
-      const response = await axios.post('http://localhost:3000/service-provider/preferences', data, {
+      const response = await axios.post(`${BASE_URL}/service-provider/preferences`, data, {
         headers: {
           'Authorization': `Bearer ${localStorage.getItem('token')}`,
         },
@@ -149,7 +150,7 @@ const ProfileTab = () => {
   const handleToggleAvailability = async (serviceId, currentAvailability) => {
     try {
       const newAvailability = !currentAvailability; // Toggle the current availability status
-      await axios.put(`http://localhost:3000/service-provider/updateAvailability/${serviceId}`, { available: newAvailability }, {
+      await axios.put(`${BASE_URL}/service-provider/updateAvailability/${serviceId}`, { available: newAvailability }, {
         headers: {
           Authorization: `Bearer ${localStorage.getItem('token')}`,
         },
@@ -168,7 +169,7 @@ const ProfileTab = () => {
   };
   const handleRemoveService = async (serviceId) => {
     try {
-      await axios.delete(`http://localhost:3000/service-provider/removeService/${serviceId}`, {
+      await axios.delete(`${BASE_URL}/service-provider/removeService/${serviceId}`, {
         headers: {
           Authorization: `Bearer ${localStorage.getItem('token')}`,
         },
@@ -198,7 +199,7 @@ const ProfileTab = () => {
         formData.append('profileImage', selectedImage);
       }
 
-      await axios.put('http://localhost:3000/service-provider/updateProfile', formData, {
+      await axios.put(`${BASE_URL}/service-provider/updateProfile`, formData, {
         headers: {
           Authorization: `Bearer ${localStorage.getItem('token')}`,
           'Content-Type': 'multipart/form-data',
@@ -216,7 +217,7 @@ const ProfileTab = () => {
     if (activeTab === 'services' || activeTab === 'add-services') {
       const fetchServices = async () => {
         try {
-          const response = await axios.get('http://localhost:3000/service-provider/services', {
+          const response = await axios.get(`${BASE_URL}/service-provider/services`, {
             headers: {
               Authorization: `Bearer ${localStorage.getItem('token')}`,
             },
@@ -264,7 +265,7 @@ const ProfileTab = () => {
                     src={
                       selectedImage
                         ? URL.createObjectURL(selectedImage)
-                        : `http://localhost:3000/profile/${profile.email}.jpg`
+                        : `${BASE_URL}/profile/${profile.email}.jpg`
                     }
                     alt="Upload Profile Image"
                     className="rounded-circle profile-picture"
@@ -275,7 +276,7 @@ const ProfileTab = () => {
                       setModalOpen(true);
                     }}
                      // Open modal when image is clicked
-                     onError={(e) => { e.target.onerror = null; e.target.src = 'http://localhost:3000/profile/default-avatar.png'; }} 
+                     onError={(e) => { e.target.onerror = null; e.target.src = `${BASE_URL}/profile/default-avatar.png`; }} 
                   />
                   {isEditing && (
                     <div className="mt-3">
@@ -425,12 +426,13 @@ const ProfileTab = () => {
         src={
           selectedImage
             ? URL.createObjectURL(selectedImage)
-            : `http://localhost:3000/profile/${profile.email}.jpg`
+            : `${BASE_URL}/profile/${profile.email}.jpg`
         }
         alt="Expanded Profile"
+        
         onError={(e) => { 
           e.target.onerror = null; 
-          e.target.src = 'http://localhost:3000/profile/default-avatar.png'; 
+          e.target.src = `${BASE_URL}/profile/default-avatar.png`; 
         }}
       />
     </div>
