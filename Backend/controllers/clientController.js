@@ -68,7 +68,7 @@ exports.getOrders= async (req,res) => {
       from ServiceProviders where sp_id=sr.sp_id) as 
       sp_name,s.name as name ,sr.address as address,sr.request_date as
        request_date,sr.status as status,sr.request_id as request_id from 
-       ServiceRequests sr join services s on  
+       ServiceRequests sr join Services s on  
        s.service_id = sr.service_id
        LEFT JOIN Feedbacks f ON sr.request_id = f.request_id
     
