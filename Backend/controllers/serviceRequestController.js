@@ -38,7 +38,7 @@ exports.getallRequests = async(req,res) => {
                 const {sp_id}=req.params;
             const query =`select DISTINCT  sr.client_id as client_id,ci.name as city_name,c.name as 
             client_name,sr.address as address,s.name as service_name,sr.description as description,sr.request_id as request_id
-             from ServiceRequests sr join clients c on c.client_id=sr.client_id 
+             from ServiceRequests sr join Clients c on c.client_id=sr.client_id 
             join Cities ci on ci.city_id=sr.city_id join Services s on s.service_id=sr.service_id  
             join ServiceProviders sp on sp.city_id=sr.city_id
             join ServiceProviderServices sps on sps.service_provider_id = sp.sp_id
