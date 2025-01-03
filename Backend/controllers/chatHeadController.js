@@ -34,7 +34,7 @@ exports.getChatHeadsForUser = async (req, res) => {
         query = `
        SELECT CONCAT(sp.firstName, ' ', sp.lastName) as sp_name, ch.room,ch.sp_id,ch.last_message as lastmsg,sp.email as email
           FROM ChatHeads ch
-          JOIN serviceproviders sp ON ch.sp_id = sp.sp_id
+          JOIN ServiceProviders sp ON ch.sp_id = sp.sp_id
           WHERE ch.client_id = ${user_id}
           order by last_message_time desc;
         `;
@@ -43,7 +43,7 @@ exports.getChatHeadsForUser = async (req, res) => {
         query = `
           SELECT ch.client_id ,ch.room,cl.name AS client_name, ch.last_message as lastmsg
           FROM ChatHeads ch
-          JOIN clients cl ON ch.client_id = cl.client_id
+          JOIN Clients cl ON ch.client_id = cl.client_id
           WHERE ch.sp_id = ${user_id}
            order by last_message_time desc;
         `;

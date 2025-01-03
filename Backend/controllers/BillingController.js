@@ -20,8 +20,8 @@ exports.getcompletedOrders = async (req, res) => {
         MONTH(sr.completed_date) as month, 
         YEAR(sr.completed_date) as year,
         MONTHNAME(sr.completed_date) as monthname
-      FROM servicerequests sr
-      JOIN services s ON s.service_id = sr.service_id
+      FROM ServiceRequests sr
+      JOIN Services s ON s.service_id = sr.service_id
       WHERE sr.sp_id = ${sp_id}
         AND sr.status = 'completed'
         AND MONTH(sr.completed_date) = ${queryMonth}
@@ -60,18 +60,18 @@ exports.getProfile = async (req, res) => {
 
 
 
-exports.generateMonthlyInvoices=async () =>
-{
-  try{
+// exports.generateMonthlyInvoices=async () =>
+// {
+//   try{
 
-    const query=`CALL sp_generateMonthlyInvoices();`
-    await sequelize.query(query);
-    console.log('Monthly invoices generated successfully.');
-  }
-  catch (error) {
-        console.error('Error generating monthly invoices:', error);
-       }
-}
+//     const query=`CALL sp_generateMonthlyInvoices();`
+//     await sequelize.query(query);
+//     console.log('Monthly invoices generated successfully.');
+//   }
+//   catch (error) {
+//         console.error('Error generating monthly invoices:', error);
+//        }
+// }
 exports.generateMonthlyInvoices = async () => {
   try {
 
@@ -79,7 +79,7 @@ exports.generateMonthlyInvoices = async () => {
     date.setMonth(date.getMonth() - 1);
     const billingMonth = date.getMonth() + 1; 
     const billingYear = date.getFullYear();
- const query=`SELECT sp_id FROM serviceproviders;`
+ const query=`SELECT sp_id FROM ServiceProviders;`
  
     const [serviceProviders] = await sequelize.query(query);
 
@@ -88,7 +88,7 @@ exports.generateMonthlyInvoices = async () => {
       const spId = sp.sp_id;
 
         const query1=`SELECT payment_id 
-         FROM payments 
+         FROM Payments 
          WHERE sp_id = ${spId} 
          AND billing_month = ${billingMonth} 
          AND billing_year = ${billingYear};`
@@ -97,7 +97,7 @@ exports.generateMonthlyInvoices = async () => {
 
       if (existingInvoice.length === 0) {
         const query2=`SELECT SUM(price) AS total_earnings
-           FROM servicerequests
+           FROM ServiceRequests
            WHERE sp_id = ${spId}
              AND status = 'completed'
              AND MONTH(completed_date) = ${billingMonth}
@@ -114,7 +114,7 @@ exports.generateMonthlyInvoices = async () => {
           const dueDate = new Date();
           dueDate.setDate(15);
           const dueDateFormatted = dueDate.toISOString().split('T')[0]; // Format due date to YYYY-MM-DD
-         const query3=`INSERT INTO payments 
+         const query3=`INSERT INTO Payments 
              (sp_id, billing_month, billing_year, total_earnings, amount_due, due_date) 
              VALUES 
              (${spId}, ${billingMonth}, ${billingYear}, ${totalEarnings.toFixed(2)}, ${amountDue.toFixed(2)}, '${dueDateFormatted}');`
@@ -134,7 +134,7 @@ exports.getInvoices = async (req, res) => {
     try {
       const spId = req.params.sp_id;
       const query=`SELECT * 
-         FROM payments 
+         FROM Payments 
          WHERE sp_id = ${spId} 
          ORDER BY billing_year DESC, billing_month DESC`
       const [invoices] = await sequelize.query(query);
@@ -151,7 +151,7 @@ exports.getInvoices = async (req, res) => {
       const { payment_id } = req.params;
   
        const query=`SELECT * 
-         FROM payments 
+         FROM Payments 
          WHERE payment_id = ${payment_id};`
       const [invoice] = await sequelize.query(query);
   
@@ -171,8 +171,8 @@ exports.getInvoices = async (req, res) => {
           MONTH(sr.completed_date) as month, 
           YEAR(sr.completed_date) as year,
           MONTHNAME(sr.completed_date) as monthname
-         FROM servicerequests sr
-         JOIN services s ON sr.service_id = s.service_id
+         FROM ServiceRequests sr
+         JOIN Services s ON sr.service_id = s.service_id
          WHERE sr.sp_id = ${sp_id}
            AND sr.status = 'completed'
            AND MONTH(sr.completed_date) = ${billing_month}
@@ -200,7 +200,7 @@ exports.getInvoices = async (req, res) => {
   
     
       const updateQuery = `
-        UPDATE payments
+        UPDATE Payments
         set
             payment_date = NOW(),
             proof_of_payment = '${newFileName}'
@@ -221,7 +221,7 @@ exports.getInvoices = async (req, res) => {
   {
     try {
        const{id}= req.params;
-       const query=`update payments set status='Paid' where payment_id=${id};`;
+       const query=`update Payments set status='Paid' where payment_id=${id};`;
        await sequelize.query(query);
     }
     catch(error)

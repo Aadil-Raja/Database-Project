@@ -86,8 +86,8 @@ exports.getfeedback= async (req,res) => {
         const query =`SELECT 
        f.rating as rating,f.review as review,f.created_at as review_date
       ,s.name as name
-        from servicerequests sr join services s on  s.service_id = sr.service_id
-         LEFT JOIN Feedback f ON sr.request_id = f.request_id
+        from ServiceRequests sr join Services s on  s.service_id = sr.service_id
+         LEFT JOIN Feedbacks f ON sr.request_id = f.request_id
       
         where sp_id=${sp_id} and sr.status='completed' 
         order by sr.request_date desc`;

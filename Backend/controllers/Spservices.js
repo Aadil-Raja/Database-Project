@@ -7,7 +7,7 @@ exports.savePreferences = async (req, res) => {
 
     
     for (const service of services) {
-      const checkQuery = `SELECT * FROM serviceproviderservices 
+      const checkQuery = `SELECT * FROM ServiceProviderServices 
                           WHERE service_provider_id = ${service_provider_id} 
                           AND service_id = ${service.serviceId}`;
 

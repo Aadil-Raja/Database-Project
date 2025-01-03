@@ -17,7 +17,7 @@ exports.addRequest = async(req,res) => {
     const {description,city_id,address,service_id}= req.body;
  const client_id=req.user.id;
 
- const query =`INSERT INTO servicerequests (description,city_id,address,service_id,client_id)
+ const query =`INSERT INTO ServiceRequests (description,city_id,address,service_id,client_id)
                 values('${description}',${city_id},'${address}',${service_id},${client_id})`;
                const [result]= await sequelize.query(query);
                req.insertID=result;
@@ -38,10 +38,10 @@ exports.getallRequests = async(req,res) => {
                 const {sp_id}=req.params;
             const query =`select DISTINCT  sr.client_id as client_id,ci.name as city_name,c.name as 
             client_name,sr.address as address,s.name as service_name,sr.description as description,sr.request_id as request_id
-             from servicerequests sr join clients c on c.client_id=sr.client_id 
-            join cities ci on ci.city_id=sr.city_id join services s on s.service_id=sr.service_id  
-            join serviceproviders sp on sp.city_id=sr.city_id
-            join serviceproviderservices sps on sps.service_provider_id = sp.sp_id
+             from ServiceRequests sr join clients c on c.client_id=sr.client_id 
+            join Cities ci on ci.city_id=sr.city_id join Services s on s.service_id=sr.service_id  
+            join ServiceProviders sp on sp.city_id=sr.city_id
+            join ServiceProviderServices sps on sps.service_provider_id = sp.sp_id
             where sp.sp_id=${sp_id} and sr.service_id=sps.service_id and sps.availability_status=1  and sr.status='pending' ;
             `;
                const [requests]= await sequelize.query(query);
@@ -58,7 +58,7 @@ exports.getPendingRequestofClient= async(req,res)=> {
    try {
       const {user_ID}=req.body;
       const query=`select s.name ,sr.request_id ,sr.description,sr.address,sr.request_date 
-      from servicerequests sr join services s on sr.service_id=s.service_id where client_id=${user_ID} and sr.status='pending'; `
+      from ServiceRequests sr join services s on sr.service_id=s.service_id where client_id=${user_ID} and sr.status='pending'; `
       const [results]= await sequelize.query(query);
       res.json(results);
    }
@@ -72,7 +72,7 @@ exports.getPendingRequestofClient= async(req,res)=> {
 exports.addAcceptedRequest=async(req,res)=>{
    try {
       const {request_id,sp_id,price}=req.body;
-      const query=`update servicerequests set status='accepted',price=${price} , sp_id=${sp_id} where request_id=${request_id}`;
+      const query=`update ServiceRequests set status='accepted',price=${price} , sp_id=${sp_id} where request_id=${request_id}`;
       await sequelize.query(query);
       
    }
@@ -87,7 +87,7 @@ exports.cancelServiceRequest= async(req,res)=>{
 
    try {
       const {request_id}=req.body;
-      const query=`update servicerequests set status='pending' where request_id=${request_id}`;
+      const query=`update ServiceRequests set status='pending' where request_id=${request_id}`;
       await sequelize.query(query);
       
    }

@@ -47,7 +47,7 @@ exports.createClient = async (req, res) => {
 exports.getClient = async (req, res) => {
   try {
     const { client_id } = req.query; // Change to req.query for GET request
-    const query = `SELECT name FROM clients WHERE client_id = ${client_id}`;
+    const query = `SELECT name FROM Clients WHERE client_id = ${client_id}`;
     const [result] = await sequelize.query(query);
     res.json(result[0]); // Send the first result
   } catch (error) {
@@ -63,14 +63,14 @@ exports.getOrders= async (req,res) => {
       f.rating as rating,f.review as review,
       sr.completed_date as completed_date ,
       sr.description as description , sr.price as price,
-      (select name from cities c where sr.city_id =c.city_id) 
+      (select name from Cities c where sr.city_id =c.city_id) 
       as city,(select CONCAT(firstName, ' ', lastName)  
-      from serviceproviders where sp_id=sr.sp_id) as 
+      from ServiceProviders where sp_id=sr.sp_id) as 
       sp_name,s.name as name ,sr.address as address,sr.request_date as
        request_date,sr.status as status,sr.request_id as request_id from 
-       servicerequests sr join services s on  
+       ServiceRequests sr join services s on  
        s.service_id = sr.service_id
-       LEFT JOIN Feedback f ON sr.request_id = f.request_id
+       LEFT JOIN Feedbacks f ON sr.request_id = f.request_id
     
       where client_id=${client_id} order by sr.request_date desc`;
       const[result]=await sequelize.query(query);
@@ -92,13 +92,13 @@ exports.updateOrder=async(req,res)=>{
     const {status}=req.body;
     let query;
     if (status==='cancelled'){
-      query =`delete from servicerequests 
+      query =`delete from ServiceRequests 
       WHERE request_id = ${orderId} and sp_id is NULL`;
     }
   else
   {
     if (status==='completed'){
-      query =`UPDATE servicerequests 
+      query =`UPDATE ServiceRequests 
       SET status = '${status}' ,completed_date=NOW() 
       WHERE request_id = ${orderId};`;
     }
@@ -116,7 +116,7 @@ exports.addfeedback= async(req,res) =>
   try 
   {
               const {request_id,rating,comment}=req.body;
-              const query =`insert into feedback(request_id,rating,review) values(${request_id},${rating},'${comment}');`;
+              const query =`insert into Feedbacks(request_id,rating,review) values(${request_id},${rating},'${comment}');`;
               await sequelize.query(query);
 
 

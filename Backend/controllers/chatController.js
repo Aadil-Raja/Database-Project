@@ -57,7 +57,7 @@ exports.updateRequestMessage = async (req, res) => {
 
 
       query = `
-      UPDATE requestmessages rm
+      UPDATE RequestMessages rm
       join messages m on rm.message_id=m.message_id
       SET rm.status = '${status}'
       WHERE rm.request_id = ${request_id} and m.room='${room}' and rm.status='pending'
@@ -82,8 +82,8 @@ exports.getMessages = async (req, res) => {
     try {
     
       const query = `
-        SELECT * FROM messages m
-        left join requestmessages rm on rm.message_id=m.message_id
+        SELECT * FROM Messages m
+        left join RequestMessages rm on rm.message_id=m.message_id
         where m.room = '${room}'
         ORDER BY created_at ASC
       `;
@@ -105,12 +105,12 @@ exports.getMessages = async (req, res) => {
     if( user_type==="clients")
       {
       
-        query=`select name from clients where client_id=${user_id};`;
+        query=`select name from Clients where client_id=${user_id};`;
         
       }
       else if(user_type="serviceproviders")
       {
-        query=`SELECT CONCAT(firstName, ' ', lastName) AS name FROM serviceproviders WHERE sp_id = ${user_id};`
+        query=`SELECT CONCAT(firstName, ' ', lastName) AS name FROM ServiceProviders WHERE sp_id = ${user_id};`
     }
    
     const[name]=await sequelize.query(query);

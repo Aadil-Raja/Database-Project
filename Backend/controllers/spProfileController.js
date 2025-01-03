@@ -110,8 +110,8 @@ exports.removeService=async(req,res) => {
   try{
          const{service_id}=req.params;
          const service_provider_id = req.user.id; 
-         const query =`DELETE FROM serviceproviderservices 
-         where service_Id=${service_id} and service_provider_Id= ${service_provider_id} `
+         const query =`DELETE FROM ServiceProviderServices 
+         where service_id=${service_id} and service_provider_id= ${service_provider_id} `
          await sequelize.query(query);
          res.json({message:"deleted successfully"});
   }
@@ -130,7 +130,7 @@ exports.updateAvailability = async (req, res) => {
     const { available } = req.body; 
    
     const query = `
-      UPDATE serviceproviderservices
+      UPDATE ServiceProviderServices
       SET availability_status = ${available}
       WHERE service_id = ${service_id} AND service_provider_id = ${service_provider_id
       }
@@ -148,7 +148,7 @@ exports.updateAvailability = async (req, res) => {
 exports.getEmail =async(req,res)=>{
   try {
     const {sp_id}=req.query;
-    const query=`select email from serviceproviders where sp_id=${sp_id}`;
+    const query=`select email from ServiceProviders where sp_id=${sp_id}`;
    const [result]= await sequelize.query(query);
     res.json(result[0])
   }

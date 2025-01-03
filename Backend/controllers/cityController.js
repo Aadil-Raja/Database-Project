@@ -6,7 +6,7 @@ exports.getACity = async (req, res) => {
     const { city_id } = req.query; 
     
 
-    const query = `SELECT name FROM cities WHERE city_id=${city_id}`;
+    const query = `SELECT name FROM Cities WHERE city_id=${city_id}`;
     const [result] = await sequelize.query(query);
     res.json(result[0]);
   } catch (error) {
@@ -17,7 +17,7 @@ exports.getACity = async (req, res) => {
 
 exports.getCities = async (req, res) => {
   try {
-    const query = `SELECT * FROM cities`;
+    const query = `SELECT * FROM Cities`;
     const [cities] = await sequelize.query(query);
 
    

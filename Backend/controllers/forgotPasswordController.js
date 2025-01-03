@@ -34,7 +34,7 @@ exports.forgotPassword = async(req,res) =>{
         id=clientUser[0].client_id;
       }
       const query = `
-  insert into resetpasswordlogs (user_id,user_type,resetPasswordToken,resetPasswordExpires)
+  insert into ResetPasswordLogs (user_id,user_type,resetPasswordToken,resetPasswordExpires)
   values(${id},'${table_name}','${resetToken}',NOW()+INTERVAL 15 MINUTE) 
   on duplicate key update resetPasswordToken=values(resetPasswordToken),
 resetPasswordExpires=values(resetPasswordExpires)

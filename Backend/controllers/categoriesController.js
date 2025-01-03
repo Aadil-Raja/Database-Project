@@ -3,7 +3,7 @@ const sequelize = require('../config/db'); // Assuming you're using sequelize fo
 
 exports.getCategories = async (req, res) => {
   try {
-    const query = `SELECT * FROM categories where status='active'`;
+    const query = `SELECT * FROM Categories where status='active'`;
     const [categories] = await sequelize.query(query); // Using raw SQL query
     res.json(categories); // Sending the fetched categories in response
   } catch (error) {
@@ -13,7 +13,7 @@ exports.getCategories = async (req, res) => {
 
 exports.getAllCategories = async (req, res) => {
   try {
-    const query = `SELECT * FROM categories `;
+    const query = `SELECT * FROM Categories `;
     const [categories] = await sequelize.query(query); // Using raw SQL query
     res.json(categories); // Sending the fetched categories in response
   } catch (error) {
@@ -25,7 +25,7 @@ exports.AddaCategory = async( req,res ) => {
   try {
       const {name ,description} =req.body;
     
-      const query = `INSERT INTO categories(name,description)
+      const query = `INSERT INTO Categories(name,description)
                       values('${name}','${description}')`;
                       await sequelize.query(query);
                       res.json("Successful");
@@ -38,7 +38,7 @@ exports.AddaCategory = async( req,res ) => {
 exports.getACategory =async(req,res)=>{
   try{
     const { categoryId } = req.params;
-   const query= `select * from categories where category_id=${categoryId}`;
+   const query= `select * from Categories where category_id=${categoryId}`;
 
    const[result]=await sequelize.query(query);
    if (result.length === 0) {

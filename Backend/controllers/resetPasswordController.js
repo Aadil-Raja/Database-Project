@@ -10,7 +10,7 @@ exports.resetpassword = async (req, res) => {
 
   try {
     // Find the user by reset token using a raw SQL query
-    const findUserQuery = `SELECT * FROM resetpasswordlogs WHERE resetPasswordToken = '${token}' and  user_id=${user_id} and user_type='${type}';`;
+    const findUserQuery = `SELECT * FROM ResetPasswordLogs WHERE resetPasswordToken = '${token}' and  user_id=${user_id} and user_type='${type}';`;
     const [user] = await sequelize.query(findUserQuery);
     
 
@@ -26,7 +26,7 @@ exports.resetpassword = async (req, res) => {
     if(type==='serviceproviders')
     {
       updateUserQuery= `
-      UPDATE ${type} 
+      UPDATE ServiceProviders
       SET password = '${hashedPassword}'
       WHERE sp_id = ${user_id};
     `;
@@ -35,7 +35,7 @@ exports.resetpassword = async (req, res) => {
     else
     {
       updateUserQuery= `
-      UPDATE ${type} 
+      UPDATE Clients
       SET password = '${hashedPassword}'
       WHERE client_id = ${user_id};
     `;
@@ -53,25 +53,26 @@ exports.resetpassword = async (req, res) => {
 };
 
 
-// exports.deleteExpiredTokens = async () => {
-//   try {
-//     const query = `
-//       DELETE FROM resetpasswordlogs
-//       WHERE resetPasswordExpires < NOW();
-//     `;
-//     await sequelize.query(query);
-//     console.log("Expired reset password records deleted successfully.");
-//   } catch (error) {
-//     console.error("Error deleting expired reset password records:", error);
-//   }
-// };
-
 exports.deleteExpiredTokens = async () => {
+
   try {
-    const query = `CALL deleteExpiredTokens(); `;
+    const query = `
+      DELETE FROM resetpasswordlogs
+      WHERE resetPasswordExpires < NOW();
+    `;
     await sequelize.query(query);
     console.log("Expired reset password records deleted successfully.");
   } catch (error) {
     console.error("Error deleting expired reset password records:", error);
   }
 };
+
+// exports.deleteExpiredTokens = async () => {
+//   try {
+//     const query = `CALL deleteExpiredTokens(); `;
+//     await sequelize.query(query);
+//     console.log("Expired reset password records deleted successfully.");
+//   } catch (error) {
+//     console.error("Error deleting expired reset password records:", error);
+//   }
+// };
