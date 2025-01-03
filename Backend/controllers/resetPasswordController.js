@@ -57,7 +57,7 @@ exports.deleteExpiredTokens = async () => {
 
   try {
     const query = `
-      DELETE FROM resetpasswordlogs
+      DELETE FROM ResetPasswordLogs
       WHERE resetPasswordExpires < NOW();
     `;
     await sequelize.query(query);

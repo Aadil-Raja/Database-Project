@@ -6,7 +6,7 @@ exports.getServicesByCategory = async (req, res) => {
     const { categoryId } = req.params;
 
     // Raw SQL query to fetch services by category_id
-    const query = `SELECT * FROM services WHERE category_id = ${categoryId} and status='active'`;
+    const query = `SELECT * FROM Services WHERE category_id = ${categoryId} and status='active'`;
     const [services] = await sequelize.query(query); // Executing the raw SQL query
 
     res.json(services); // Returning the fetched services
@@ -20,7 +20,7 @@ exports.getAllServicesByCategory = async (req, res) => {
     const { categoryId } = req.params;
 
     // Raw SQL query to fetch services by category_id
-    const query = `SELECT * FROM services WHERE category_id = ${categoryId} ;`;
+    const query = `SELECT * FROM Services WHERE category_id = ${categoryId} ;`;
     const [services] = await sequelize.query(query); // Executing the raw SQL query
 
     res.json(services); // Returning the fetched services
@@ -33,7 +33,7 @@ exports.AddaService = async( req,res ) => {
   try {
       const {name ,description,category_id} =req.body;
     
-      const query = `INSERT INTO services(name,description,category_id,image)
+      const query = `INSERT INTO Services(name,description,category_id,image)
                       values('${name}','${description}',${category_id},'${name}')`;
                       await sequelize.query(query);
                       res.json("Successful");
@@ -46,7 +46,7 @@ exports.AddaService = async( req,res ) => {
 exports.getaServiceName = async (req, res) => {
   try {
     const { service_id } = req.query; // Change to req.query for GET request
-    const query = `SELECT name FROM services WHERE service_id = ${service_id}`;
+    const query = `SELECT name FROM Services WHERE service_id = ${service_id}`;
     const [result] = await sequelize.query(query);
     res.json(result[0] || { message: 'Service not found' })
   } catch (error) {
