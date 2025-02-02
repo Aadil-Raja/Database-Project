@@ -162,10 +162,10 @@ exports.getInvoices = async (req, res) => {
       const { sp_id, billing_month, billing_year } = invoice[0];
   
      const query2=`SELECT 
-          (SELECT name FROM clients c WHERE c.client_id = sr.client_id) AS client_name,
+          (SELECT name FROM Clients c WHERE c.client_id = sr.client_id) AS client_name,
           sr.completed_date AS completed_date,
           sr.price AS price,
-          (SELECT name FROM cities c WHERE sr.city_id = c.city_id) AS city,
+          (SELECT name FROM Cities c WHERE sr.city_id = c.city_id) AS city,
           s.name AS service_name,
           sr.address AS address,
           MONTH(sr.completed_date) as month, 
