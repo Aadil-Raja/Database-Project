@@ -58,7 +58,7 @@ exports.updateRequestMessage = async (req, res) => {
 
       query = `
       UPDATE RequestMessages rm
-      join messages m on rm.message_id=m.message_id
+      join Messages m on rm.message_id=m.message_id
       SET rm.status = '${status}'
       WHERE rm.request_id = ${request_id} and m.room='${room}' and rm.status='pending'
     `;
