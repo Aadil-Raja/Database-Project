@@ -58,7 +58,7 @@ exports.getPendingRequestofClient= async(req,res)=> {
    try {
       const {user_ID}=req.body;
       const query=`select s.name ,sr.request_id ,sr.description,sr.address,sr.request_date 
-      from ServiceRequests sr join services s on sr.service_id=s.service_id where client_id=${user_ID} and sr.status='pending'; `
+      from ServiceRequests sr join Services s on sr.service_id=s.service_id where client_id=${user_ID} and sr.status='pending'; `
       const [results]= await sequelize.query(query);
       res.json(results);
    }
